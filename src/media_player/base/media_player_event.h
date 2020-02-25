@@ -23,7 +23,6 @@
 #define TK_MEDIA_PLAYER_EVENT_H
 
 #include "tkc/event.h"
-#include "base/bitmap.h"
 
 BEGIN_C_DECLS
 

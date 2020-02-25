@@ -20,7 +20,7 @@
  */
 
 #include "awtk.h"
-#include "media_player/media_player_ffmpeg.h"
+#include "media_player/base/media_player.h"
 
 static ret_t on_media_player_event(void* ctx, event_t* e) {
   switch (e->type) {
@@ -44,7 +44,7 @@ static ret_t on_media_player_event(void* ctx, event_t* e) {
 static ret_t on_load_click(void* ctx, event_t* e) {
   media_player_t* player = (media_player_t*)ctx;
 
-  media_player_load(player, "./test.mp4");
+  media_player_load(player, "./data/test.mp4");
 
   return RET_OK;
 }
@@ -98,7 +98,7 @@ static ret_t mutable_image_prepare_image(void* ctx, bitmap_t* image) {
 }
 
 void application_init() {
-  media_player_t* player = media_player_ffmpeg_create();
+  media_player_t* player = media_player_create();
 
   media_player_set_on_event(player, on_media_player_event, player);
 

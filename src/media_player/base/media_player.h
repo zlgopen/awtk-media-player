@@ -24,7 +24,7 @@
 
 #include "tkc/event.h"
 #include "base/bitmap.h"
-#include "media_player/media_player_event.h"
+#include "media_player/base/media_player_event.h"
 
 BEGIN_C_DECLS
 
@@ -299,6 +299,14 @@ ret_t media_player_notify_simple(media_player_t* player, uint32_t event_type);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t media_player_notify(media_player_t* player, event_t* e);
+
+/**
+ * @method media_player_create
+ * 创建media_player对象。
+ *
+ * @return {media_player_t*} 返回media_player对象。
+ */
+media_player_t* media_player_create(void);
 
 END_C_DECLS
 

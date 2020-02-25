@@ -4,4 +4,4 @@ import sys
 env=DefaultEnvironment().Clone()
 LIB_DIR=os.environ['LIB_DIR'];
 
-env.Library(os.path.join(LIB_DIR, 'media_player'), Glob('*.c'))
+env.Library(os.path.join(LIB_DIR, 'audio_device_sdl'), Glob('*.c'))

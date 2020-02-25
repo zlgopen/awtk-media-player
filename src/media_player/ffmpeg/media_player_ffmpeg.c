@@ -25,9 +25,9 @@
 #include "tkc/mutex.h"
 #include "tkc/thread.h"
 #include "tkc/platform.h"
-#include "media_player/audio_device.h"
-#include "media_player/media_player_event.h"
-#include "media_player/media_player_ffmpeg.h"
+#include "media_player_ffmpeg.h"
+#include "media_player/base/audio_device.h"
+#include "media_player/base/media_player_event.h"
 
 static ret_t media_player_ffmpeg_notify(media_player_t* player, event_t* e);
 static ret_t media_player_ffmpeg_notify_simple(media_player_t* player, uint32_t type);
@@ -253,7 +253,7 @@ static const media_player_vtable_t s_media_player_ffmpeg = {
     .get_video_width = media_player_ffmpeg_get_video_width,
     .get_video_height = media_player_ffmpeg_get_video_height};
 
-media_player_t* media_player_ffmpeg_create(void) {
+media_player_t* media_player_create(void) {
   media_player_ffmpeg_t* player = TKMEM_ZALLOC(media_player_ffmpeg_t);
   return_value_if_fail(player != NULL, NULL);
 

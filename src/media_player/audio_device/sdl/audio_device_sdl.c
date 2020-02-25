@@ -24,7 +24,7 @@
 #ifdef WITH_SDL
 
 #include "SDL.h"
-#include "media_player/audio_device.h"
+#include "media_player/base/audio_device.h"
 
 typedef struct _audio_device_sdl_t {
   audio_device_t audio_device;

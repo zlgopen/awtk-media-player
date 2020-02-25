@@ -23,7 +23,6 @@ INCLUDE_PATH = [TK_ROOT,
   os.path.join(GTEST_ROOT, 'make')] 
 
 env['CPPPATH'] = env['CPPPATH'] + INCLUDE_PATH
-env['LIBS'] = ['http', 'curl'] + env['LIBS']
 
 if platform.system() == 'Windows':
   env['LIBS'] = ['Ws2_32', 'Wldap32'] + env['LIBS']

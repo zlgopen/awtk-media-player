@@ -20,7 +20,7 @@
  */
 
 #include "tkc/mem.h"
-#include "media_player/audio_device.h"
+#include "audio_device.h"
 
 ret_t audio_device_mix(audio_device_t* device, uint8_t* dst, const uint8_t* src, uint32_t len) {
   return_value_if_fail(device != NULL, RET_BAD_PARAMS);

@@ -22,11 +22,11 @@
 #ifndef TK_MEDIA_PLAYER_FFMPEG_H
 #define TK_MEDIA_PLAYER_FFMPEG_H
 
-#include "media_player/media_player.h"
+#include "media_player/base/media_player.h"
 
 BEGIN_C_DECLS
 
-media_player_t* media_player_ffmpeg_create(void);
+media_player_t* media_player_create(void);
 
 END_C_DECLS
 
