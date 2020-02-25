@@ -1,4 +1,6 @@
 ./configure  --disable-sdl2 --disable-iconv --disable-x86asm --disable-asm \
   --disable-ffmpeg --disable-ffplay --disable-ffprobe \
   --disable-xlib --disable-zlib --disable-lzma --disable-bzlib \
-  --disable-avfoundation --disable-appkit 
+  --disable-avfoundation --disable-appkit \
+  --disable-libxcb --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxcb-shape \
+  --disable-libxml2 --disable-libxvid --disable-coreimage --disable-alsa
