@@ -40,8 +40,7 @@ if OS_NAME == 'Darwin':
   PLAYER_LINKFLAGS = PLAYER_LINKFLAGS + " -framework CoreFoundation"
   PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS #+ ['iconv', 'pthread', 'lzma', 'bz2', 'z']
 elif OS_NAME == 'Linux':
-  PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS + ["xcb","xcb-shm","xcb-shape", 
-    "xcb-xfixes", "Xv", "asound", "z"]
+  PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS  + ["asound"] 
 elif OS_NAME == 'Windows':
   print("debug");
 
