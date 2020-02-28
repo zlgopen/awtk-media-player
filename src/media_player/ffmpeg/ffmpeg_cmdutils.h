@@ -169,11 +169,11 @@ typedef struct OptionDef {
 #define OPT_INT64 0x0400
 #define OPT_EXIT 0x0800
 #define OPT_DATA 0x1000
-#define OPT_PERFILE                                                          \
+#define OPT_PERFILE \
   0x2000                  /* the option is per-file (currently ffmpeg-only). \
                              implied by OPT_OFFSET or OPT_SPEC */
 #define OPT_OFFSET 0x4000 /* option is specified as an offset in a passed optctx */
-#define OPT_SPEC                                                 \
+#define OPT_SPEC \
   0x8000 /* option is to be stored in an array of SpecifierOpt.  \
             Implies OPT_OFFSET. Next element after the offset is \
             an int containing element count in the array. */

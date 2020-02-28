@@ -208,7 +208,7 @@ uint32_t audio_device_get_queued_data_size(audio_device_t* device);
  *
  * @param {audio_device_t*} device audio_device对象。
  *
- * @return {uint32_t} 返回数据长度。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t audio_device_clear_queued_data(audio_device_t* device);
 

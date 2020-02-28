@@ -32,7 +32,7 @@ typedef struct _audio_device_alsa_t {
 } audio_device_alsa_t;
 
 static ret_t audio_device_alsa_mix(audio_device_t* device, uint8_t* dst, const uint8_t* src,
-                                  uint32_t len) {
+                                   uint32_t len) {
   ALSA_MixAudio(dst, src, len, device->volume);
 
   return RET_OK;
@@ -44,7 +44,8 @@ static uint32_t audio_device_alsa_dequeue_data(audio_device_t* device, void* dat
   return ALSA_DequeueAudio(alsa->devid, data, len);
 }
 
-static int32_t audio_device_alsa_queue_data(audio_device_t* device, const void* data, uint32_t len) {
+static int32_t audio_device_alsa_queue_data(audio_device_t* device, const void* data,
+                                            uint32_t len) {
   audio_device_alsa_t* alsa = (audio_device_alsa_t*)device;
 
   return ALSA_QueueAudio(alsa->devid, data, len);
@@ -157,7 +158,7 @@ static audio_device_vtable_t s_audio_device_vtable = {
     .destroy = audio_device_alsa_destroy};
 
 static audio_device_t* audio_device_alsa_create(const char* name, bool_t is_capture,
-                                               const audio_spec_t* desired, audio_spec_t* real) {
+                                                const audio_spec_t* desired, audio_spec_t* real) {
   audio_device_alsa_t* alsa = NULL;
   ALSA_AudioSpec alsa_real;
   ALSA_AudioSpec alsa_desired;

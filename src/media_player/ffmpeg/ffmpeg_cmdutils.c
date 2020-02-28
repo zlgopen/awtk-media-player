@@ -1271,7 +1271,6 @@ int show_devices(void* optctx, const char* opt, const char* arg) {
     printf("\n");                                                            \
   }
 
-
 static char get_media_type_char(enum AVMediaType type) {
   switch (type) {
     case AVMEDIA_TYPE_VIDEO:
@@ -1571,7 +1570,6 @@ int show_sample_fmts(void* optctx, const char* opt, const char* arg) {
     printf("%s\n", av_get_sample_fmt_string(fmt_str, sizeof(fmt_str), i));
   return 0;
 }
-
 
 static void show_help_demuxer(const char* name) {
   const AVInputFormat* fmt = av_find_input_format(name);
