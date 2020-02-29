@@ -16,7 +16,7 @@ FFMPEG_ROOT=os.path.abspath(os.path.join(APP_ROOT, '3rd/ffmpeg/ffmpeg'))
 
 PLAYER_CPPPATH=[]
 PLAYER_LINKFLAGS=""
-PLAYER_LIBS = ["media_player_ffmpeg", "audio_device_sdl", "media_player_base"]
+PLAYER_LIBS = ["media_player_ffmpeg", "audio_device_sdl", "media_player_base", "lrc"]
 
 OS_NAME = platform.system();
 
@@ -70,6 +70,7 @@ DefaultEnvironment(
   OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS)
 
 SConscriptFiles=[
+  'src/media_player/lrc/SConscript', 
   'src/media_player/base/SConscript', 
   'src/media_player/ffmpeg/SConscript', 
   'src/media_player/audio_device/sdl/SConscript', 
