@@ -10,7 +10,7 @@ FFMPEG_ROOT=os.path.abspath(os.path.join('../', '3rd/ffmpeg/ffmpeg'))
 
 PLAYER_CPPPATH=[]
 PLAYER_LINKFLAGS=""
-PLAYER_LIBS = ["media_player"]
+PLAYER_LIBS = ["media_player_audio", "media_player_ffmpeg", "", "audio_device_sdl", "media_player_base"]
 
 OS_NAME = platform.system();
 
@@ -43,5 +43,6 @@ env['LIBS'] = PLAYER_LIBS +  env['LIBS']
 env['LINKFLAGS'] = env['LINKFLAGS'] + PLAYER_LINKFLAGS
 
 env.Program(os.path.join(BIN_DIR, 'demo_media_player'), ['demo_media_player.c'])
+env.Program(os.path.join(BIN_DIR, 'demo_audio_player'), ['demo_audio_player.c'])
 
 

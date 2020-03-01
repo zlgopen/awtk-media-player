@@ -16,7 +16,7 @@ FFMPEG_ROOT=os.path.abspath(os.path.join(APP_ROOT, '3rd/ffmpeg/ffmpeg'))
 
 PLAYER_CPPPATH=[]
 PLAYER_LINKFLAGS=""
-PLAYER_LIBS = ["media_player_ffmpeg", "audio_device_sdl", "media_player_base", "lrc"]
+PLAYER_LIBS = ["media_player_ffmpeg", "media_player_audio", "audio_device_sdl", "media_player_base", "lrc"]
 
 OS_NAME = platform.system();
 
@@ -46,6 +46,7 @@ elif OS_NAME == 'Windows':
 
 APP_CPPPATH = ['.', 
   os.path.join(APP_ROOT, 'src'),
+  os.path.join(APP_ROOT, '3rd'),
   os.path.join(APP_ROOT, '3rd/ffmpeg/ffmpeg'),
   os.path.join(APP_ROOT, '3rd/ffmpeg/x264')
 ]
@@ -73,6 +74,7 @@ SConscriptFiles=[
   'src/media_player/lrc/SConscript', 
   'src/media_player/base/SConscript', 
   'src/media_player/ffmpeg/SConscript', 
+  'src/media_player/audio_player/SConscript', 
   'src/media_player/audio_device/sdl/SConscript', 
   'demos/SConscript', 
   'tests/SConscript', 

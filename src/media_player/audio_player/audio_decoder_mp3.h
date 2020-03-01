@@ -1,7 +1,7 @@
 ﻿/**
- * File:   lrc_builder_dump.h
+ * File:   audio_decoder_mp3.h
  * Author: AWTK Develop Team
- * Brief:  lrc builder dump
+ * Brief:  mp3 audio decoder
  *
  * Copyright (c) 2020 - 2020  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -19,31 +19,22 @@
  *
  */
 
-#ifndef TK_LRC_BUILDER_DUMP_H
-#define TK_LRC_BUILDER_DUMP_H
+#ifndef TK_AUDIO_DECODER_MP3_H
+#define TK_AUDIO_DECODER_MP3_H
 
-#include "tkc/str.h"
-#include "media_player/lrc/lrc_builder.h"
+#include "tkc/data_reader.h"
+#include "media_player/audio_player/audio_decoder.h"
 
 BEGIN_C_DECLS
 
 /**
- * @class lrc_builder_dump_t
- * lrc builder dump
+ * @method audio_decoder_mp3_create
+ * 创建decoder对象。
+ * @param {data_reader_t*} reader data reader对象(由decoder销毁)。
+ * @return {audio_decoder_t*} 返回decoder对象。
  */
-typedef struct _lrc_builder_dump_t {
-  lrc_builder_t lrc_builder;
-  str_t result;
-} lrc_builder_dump_t;
-
-/**
- * @method lrc_builder_dump_create
- * 创建builder对象。
- *
- * @return {lrc_builder_t*} 返回builder对象。
- */
-lrc_builder_t* lrc_builder_dump_create(void);
+audio_decoder_t* audio_decoder_mp3_create(data_reader_t* reader);
 
 END_C_DECLS
 
-#endif /*TK_LRC_BUILDER_DUMP_H*/
+#endif /*TK_AUDIO_DECODER_MP3_H*/
