@@ -1,0 +1,5 @@
+<window theme="main">
+    <edit text="hello awtk" x="center" y="middle:-100" w="80%" h="30" input_type="text"/>
+    <button style="icon" name="settings" text="Open Settings" x="center" y="middle" w="50%" h="30"/>
+    <button style="icon" name="window1" text="Open Window1" x="center" y="middle:50" w="50%" h="30"/>
+</window>

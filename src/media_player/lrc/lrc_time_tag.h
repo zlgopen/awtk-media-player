@@ -78,6 +78,31 @@ lrc_time_tag_list_t* lrc_time_tag_list_create(void);
 ret_t lrc_time_tag_list_append(lrc_time_tag_list_t* list, uint32_t timestamp);
 
 /**
+ * @method lrc_time_tag_list_is_matched
+ * 
+ * 判断指定的序号是否匹配指定的时间。
+ *
+ * @param {lrc_time_tag_list_t*} list lrc_time_tag_list对象。
+ * @param {uint32_t} index 序数。
+ * @param {uint32_t} timestamp 时间。
+ *
+ * @return {bool_t} 返回TRUE表示匹配，FALSE表示不匹配。
+ */
+bool_t lrc_time_tag_list_is_matched(lrc_time_tag_list_t* list, uint32_t index, uint32_t timestamp);
+
+/**
+ * @method lrc_time_tag_list_find_index
+ * 
+ * 获取指定时间的项的序数。
+ *
+ * @param {lrc_time_tag_list_t*} list lrc_time_tag_list对象。
+ * @param {uint32_t} timestamp 时间。
+ *
+ * @return {int32_t} 找到则返回项的序数，否则返回-1。
+ */
+int32_t lrc_time_tag_list_find_index(lrc_time_tag_list_t* list, uint32_t timestamp);
+
+/**
  * @method lrc_time_tag_list_set_text
  * 设置没有text的tag的text。
  *

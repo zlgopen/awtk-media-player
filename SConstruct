@@ -57,7 +57,7 @@ os.environ['BIN_DIR'] = APP_BIN_DIR;
 os.environ['LIB_DIR'] = APP_LIB_DIR;
 
 APP_LIBPATH = [APP_LIB_DIR]
-APP_LIBS = ['assets'] + PLAYER_LIBS
+APP_LIBS = ['assets', 'media_player_widgets'] + PLAYER_LIBS
 APP_LINKFLAGS = PLAYER_LINKFLAGS
 APP_CCFLAGS = ' -DBUILDING_LIBCURL -DRES_ROOT=\"\\\"'+RES_ROOT+'\\\"\" '
 
@@ -74,6 +74,7 @@ SConscriptFiles=[
   'src/media_player/lrc/SConscript', 
   'src/media_player/base/SConscript', 
   'src/media_player/ffmpeg/SConscript', 
+  'src/media_player/widgets/SConscript', 
   'src/media_player/audio_player/SConscript', 
   'src/media_player/audio_device/sdl/SConscript', 
   'demos/SConscript', 

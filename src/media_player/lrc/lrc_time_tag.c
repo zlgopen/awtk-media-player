@@ -103,25 +103,47 @@ ret_t lrc_time_tag_list_sort(lrc_time_tag_list_t* list) {
   return RET_OK;
 }
 
-const char* lrc_time_tag_list_find(lrc_time_tag_list_t* list, uint32_t timestamp) {
+int32_t lrc_time_tag_list_find_index(lrc_time_tag_list_t* list, uint32_t timestamp) {
   uint32_t i = 0;
-  return_value_if_fail(list != NULL, NULL);
+  return_value_if_fail(list != NULL, -1);
   for (i = 0; i < list->size; i++) {
     lrc_time_tag_t* iter = list->items + i;
 
-    if (iter->timestamp == timestamp) {
-      return iter->text;
-    } else if (iter->timestamp > timestamp) {
-      if (i > 0) {
-        iter = list->items + i - 1;
-        return iter->text;
-      } else {
-        return NULL;
-      }
-    } else if ((i + 1) == list->size) {
-      return iter->text;
+    if (lrc_time_tag_list_is_matched(list, i, timestamp)) {
+      return i;
     }
   }
 
-  return NULL;
+  return -1;
+}
+
+const char* lrc_time_tag_list_find(lrc_time_tag_list_t* list, uint32_t timestamp) {
+  int32_t index = lrc_time_tag_list_find_index(list, timestamp);
+  if (index >= 0) {
+    return list->items[index].text;
+  } else {
+    return NULL;
+  }
+}
+
+bool_t lrc_time_tag_list_is_matched(lrc_time_tag_list_t* list, uint32_t index, uint32_t timestamp) {
+  lrc_time_tag_t* iter = NULL;
+  return_value_if_fail(list != NULL && list->items != NULL, FALSE);
+  return_value_if_fail(index < list->size, FALSE);
+
+  iter = list->items + index;
+
+  if (iter->timestamp == timestamp) {
+    return TRUE;
+  }
+
+  if ((index + 1) == list->size && iter->timestamp < timestamp) {
+    return TRUE;
+  }
+
+  if (iter->timestamp < timestamp && iter[1].timestamp > timestamp) {
+    return TRUE;
+  }
+
+  return FALSE;
 }

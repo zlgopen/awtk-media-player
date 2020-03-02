@@ -20,6 +20,7 @@
  */
 
 #include "awtk.h"
+#include "media_player/widgets/lrc_view.h"
 #include "media_player/base/media_player.h"
 #include "media_player/audio_player/audio_decoder_mp3.h"
 #include "media_player/audio_player/audio_decoder_factory.h"
@@ -90,17 +91,24 @@ static ret_t on_quit_click(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-void application_init() {
-  media_player_t* player = media_player_audio_create();
-
+static ret_t app_global_init(void) {
+  lrc_view_register();
   data_reader_factory_set(data_reader_factory_create());
   data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
   audio_decoder_factory_set(audio_decoder_factory_create());
   audio_decoder_factory_register(audio_decoder_factory(), "mp3", audio_decoder_mp3_create);
 
+  return RET_OK;
+}
+
+static ret_t application_init() {
+  media_player_t* player = media_player_audio_create();
+
+  app_global_init();
   media_player_set_on_event(player, on_media_player_event, player);
 
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
+  widget_t* lrc_View = lrc_view_create(win, 20, 20, win->w - 40, win->h - 40);
   widget_t* load = button_create(win, 0, 0, 0, 0);
   widget_t* start = button_create(win, 0, 0, 0, 0);
   widget_t* forward = button_create(win, 0, 0, 0, 0);
@@ -109,6 +117,7 @@ void application_init() {
   widget_t* quit = button_create(win, 0, 0, 0, 0);
   widget_t* status = label_create(win, 0, 0, 0, 0);
 
+  widget_set_prop_str(win, WIDGET_PROP_THEME, "audio_player");
   widget_set_self_layout_params(status, "center", "m:-120", "100%", "30");
 
   widget_set_text(load, L"load");
@@ -136,10 +145,16 @@ void application_init() {
   widget_on(quit, EVT_CLICK, on_quit_click, quit);
 
   widget_layout(win);
+
+  return RET_OK;
 }
 
-void application_deinit() {
+ret_t application_exit() {
   data_reader_factory_destroy(data_reader_factory());
+
+  return RET_OK;
 }
 
-#include "demo_main.c"
+#define LCD_WIDTH 800
+#define LCD_HEGHT 480
+#include "awtk_main.inc"

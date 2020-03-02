@@ -6,8 +6,11 @@ TEST(Lrc, basic) {
 
   ASSERT_EQ(lrc != NULL, true);
   ASSERT_EQ(lrc->time_tags->size, 1);
-  ASSERT_STREQ(lrc_time_tag_list_find(lrc->time_tags, 62 * 1000), "hello");
-  ASSERT_STREQ(lrc_time_tag_list_find(lrc->time_tags, 63 * 1000), "hello");
+  const char* str = lrc_time_tag_list_find(lrc->time_tags, 62 * 1000);
+  ASSERT_STREQ(str, "hello");
+
+  str = lrc_time_tag_list_find(lrc->time_tags, 63 * 1000);
+  ASSERT_STREQ(str, "hello");
 
   lrc_destroy(lrc);
 }
