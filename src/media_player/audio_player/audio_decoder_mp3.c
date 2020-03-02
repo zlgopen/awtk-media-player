@@ -61,6 +61,8 @@ static int32_t audio_decoder_mp3_decode(audio_decoder_t* decoder, void* buff, ui
   audio_decoder_mp3_t* adecoder = (audio_decoder_mp3_t*)decoder;
   uint32_t samples = mp3dec_ex_read(&(adecoder->mp3), (mp3d_sample_t*)buff, request_samples);
 
+  decoder->position = (adecoder->mp3.cur_sample * 1000) / (decoder->channels * decoder->freq);
+
   return samples * sizeof(mp3d_sample_t);
 }
 

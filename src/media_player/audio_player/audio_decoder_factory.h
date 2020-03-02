@@ -76,7 +76,7 @@ audio_decoder_factory_t* audio_decoder_factory_create(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t audio_decoder_factory_register(audio_decoder_factory_t* factory, const char* type,
-                                   audio_decoder_create_t create);
+                                     audio_decoder_create_t create);
 /**
  * @method audio_decoder_factory_create_decoder
  * 创建指定类型的audio decoder对象。
@@ -87,8 +87,8 @@ ret_t audio_decoder_factory_register(audio_decoder_factory_t* factory, const cha
  *
  * @return {audio_decoder_t*} 返回audio decoder对象。
  */
-audio_decoder_t* audio_decoder_factory_create_decoder(audio_decoder_factory_t* factory, 
-    const char* type, data_reader_t* reader);
+audio_decoder_t* audio_decoder_factory_create_decoder(audio_decoder_factory_t* factory,
+                                                      const char* type, data_reader_t* reader);
 
 /**
  * @method audio_decoder_factory_destroy

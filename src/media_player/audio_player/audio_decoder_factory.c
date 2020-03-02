@@ -57,7 +57,7 @@ static audio_decoder_factory_t* audio_decoder_factory_init(audio_decoder_factory
 }
 
 ret_t audio_decoder_factory_register(audio_decoder_factory_t* factory, const char* type,
-                                   audio_decoder_create_t create) {
+                                     audio_decoder_create_t create) {
   creator_item_t* item = NULL;
   return_value_if_fail(factory != NULL && type != NULL && create != NULL, RET_BAD_PARAMS);
 
@@ -71,8 +71,8 @@ ret_t audio_decoder_factory_register(audio_decoder_factory_t* factory, const cha
   return RET_OK;
 }
 
-audio_decoder_t* audio_decoder_factory_create_decoder(audio_decoder_factory_t* factory, 
-    const char* type, data_reader_t* reader) {
+audio_decoder_t* audio_decoder_factory_create_decoder(audio_decoder_factory_t* factory,
+                                                      const char* type, data_reader_t* reader) {
   const creator_item_t* iter = NULL;
   return_value_if_fail(factory != NULL && type != NULL && reader != NULL, NULL);
 

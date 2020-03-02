@@ -27,21 +27,20 @@
 #include "tkc/action_thread.h"
 #include "tkc/data_reader_factory.h"
 #include "media_player/base/audio_device.h"
-#include "media_player/audio_player/audio_decoder_factory.h"
-#include "media_player/audio_player/media_player_audio.h"
 #include "media_player/base/media_player_event.h"
+#include "media_player/audio_player/media_player_audio.h"
+#include "media_player/audio_player/audio_decoder_factory.h"
 
 typedef struct _media_player_audio_t {
   media_player_t media_player;
   audio_decoder_t* decoder;
 
-  uint32_t duration;
-  uint32_t position;
   uint32_t volume;
 
   bool_t paused;
   bool_t muted;
   bool_t abort_request;
+  int32_t seek_request;
   action_thread_t* worker;
 } media_player_audio_t;
 
@@ -49,15 +48,22 @@ typedef struct _action_play_info_t {
   media_player_audio_t* player;
 } action_play_info_t;
 
+#ifndef AUDIO_DEVICE_MAX_QUEUED_SIZE
+#define AUDIO_DEVICE_MAX_QUEUED_SIZE 10 * 1024
+#endif /*AUDIO_DEVICE_MAX_QUEUED_SIZE*/
+
 static ret_t qaction_exec_decode(qaction_t* action) {
   int32_t ret = 0;
   uint16_t buff[1024];
   audio_spec_t real;
   audio_spec_t desired;
+  audio_device_t* device = NULL;
   action_play_info_t* info = (action_play_info_t*)(action->args);
   media_player_audio_t* player = info->player;
   audio_decoder_t* decoder = player->decoder;
-  audio_device_t* device = NULL;
+  uint32_t queued_data_size = 0;
+  uint32_t volume = player->volume;
+  bool_t paused = player->paused;
 
   memset(&real, 0x00, sizeof(real));
   memset(&desired, 0x00, sizeof(desired));
@@ -66,32 +72,71 @@ static ret_t qaction_exec_decode(qaction_t* action) {
   desired.format = player->decoder->format;
   desired.channels = player->decoder->channels;
 
+  player->seek_request = -1;
   player->abort_request = FALSE;
   device = audio_device_mixer_create(NULL, &desired, &real);
-  while (player->abort_request == FALSE) {
-    uint32_t queued_data_size = 0;
+  return_value_if_fail(device != NULL, RET_FAIL);
 
+  audio_device_set_volume(device, volume);
+  while (!(player->abort_request)) {
     memset(buff, 0, sizeof(buff));
 
-    if (player->paused) {
+    if (volume != player->volume) {
+      volume = player->volume;
+      audio_device_set_volume(device, volume);
+    }
+
+    if (paused != player->paused) {
+      paused = player->paused;
+      if (paused) {
+        audio_device_pause(device);
+      } else {
+        audio_device_start(device);
+      }
+    }
+
+    if (player->seek_request >= 0) {
+      audio_decoder_seek(decoder, player->seek_request);
+      player->seek_request = -1;
+    }
+
+    if (paused) {
       sleep_ms(10);
       continue;
     }
 
     queued_data_size = audio_device_get_queued_data_size(device);
-    if (queued_data_size > 20480) {
+    if (queued_data_size > AUDIO_DEVICE_MAX_QUEUED_SIZE) {
       sleep_ms(10);
       continue;
     }
 
     ret = audio_decoder_decode(decoder, buff, sizeof(buff));
     if (ret > 0) {
-      audio_device_start(device);
-      ret = audio_device_queue_data(device, buff, ret);
+      if (!(player->muted)) {
+        ret = audio_device_queue_data(device, buff, ret);
+      }
     } else {
       log_debug("decode done\n");
       break;
     }
+
+    log_debug("position:%u duration:%u \n", decoder->position, decoder->duration);
+  }
+
+  if (player->abort_request) {
+    audio_device_clear_queued_data(device);
+  } else {
+    while (TRUE) {
+      queued_data_size = audio_device_get_queued_data_size(device);
+      if (queued_data_size > 0) {
+        log_debug("queued_data_size=%d\n", queued_data_size);
+        sleep_ms(20);
+      } else {
+        break;
+      }
+    }
+    log_debug("wait for audio device done\n");
   }
 
   audio_device_destroy(device);
@@ -103,13 +148,14 @@ static ret_t qaction_exec_decode(qaction_t* action) {
 
 static ret_t media_player_audio_create_decoder(media_player_audio_t* player, const char* url) {
   const char* type = strrchr(url, '.');
-  if(type != NULL) {
+
+  if (type != NULL) {
     data_reader_t* reader = data_reader_factory_create_reader(data_reader_factory(), url);
     return_value_if_fail(reader != NULL, RET_BAD_PARAMS);
-   
+
     type++;
     player->decoder = audio_decoder_factory_create_decoder(audio_decoder_factory(), type, reader);
-    if(player->decoder == NULL) {
+    if (player->decoder == NULL) {
       data_reader_destroy(reader);
     }
   }
@@ -176,8 +222,13 @@ static ret_t media_player_audio_stop(media_player_t* player) {
 static ret_t media_player_audio_seek(media_player_t* player, uint32_t offset) {
   media_player_audio_t* aplayer = (media_player_audio_t*)player;
   return_value_if_fail(aplayer->decoder != NULL, RET_BAD_PARAMS);
+  if (offset < aplayer->decoder->duration) {
+    aplayer->seek_request = offset;
+  } else {
+    aplayer->seek_request = aplayer->decoder->duration;
+  }
 
-  return audio_decoder_seek(aplayer->decoder, offset);
+  return RET_OK;
 }
 
 static ret_t media_player_audio_set_volume(media_player_t* player, uint32_t volume) {
@@ -229,21 +280,20 @@ static uint32_t media_player_audio_get_volume(media_player_t* player) {
   return_value_if_fail(aplayer->decoder != NULL, 0);
 
   return aplayer->volume;
-  ;
 }
 
 static uint32_t media_player_audio_get_position(media_player_t* player) {
   media_player_audio_t* aplayer = (media_player_audio_t*)player;
   return_value_if_fail(aplayer->decoder != NULL, 0);
 
-  return aplayer->position;
+  return aplayer->decoder->position;
 }
 
 static uint32_t media_player_audio_get_duration(media_player_t* player) {
   media_player_audio_t* aplayer = (media_player_audio_t*)player;
   return_value_if_fail(aplayer->decoder != NULL, 0);
 
-  return aplayer->duration;
+  return aplayer->decoder->duration;
 }
 
 static const media_player_vtable_t s_media_player_audio = {
