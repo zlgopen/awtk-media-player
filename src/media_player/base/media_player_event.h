@@ -40,9 +40,15 @@ typedef enum _media_player_event_t {
 
   /**
    * @const EVT_MEDIA_PLAYER_PAUSED
-   * 暂停状态。
+   * 进入暂停状态。
    */
   EVT_MEDIA_PLAYER_PAUSED,
+  
+  /**
+   * @const EVT_MEDIA_PLAYER_RESUMED
+   * 进入播放状态。
+   */
+  EVT_MEDIA_PLAYER_RESUMED,
 
   /**
    * @const EVT_MEDIA_PLAYER_DONE

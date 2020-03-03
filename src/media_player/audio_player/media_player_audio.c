@@ -77,6 +77,7 @@ static ret_t qaction_exec_decode(qaction_t* action) {
   device = audio_device_mixer_create(NULL, &desired, &real);
   return_value_if_fail(device != NULL, RET_FAIL);
 
+  media_player_notify_simple(player, EVT_MEDIA_PLAYER_LOADED);
   audio_device_set_volume(device, volume);
   while (!(player->abort_request)) {
     memset(buff, 0, sizeof(buff));
@@ -90,8 +91,10 @@ static ret_t qaction_exec_decode(qaction_t* action) {
       paused = player->paused;
       if (paused) {
         audio_device_pause(device);
+        media_player_notify_simple(player, EVT_MEDIA_PLAYER_PAUSED);
       } else {
         audio_device_start(device);
+        media_player_notify_simple(player, EVT_MEDIA_PLAYER_RESUMED);
       }
     }
 
@@ -139,6 +142,7 @@ static ret_t qaction_exec_decode(qaction_t* action) {
     log_debug("wait for audio device done\n");
   }
 
+  media_player_notify_simple(player, EVT_MEDIA_PLAYER_DONE);
   audio_device_destroy(device);
   audio_decoder_destroy(decoder);
   player->decoder = NULL;

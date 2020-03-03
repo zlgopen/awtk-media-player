@@ -93,6 +93,7 @@ static ret_t on_quit_click(void* ctx, event_t* e) {
 
 static ret_t app_global_init(void) {
   lrc_view_register();
+  media_player_set(media_player_audio_create());
   data_reader_factory_set(data_reader_factory_create());
   data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
   audio_decoder_factory_set(audio_decoder_factory_create());
@@ -102,11 +103,7 @@ static ret_t app_global_init(void) {
 }
 
 static ret_t application_init() {
-  media_player_t* player = media_player_audio_create();
-
-  app_global_init();
-  media_player_set_on_event(player, on_media_player_event, player);
-
+  media_player_t* player = NULL;
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* lrc_View = lrc_view_create(win, 20, 20, win->w - 40, win->h - 40);
   widget_t* load = button_create(win, 0, 0, 0, 0);
@@ -116,6 +113,10 @@ static ret_t application_init() {
   widget_t* stop = button_create(win, 0, 0, 0, 0);
   widget_t* quit = button_create(win, 0, 0, 0, 0);
   widget_t* status = label_create(win, 0, 0, 0, 0);
+  
+  app_global_init();
+  player = media_player();
+  media_player_set_on_event(player, on_media_player_event, player);
 
   widget_set_prop_str(win, WIDGET_PROP_THEME, "audio_player");
   widget_set_self_layout_params(status, "center", "m:-120", "100%", "30");

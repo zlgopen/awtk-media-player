@@ -308,6 +308,22 @@ ret_t media_player_notify(media_player_t* player, event_t* e);
  */
 media_player_t* media_player_create(void);
 
+/**
+ * @method media_player
+ * 获取全局的media_player对象。
+ *
+ * @return {media_player_t*} 返回media_player对象。
+ */
+media_player_t* media_player(void);
+
+/**
+ * @method media_player_set
+ * 设置全局的media_player对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t media_player_set(media_player_t* media_layer);
+
 END_C_DECLS
 
 #endif /*TK_MEDIA_PLAYER_H*/

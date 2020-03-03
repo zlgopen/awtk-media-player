@@ -157,3 +157,15 @@ uint32_t media_player_get_video_height(media_player_t* player) {
 
   return player->vt->get_video_height(player);
 }
+
+static media_player_t* s_media_player;
+
+media_player_t* media_player(void) {
+  return s_media_player;
+}
+
+ret_t media_player_set(media_player_t* media_layer) {
+  s_media_player = media_layer;
+
+  return RET_OK;
+}
