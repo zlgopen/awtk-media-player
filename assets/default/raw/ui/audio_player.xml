@@ -1,0 +1,20 @@
+<window anim_hint="htranslate" theme="player">
+  <audio_view x="0" y="0" w="100%" h="90%">
+    <lrc_view name="lrc" x="10" y="0" w="100%" h="-40"/>
+
+    <label name="author" text="author" x="right:10" y="10" w="100" h="30"/>
+    <label name="song" text="song" x="right:10" y="40" w="100" h="30"/>
+
+    <row x="10" y="bottom:10" w="100%" h="30">
+      <button name="prev" text="<" x="10" y="0" w="30" h="30"/>
+      <check_button name="play" style="play" x="50" y="0" w="30" h="30"/>
+      <button name="next" text=">" x="90" y="0" w="30" h="30"/>
+      <check_button name="mute" style="mute" x="130" y="0" w="30" h="30"/>
+      <image_value  name="mode" x="170" y="0" w="30" h="30"
+        value="0" image="mode_" click_add_delta="1" min="0" max="2"/>
+
+      <slider name="progress" text=">" x="210" y="0" w="-230" h="30"/>
+    </row>
+  </audio_view>
+  <button name="close" text="Close" x="center" y="bottom:10" w="80%" h="30"/>
+</window>

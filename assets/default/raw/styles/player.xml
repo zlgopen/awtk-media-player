@@ -1,0 +1,18 @@
+<lrc_view>
+  <style highlight_text_color="red" highlight_font_size="20"
+    text_color="black" font_size="18" 
+    text_align_h="center">
+    <normal />
+  </style>
+</lrc_view>
+
+<check_button>
+  <style name="play" >
+    <normal  icon="play" />
+    <pressed icon="play" x_offset="1" y_offset="1"/>
+    <over    icon="play" />
+    <normal_of_checked icon="pause" />
+    <pressed_of_checked icon="pause" x_offset="1" y_offset="1"/>
+    <over_of_checked icon="pause" />
+  </style>
+</check_button>

@@ -21,6 +21,7 @@
 
 #include "awtk.h"
 #include "media_player/widgets/lrc_view.h"
+#include "media_player/widgets/audio_view.h"
 #include "media_player/base/media_player.h"
 #include "media_player/audio_player/audio_decoder_mp3.h"
 #include "media_player/audio_player/audio_decoder_factory.h"
@@ -48,7 +49,7 @@ static ret_t on_media_player_event(void* ctx, event_t* e) {
 static ret_t on_load_click(void* ctx, event_t* e) {
   media_player_t* player = (media_player_t*)ctx;
 
-  media_player_load(player, "./data/test.mp3");
+  media_player_load(player, "./data/song3.mp3");
 
   return RET_OK;
 }
@@ -93,6 +94,7 @@ static ret_t on_quit_click(void* ctx, event_t* e) {
 
 static ret_t app_global_init(void) {
   lrc_view_register();
+  audio_view_register();
   media_player_set(media_player_audio_create());
   data_reader_factory_set(data_reader_factory_create());
   data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
@@ -103,48 +105,17 @@ static ret_t app_global_init(void) {
 }
 
 static ret_t application_init() {
+  widget_t* win = NULL;
   media_player_t* player = NULL;
-  widget_t* win = window_create(NULL, 0, 0, 0, 0);
-  widget_t* lrc_View = lrc_view_create(win, 20, 20, win->w - 40, win->h - 40);
-  widget_t* load = button_create(win, 0, 0, 0, 0);
-  widget_t* start = button_create(win, 0, 0, 0, 0);
-  widget_t* forward = button_create(win, 0, 0, 0, 0);
-  widget_t* pause = button_create(win, 0, 0, 0, 0);
-  widget_t* stop = button_create(win, 0, 0, 0, 0);
-  widget_t* quit = button_create(win, 0, 0, 0, 0);
-  widget_t* status = label_create(win, 0, 0, 0, 0);
-  
+
   app_global_init();
+  log_set_log_level(LOG_LEVEL_DEBUG);
+
   player = media_player();
+  win = window_open("audio_player");
   media_player_set_on_event(player, on_media_player_event, player);
 
-  widget_set_prop_str(win, WIDGET_PROP_THEME, "audio_player");
-  widget_set_self_layout_params(status, "center", "m:-120", "100%", "30");
-
-  widget_set_text(load, L"load");
-  widget_set_self_layout_params(load, "center", "middle:-80", "50%", "30");
-  widget_on(load, EVT_CLICK, on_load_click, player);
-
-  widget_set_text(start, L"start");
-  widget_set_self_layout_params(start, "center", "middle:-40", "50%", "30");
-  widget_on(start, EVT_CLICK, on_start_click, player);
-
-  widget_set_text(forward, L"forward");
-  widget_set_self_layout_params(forward, "center", "middle", "50%", "30");
-  widget_on(forward, EVT_CLICK, on_forward_click, player);
-
-  widget_set_text(pause, L"pause");
-  widget_set_self_layout_params(pause, "center", "middle:40", "50%", "30");
-  widget_on(pause, EVT_CLICK, on_pause_click, player);
-
-  widget_set_text(stop, L"stop");
-  widget_set_self_layout_params(stop, "center", "m:80", "50%", "30");
-  widget_on(stop, EVT_CLICK, on_stop_click, player);
-
-  widget_set_text(quit, L"Quit");
-  widget_set_self_layout_params(quit, "center", "m:120", "50%", "30");
-  widget_on(quit, EVT_CLICK, on_quit_click, quit);
-
+  widget_child_on(win, "close", EVT_CLICK, on_quit_click, NULL);
   widget_layout(win);
 
   return RET_OK;
