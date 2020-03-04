@@ -113,6 +113,7 @@ static ret_t qaction_exec_decode(qaction_t* action) {
 
     if (player->seek_request >= 0) {
       audio_decoder_seek(decoder, player->seek_request);
+      log_debug("seek to %u\n", player->seek_request);
       player->seek_request = -1;
     }
 
@@ -124,7 +125,6 @@ static ret_t qaction_exec_decode(qaction_t* action) {
     queued_data_size = audio_device_get_queued_data_size(device);
     if (queued_data_size > AUDIO_DEVICE_MAX_QUEUED_SIZE) {
       sleep_ms(10);
-      log_debug("queued_data_size=%u\n", queued_data_size);
       continue;
     }
 
@@ -140,8 +140,6 @@ static ret_t qaction_exec_decode(qaction_t* action) {
       log_debug("decode done\n");
       break;
     }
-
-    log_debug("position:%u duration:%u \n", decoder->position, decoder->duration);
   }
 
   if (player->abort_request) {

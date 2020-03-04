@@ -110,13 +110,9 @@ static ret_t player_on_mode_changed(void* ctx, event_t* e) {
 
 static ret_t player_on_progress_changed(void* ctx, event_t* e) {
   widget_t* target = WIDGET(e->target);
-  uint32_t percent = widget_get_value(target);
+  uint32_t position = widget_get_value(target);
   media_player_t* player = media_player();
-  uint32_t duration = media_player_get_duration(player);
-  if (duration > 0) {
-    uint32_t offset = percent * duration / 100;
-    media_player_seek(player, offset);
-  }
+  media_player_seek(player, position);
   log_debug("progress changed\n");
   return RET_OK;
 }
