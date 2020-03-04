@@ -52,9 +52,23 @@ typedef struct _action_play_info_t {
 #define AUDIO_DEVICE_MAX_QUEUED_SIZE 10 * 1024
 #endif /*AUDIO_DEVICE_MAX_QUEUED_SIZE*/
 
+static ret_t adjust_data_volume(void* buff, uint32_t size, uint32_t volume, audio_format_t format) {
+  uint32_t i = 0;
+  int16_t* p = (int16_t*)buff;
+  uint32_t n = size / sizeof(int16_t);
+
+  return_value_if_fail(format == AUDIO_FORMAT_S16LSB || format == AUDIO_FORMAT_S16SYS, RET_FAIL);
+
+  for (i = 0; i < n; i++) {
+    p[i] = (p[i] * volume) / AUDIO_DEVICE_MAXVOLUME;
+  }
+
+  return RET_OK;
+}
+
 static ret_t qaction_exec_decode(qaction_t* action) {
   int32_t ret = 0;
-  uint16_t buff[1024];
+  int16_t buff[1024];
   audio_spec_t real;
   audio_spec_t desired;
   audio_device_t* device = NULL;
@@ -119,6 +133,7 @@ static ret_t qaction_exec_decode(qaction_t* action) {
     ret = audio_decoder_decode(decoder, buff, sizeof(buff));
     if (ret > 0) {
       if (!(player->muted)) {
+        adjust_data_volume(buff, ret, player->volume, decoder->format);
         ret = audio_device_queue_data(device, buff, ret);
       }
     } else {

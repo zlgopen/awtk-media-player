@@ -121,7 +121,7 @@ audio_decoder_t* audio_decoder_mp3_create(data_reader_t* reader) {
     decoder->channels = adecoder->mp3.info.channels;
     decoder->samples = adecoder->mp3.samples;
     decoder->format = AUDIO_FORMAT_S16SYS;
-    decoder->duration = (decoder->samples) / (decoder->channels * decoder->freq/1000);
+    decoder->duration = (decoder->samples) / (decoder->channels * decoder->freq / 1000);
   } else {
     TKMEM_FREE(adecoder);
   }

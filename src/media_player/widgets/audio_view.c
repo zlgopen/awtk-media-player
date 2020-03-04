@@ -27,8 +27,8 @@ static ret_t play_list_play(play_list_t* play_list) {
   const char* song = play_list_curr(play_list);
   return_value_if_fail(song != NULL, RET_BAD_PARAMS);
   media_player_load(player, song);
-  
-  return  media_player_start(player);
+
+  return media_player_start(player);
 }
 
 static ret_t player_on_play_or_pause(void* ctx, event_t* e) {
@@ -38,9 +38,9 @@ static ret_t player_on_play_or_pause(void* ctx, event_t* e) {
 
   media_player_state_t state = media_player_get_state(player);
 
-  if(state == MEDIA_PLAYER_PLAYING) {
+  if (state == MEDIA_PLAYER_PLAYING) {
     media_player_start(player);
-  } else if(state == MEDIA_PLAYER_PLAYING) {
+  } else if (state == MEDIA_PLAYER_PLAYING) {
     media_player_pause(player);
   } else {
     play_list_play(play_list);
@@ -84,8 +84,8 @@ static ret_t player_on_progress_changed(void* ctx, event_t* e) {
   uint32_t percent = widget_get_value(target);
   media_player_t* player = media_player();
   uint32_t duration = media_player_get_duration(player);
-  if(duration > 0) {
-    uint32_t offset = percent * duration/100; 
+  if (duration > 0) {
+    uint32_t offset = percent * duration / 100;
     media_player_seek(player, offset);
   }
   log_debug("progress changed\n");
@@ -157,7 +157,7 @@ static ret_t audio_view_on_destroy(widget_t* widget) {
   audio_view_t* audio_view = AUDIO_VIEW(widget);
 
   play_list_destroy(audio_view->play_list);
-  if(audio_view->lrc != NULL) {
+  if (audio_view->lrc != NULL) {
     lrc_destroy(audio_view->lrc);
   }
 

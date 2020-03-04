@@ -54,14 +54,14 @@ BEGIN_C_DECLS
  */
 typedef struct _audio_view_t {
   widget_t widget;
-  
+
   /**
    * @property {lrc_t*} lrc
    * @annotation ["readable"]
    * 歌词对象。
    */
   lrc_t* lrc;
-  
+
   /**
    * @property {play_list_t*} play_list
    * @annotation ["readable"]

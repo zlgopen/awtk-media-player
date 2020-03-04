@@ -67,7 +67,7 @@ static ret_t application_init() {
   widget_t* win = NULL;
   widget_t* audio_view = NULL;
   media_player_t* player = NULL;
- 
+
   app_global_init();
   log_set_log_level(LOG_LEVEL_DEBUG);
 
