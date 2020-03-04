@@ -68,6 +68,9 @@ typedef struct _audio_view_t {
    * 播放列表对象。
    */
   play_list_t* play_list;
+
+  /*private*/
+  uint32_t timer_id;
 } audio_view_t;
 
 /**

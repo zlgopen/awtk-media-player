@@ -132,10 +132,12 @@ static ret_t qaction_exec_decode(qaction_t* action) {
 
     ret = audio_decoder_decode(decoder, buff, sizeof(buff));
     if (ret > 0) {
-      if (!(player->muted)) {
+      if (player->muted) {
+        memset(buff, 0x00, ret);
+      } else {
         adjust_data_volume(buff, ret, player->volume, decoder->format);
-        ret = audio_device_queue_data(device, buff, ret);
       }
+      ret = audio_device_queue_data(device, buff, ret);
     } else {
       log_debug("decode done\n");
       break;
@@ -261,11 +263,11 @@ static ret_t media_player_audio_set_volume(media_player_t* player, uint32_t volu
   return RET_OK;
 }
 
-static ret_t media_player_audio_set_mute(media_player_t* player, bool_t mute) {
+static ret_t media_player_audio_set_muted(media_player_t* player, bool_t muted) {
   media_player_audio_t* aplayer = (media_player_audio_t*)player;
   return_value_if_fail(aplayer->decoder != NULL, RET_BAD_PARAMS);
 
-  aplayer->muted = mute;
+  aplayer->muted = muted;
 
   return RET_OK;
 }
@@ -323,7 +325,7 @@ static const media_player_vtable_t s_media_player_audio = {
     .stop = media_player_audio_stop,
     .seek = media_player_audio_seek,
     .set_volume = media_player_audio_set_volume,
-    .set_mute = media_player_audio_set_mute,
+    .set_muted = media_player_audio_set_muted,
     .set_on_event = media_player_audio_set_on_event,
     .destroy = media_player_audio_destroy,
     .get_state = media_player_audio_get_state,

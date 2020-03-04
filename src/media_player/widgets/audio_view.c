@@ -66,9 +66,9 @@ static ret_t player_on_next(void* ctx, event_t* e) {
 
 static ret_t player_on_mute_changed(void* ctx, event_t* e) {
   widget_t* target = WIDGET(e->target);
-  uint32_t mute = widget_get_value(target);
+  uint32_t muted = widget_get_value(target);
 
-  return media_player_set_mute(media_player(), mute);
+  return media_player_set_muted(media_player(), muted);
 }
 
 static ret_t player_on_mode_changed(void* ctx, event_t* e) {
@@ -107,6 +107,28 @@ static ret_t widget_set_value_without_notify(widget_t* widget, uint32_t value) {
   return RET_OK;
 }
 
+static ret_t audio_view_update_timer(const timer_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  widget_t* play = widget_lookup(widget, "play", TRUE);
+  widget_t* progress = widget_lookup(widget, "progress", TRUE);
+  media_player_t* player = media_player();
+  media_player_state_t state = media_player_get_state(player);
+  bool_t paused = (bool_t)widget_get_value(play);
+
+  if (state == MEDIA_PLAYER_PLAYING) {
+    uint32_t offset = media_player_get_position(player);
+    uint32_t duration = media_player_get_duration(player);
+
+    widget_set_value_without_notify(play, 1);
+    widget_set_value_without_notify(progress, offset);
+    widget_set_prop_int(progress, WIDGET_PROP_MAX, duration);
+  } else {
+    widget_set_value_without_notify(play, 0);
+  }
+
+  return RET_REPEAT;
+}
+
 static ret_t audio_view_hook_children(widget_t* widget, play_list_t* play_list) {
   media_player_t* player = media_player();
   widget_t* volume = widget_lookup(widget, "volume", TRUE);
@@ -118,7 +140,7 @@ static ret_t audio_view_hook_children(widget_t* widget, play_list_t* play_list) 
   widget_child_on(widget, "mode", EVT_VALUE_CHANGED, player_on_mode_changed, play_list);
   widget_child_on(widget, "progress", EVT_VALUE_CHANGED, player_on_progress_changed, play_list);
 
-  if(volume != NULL) {
+  if (volume != NULL) {
     uint32_t v = media_player_get_volume(player);
     widget_set_prop_int(volume, WIDGET_PROP_MAX, MEDIA_PLAYER_MAX_VOLUME);
     widget_set_value_without_notify(volume, v);
@@ -195,6 +217,7 @@ widget_t* audio_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   audio_view_t* audio_view = AUDIO_VIEW(widget);
   return_value_if_fail(audio_view != NULL, NULL);
 
+  audio_view->timer_id = timer_add(audio_view_update_timer, audio_view, 1000);
   audio_view->play_list = play_list_create();
 
   return widget;

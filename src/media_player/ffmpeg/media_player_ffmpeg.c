@@ -122,11 +122,11 @@ static ret_t media_player_ffmpeg_set_volume(media_player_t* player, uint32_t vol
   return RET_OK;
 }
 
-static ret_t media_player_ffmpeg_set_mute(media_player_t* player, bool_t mute) {
+static ret_t media_player_ffmpeg_set_muted(media_player_t* player, bool_t muted) {
   media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
   return_value_if_fail(ffmpeg->is != NULL, RET_BAD_PARAMS);
 
-  ffmpeg->is->muted = mute;
+  ffmpeg->is->muted = muted;
 
   return RET_OK;
 }
@@ -242,7 +242,7 @@ static const media_player_vtable_t s_media_player_ffmpeg = {
     .stop = media_player_ffmpeg_stop,
     .seek = media_player_ffmpeg_seek,
     .set_volume = media_player_ffmpeg_set_volume,
-    .set_mute = media_player_ffmpeg_set_mute,
+    .set_muted = media_player_ffmpeg_set_muted,
     .set_on_event = media_player_ffmpeg_set_on_event,
     .get_video_frame = media_player_ffmpeg_get_video_frame,
     .destroy = media_player_ffmpeg_destroy,
