@@ -51,9 +51,9 @@ static ret_t on_load_click(void* ctx, event_t* e) {
 
 static ret_t on_forward_click(void* ctx, event_t* e) {
   media_player_t* player = (media_player_t*)ctx;
-  uint32_t position = media_player_get_position(player) + 3000;
+  uint32_t elapsed = media_player_get_elapsed(player) + 3000;
 
-  media_player_seek(player, position);
+  media_player_seek(player, elapsed);
 
   return RET_OK;
 }

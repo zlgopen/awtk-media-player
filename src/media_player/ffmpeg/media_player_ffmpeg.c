@@ -207,7 +207,7 @@ static uint32_t media_player_ffmpeg_get_volume(media_player_t* player) {
   return ffmpeg->is->audio_volume;
 }
 
-static uint32_t media_player_ffmpeg_get_position(media_player_t* player) {
+static uint32_t media_player_ffmpeg_get_elapsed(media_player_t* player) {
   media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
   return_value_if_fail(ffmpeg->is != NULL, 0);
 
@@ -248,7 +248,7 @@ static const media_player_vtable_t s_media_player_ffmpeg = {
     .destroy = media_player_ffmpeg_destroy,
     .get_state = media_player_ffmpeg_get_state,
     .get_volume = media_player_ffmpeg_get_volume,
-    .get_position = media_player_ffmpeg_get_position,
+    .get_elapsed = media_player_ffmpeg_get_elapsed,
     .get_duration = media_player_ffmpeg_get_duration,
     .get_video_width = media_player_ffmpeg_get_video_width,
     .get_video_height = media_player_ffmpeg_get_video_height};

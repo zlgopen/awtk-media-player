@@ -130,11 +130,11 @@ uint32_t media_player_get_volume(media_player_t* player) {
   return player->vt->get_volume(player);
 }
 
-uint32_t media_player_get_position(media_player_t* player) {
+uint32_t media_player_get_elapsed(media_player_t* player) {
   return_value_if_fail(player != NULL && player->vt != NULL, 0);
-  return_value_if_fail(player->vt->get_position != NULL, 0);
+  return_value_if_fail(player->vt->get_elapsed != NULL, 0);
 
-  return player->vt->get_position(player);
+  return player->vt->get_elapsed(player);
 }
 
 uint32_t media_player_get_duration(media_player_t* player) {

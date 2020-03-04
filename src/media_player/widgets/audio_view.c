@@ -177,14 +177,14 @@ static ret_t audio_view_update_timer(const timer_info_t* info) {
   bool_t paused = (bool_t)widget_get_value(play);
 
   if (state == MEDIA_PLAYER_PLAYING) {
-    uint32_t offset = media_player_get_position(player);
+    uint32_t elapsed = media_player_get_elapsed(player);
     uint32_t duration = media_player_get_duration(player);
 
     widget_set_value_without_notify(play, 1);
-    widget_set_value_without_notify(progress, offset);
+    widget_set_value_without_notify(progress, elapsed);
     widget_set_prop_int(progress, WIDGET_PROP_MAX, duration);
     
-    widget_set_value_without_notify(lrc, offset);
+    widget_set_value_without_notify(lrc, elapsed);
   } else {
     widget_set_value_without_notify(play, 0);
   }

@@ -69,7 +69,7 @@ typedef ret_t (*media_player_get_video_frame_t)(media_player_t* player, bitmap_t
 typedef ret_t (*media_player_destroy_t)(media_player_t* player);
 typedef media_player_state_t (*media_player_get_state_t)(media_player_t* player);
 typedef uint32_t (*media_player_get_volume_t)(media_player_t* player);
-typedef uint32_t (*media_player_get_position_t)(media_player_t* player);
+typedef uint32_t (*media_player_get_elapsed_t)(media_player_t* player);
 typedef uint32_t (*media_player_get_duration_t)(media_player_t* player);
 typedef uint32_t (*media_player_get_video_width_t)(media_player_t* player);
 typedef uint32_t (*media_player_get_video_height_t)(media_player_t* player);
@@ -87,7 +87,7 @@ typedef struct _media_player_vtable_t {
   media_player_destroy_t destroy;
   media_player_get_state_t get_state;
   media_player_get_volume_t get_volume;
-  media_player_get_position_t get_position;
+  media_player_get_elapsed_t get_elapsed;
   media_player_get_duration_t get_duration;
   media_player_get_video_width_t get_video_width;
   media_player_get_video_height_t get_video_height;
@@ -240,14 +240,14 @@ media_player_state_t media_player_get_state(media_player_t* player);
 uint32_t media_player_get_volume(media_player_t* player);
 
 /**
- * @method media_player_get_position
+ * @method media_player_get_elapsed
  * 获取当前播放位置。
  *
  * @param {media_player_t*} media_player media_player对象。
  *
  * @return {uint32_t} 返回当前播放位置(ms)。
  */
-uint32_t media_player_get_position(media_player_t* player);
+uint32_t media_player_get_elapsed(media_player_t* player);
 
 /**
  * @method media_player_get_duration
