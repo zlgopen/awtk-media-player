@@ -20,6 +20,9 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/path.h"
+#include "tkc/data_reader.h"
+#include "media_player/widgets/lrc_view.h"
 #include "media_player/widgets/audio_view.h"
 
 static ret_t play_list_play(play_list_t* play_list) {
@@ -63,12 +66,42 @@ static ret_t player_on_next(void* ctx, event_t* e) {
   return play_list_play(play_list);
 }
 
-static ret_t player_idle_next(const idle_info_t* info) {
+static ret_t player_idle_on_done(const idle_info_t* info) {
   play_list_t* play_list = (play_list_t*)(info->ctx);
 
   return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
 
-  return play_list_play(play_list);
+  play_list_play(play_list);
+  
+  return RET_REMOVE;
+}
+
+static ret_t player_idle_on_load(const idle_info_t* info) {
+  char* lrc_text = NULL;
+  char lrc_filename[MAX_PATH+1];
+  widget_t* widget = WIDGET(info->ctx);
+  audio_view_t* audio_view = AUDIO_VIEW(widget);
+  const char* song = play_list_curr(audio_view->play_list);
+  return_value_if_fail(song != NULL, RET_REMOVE);
+
+  path_replace_extname(lrc_filename, sizeof(lrc_filename), song, "lrc");
+
+  lrc_text = data_reader_read_all(lrc_filename, NULL);
+
+  if(lrc_text != NULL) {
+    widget_t* lrc = widget_lookup(widget, "lrc", TRUE);
+    if(audio_view->lrc != NULL) {
+      lrc_destroy(audio_view->lrc);
+    }
+    audio_view->lrc = lrc_create(lrc_text);
+    TKMEM_FREE(lrc_text);
+   
+    if(lrc != NULL) {
+      lrc_view_set_lrc(lrc, audio_view->lrc);
+    }
+  }
+
+  return RET_REMOVE;
 }
 
 static ret_t audio_view_on_media_player_event(void* ctx, event_t* e) {
@@ -78,6 +111,7 @@ static ret_t audio_view_on_media_player_event(void* ctx, event_t* e) {
     case EVT_MEDIA_PLAYER_LOADED: {
       media_player_loaded_event_t* evt = media_player_loaded_event_cast(e);
       log_debug("w=%u h=%u duration=%u\n", evt->video_width, evt->video_height, evt->duration);
+      idle_add(player_idle_on_load, audio_view);
       break;
     }
     case EVT_MEDIA_PLAYER_PAUSED: {
@@ -86,7 +120,7 @@ static ret_t audio_view_on_media_player_event(void* ctx, event_t* e) {
     }
     case EVT_MEDIA_PLAYER_DONE: {
       log_debug("done\n");
-      idle_add(player_idle_next, audio_view->play_list);
+      idle_add(player_idle_on_done, audio_view->play_list);
       break;
     }
   }
@@ -114,6 +148,7 @@ static ret_t player_on_progress_changed(void* ctx, event_t* e) {
   media_player_t* player = media_player();
   media_player_seek(player, position);
   log_debug("progress changed\n");
+
   return RET_OK;
 }
 
@@ -136,6 +171,7 @@ static ret_t audio_view_update_timer(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   widget_t* play = widget_lookup(widget, "play", TRUE);
   widget_t* progress = widget_lookup(widget, "progress", TRUE);
+  widget_t* lrc = widget_lookup(widget, "lrc", TRUE);
   media_player_t* player = media_player();
   media_player_state_t state = media_player_get_state(player);
   bool_t paused = (bool_t)widget_get_value(play);
@@ -147,6 +183,8 @@ static ret_t audio_view_update_timer(const timer_info_t* info) {
     widget_set_value_without_notify(play, 1);
     widget_set_value_without_notify(progress, offset);
     widget_set_prop_int(progress, WIDGET_PROP_MAX, duration);
+    
+    widget_set_value_without_notify(lrc, offset);
   } else {
     widget_set_value_without_notify(play, 0);
   }
@@ -163,7 +201,8 @@ static ret_t audio_view_hook_children(widget_t* widget, play_list_t* play_list) 
   widget_child_on(widget, "play", EVT_VALUE_CHANGED, player_on_play_or_pause, play_list);
   widget_child_on(widget, "mute", EVT_VALUE_CHANGED, player_on_mute_changed, play_list);
   widget_child_on(widget, "mode", EVT_VALUE_CHANGED, player_on_mode_changed, play_list);
-  widget_child_on(widget, "progress", EVT_VALUE_CHANGED, player_on_progress_changed, play_list);
+  widget_child_on(widget, "progress", EVT_VALUE_CHANGED, player_on_progress_changed, NULL);
+  widget_child_on(widget, "lrc", EVT_VALUE_CHANGED, player_on_progress_changed, NULL);
 
   if (volume != NULL) {
     uint32_t v = media_player_get_volume(player);
