@@ -52,9 +52,14 @@ typedef enum _media_player_event_t {
 
   /**
    * @const EVT_MEDIA_PLAYER_DONE
-   * 播放状态。
+   * 播放完成。
    */
-  EVT_MEDIA_PLAYER_DONE
+  EVT_MEDIA_PLAYER_DONE,
+  /**
+   * @const EVT_MEDIA_PLAYER_ABORT
+   * 播放取消。
+   */
+  EVT_MEDIA_PLAYER_ABORT
 } media_player_event_t;
 
 /**

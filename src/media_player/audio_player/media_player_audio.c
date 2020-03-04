@@ -86,8 +86,6 @@ static ret_t qaction_exec_decode(qaction_t* action) {
   desired.format = player->decoder->format;
   desired.channels = player->decoder->channels;
 
-  player->seek_request = -1;
-  player->abort_request = FALSE;
   device = audio_device_mixer_create(NULL, &desired, &real);
   return_value_if_fail(device != NULL, RET_FAIL);
 
@@ -161,10 +159,16 @@ static ret_t qaction_exec_decode(qaction_t* action) {
     log_debug("wait for audio device done\n");
   }
 
-  media_player_notify_simple((media_player_t*)player, EVT_MEDIA_PLAYER_DONE);
+  player->decoder = NULL;
+  if (player->abort_request) {
+    media_player_notify_simple((media_player_t*)player, EVT_MEDIA_PLAYER_ABORT);
+  } else {
+    media_player_notify_simple((media_player_t*)player, EVT_MEDIA_PLAYER_DONE);
+  }
+  player->seek_request = -1;
+  player->abort_request = FALSE;
   audio_device_destroy(device);
   audio_decoder_destroy(decoder);
-  player->decoder = NULL;
 
   return RET_OK;
 }

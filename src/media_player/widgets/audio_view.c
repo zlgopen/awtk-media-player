@@ -53,7 +53,6 @@ static ret_t player_on_prev(void* ctx, event_t* e) {
   play_list_t* play_list = (play_list_t*)(ctx);
 
   return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
-
   return play_list_play(play_list);
 }
 
@@ -62,6 +61,36 @@ static ret_t player_on_next(void* ctx, event_t* e) {
 
   return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
   return play_list_play(play_list);
+}
+
+static ret_t player_idle_next(const idle_info_t* info) {
+  play_list_t* play_list = (play_list_t*)(info->ctx);
+
+  return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
+
+  return play_list_play(play_list);
+}
+
+static ret_t audio_view_on_media_player_event(void* ctx, event_t* e) {
+  audio_view_t* audio_view = AUDIO_VIEW(ctx);
+
+  switch (e->type) {
+    case EVT_MEDIA_PLAYER_LOADED: {
+      media_player_loaded_event_t* evt = media_player_loaded_event_cast(e);
+      log_debug("w=%u h=%u duration=%u\n", evt->video_width, evt->video_height, evt->duration);
+      break;
+    }
+    case EVT_MEDIA_PLAYER_PAUSED: {
+      log_debug("paused\n");
+      break;
+    }
+    case EVT_MEDIA_PLAYER_DONE: {
+      log_debug("done\n");
+      idle_add(player_idle_next, audio_view->play_list);
+      break;
+    }
+  }
+  return RET_OK;
 }
 
 static ret_t player_on_mute_changed(void* ctx, event_t* e) {
@@ -195,6 +224,7 @@ static ret_t audio_view_set_prop(widget_t* widget, const char* name, const value
 static ret_t audio_view_on_destroy(widget_t* widget) {
   audio_view_t* audio_view = AUDIO_VIEW(widget);
 
+  media_player_set_on_event(media_player(), NULL, NULL);
   play_list_destroy(audio_view->play_list);
   if (audio_view->lrc != NULL) {
     lrc_destroy(audio_view->lrc);
@@ -217,8 +247,9 @@ widget_t* audio_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   audio_view_t* audio_view = AUDIO_VIEW(widget);
   return_value_if_fail(audio_view != NULL, NULL);
 
-  audio_view->timer_id = timer_add(audio_view_update_timer, audio_view, 1000);
+  audio_view->timer_id = timer_add(audio_view_update_timer, audio_view, 500);
   audio_view->play_list = play_list_create();
+  media_player_set_on_event(media_player(), audio_view_on_media_player_event, audio_view);
 
   return widget;
 }

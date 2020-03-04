@@ -27,25 +27,6 @@
 #include "media_player/audio_player/audio_decoder_factory.h"
 #include "media_player/audio_player/media_player_audio.h"
 
-static ret_t on_media_player_event(void* ctx, event_t* e) {
-  switch (e->type) {
-    case EVT_MEDIA_PLAYER_LOADED: {
-      media_player_loaded_event_t* evt = media_player_loaded_event_cast(e);
-      log_debug("w=%u h=%u duration=%u\n", evt->video_width, evt->video_height, evt->duration);
-      break;
-    }
-    case EVT_MEDIA_PLAYER_PAUSED: {
-      log_debug("paused\n");
-      break;
-    }
-    case EVT_MEDIA_PLAYER_DONE: {
-      log_debug("done\n");
-      break;
-    }
-  }
-  return RET_OK;
-}
-
 static ret_t on_quit_click(void* ctx, event_t* e) {
   tk_quit();
   return RET_OK;
@@ -74,7 +55,6 @@ static ret_t application_init() {
   player = media_player();
   win = window_open("audio_player");
   audio_view = widget_lookup_by_type(win, "audio_view", TRUE);
-  media_player_set_on_event(player, on_media_player_event, player);
 
   play_list_append(audio_view_get_play_list(audio_view), "data/test.mp3");
   play_list_append(audio_view_get_play_list(audio_view), "data/song1.mp3");
