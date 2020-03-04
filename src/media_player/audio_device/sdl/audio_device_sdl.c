@@ -181,6 +181,7 @@ static audio_device_t* audio_device_sdl_create(const char* name, bool_t is_captu
     if (real != NULL) {
       *real = sdl_audio_spec_to(&sdl_real);
     }
+    device->spec = *real;
   } else {
     SDL_CloseAudioDevice(devid);
   }

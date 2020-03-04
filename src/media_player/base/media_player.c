@@ -65,11 +65,11 @@ ret_t media_player_set_volume(media_player_t* player, uint32_t volume) {
   return player->vt->set_volume(player, volume);
 }
 
-ret_t media_player_toggle_mute(media_player_t* player) {
+ret_t media_player_set_mute(media_player_t* player, bool_t mute) {
   return_value_if_fail(player != NULL && player->vt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(player->vt->toggle_mute != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(player->vt->set_mute != NULL, RET_BAD_PARAMS);
 
-  return player->vt->toggle_mute(player);
+  return player->vt->set_mute(player, mute);
 }
 
 ret_t media_player_set_on_event(media_player_t* player, event_func_t on_event, void* ctx) {

@@ -67,7 +67,7 @@ static int32_t audio_decoder_mp3_decode(audio_decoder_t* decoder, void* buff, ui
 }
 
 static ret_t audio_decoder_mp3_seek(audio_decoder_t* decoder, uint32_t offset) {
-  uint64_t postion = 0;
+  uint64_t position = decoder->samples;
   audio_decoder_mp3_t* adecoder = (audio_decoder_mp3_t*)decoder;
   if (offset >= decoder->duration) {
     offset = decoder->duration;
@@ -77,8 +77,8 @@ static ret_t audio_decoder_mp3_seek(audio_decoder_t* decoder, uint32_t offset) {
     return RET_BAD_PARAMS;
   }
 
-  postion = (1000 * decoder->samples * offset) / decoder->duration;
-  mp3dec_ex_seek(&(adecoder->mp3), postion);
+  position = (position * offset) / decoder->duration;
+  mp3dec_ex_seek(&(adecoder->mp3), position);
 
   return RET_OK;
 }
@@ -120,8 +120,8 @@ audio_decoder_t* audio_decoder_mp3_create(data_reader_t* reader) {
     decoder->freq = adecoder->mp3.info.hz;
     decoder->channels = adecoder->mp3.info.channels;
     decoder->samples = adecoder->mp3.samples;
-    decoder->format = AUDIO_FORMAT_S16LSB;
-    decoder->duration = (1000 * decoder->samples) / (decoder->channels * decoder->freq);
+    decoder->format = AUDIO_FORMAT_S16SYS;
+    decoder->duration = (decoder->samples) / (decoder->channels * decoder->freq/1000);
   } else {
     TKMEM_FREE(adecoder);
   }

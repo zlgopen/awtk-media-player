@@ -33,7 +33,7 @@ BEGIN_C_DECLS
  * @class audio_view_t
  * @parent widget_t
  * @annotation ["scriptable","design","widget"]
- * 一个通用的容器控件。
+ * 音频播放控件。
  *
  * audio_view\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于audio_view\_t控件。
  *
@@ -54,7 +54,20 @@ BEGIN_C_DECLS
  */
 typedef struct _audio_view_t {
   widget_t widget;
-  /*private*/
+  
+  /**
+   * @property {lrc_t*} lrc
+   * @annotation ["readable"]
+   * 歌词对象。
+   */
+  lrc_t* lrc;
+  
+  /**
+   * @property {play_list_t*} play_list
+   * @annotation ["readable"]
+   * 播放列表对象。
+   */
+  play_list_t* play_list;
 } audio_view_t;
 
 /**
@@ -80,6 +93,15 @@ widget_t* audio_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {widget_t*} audio_view对象。
  */
 widget_t* audio_view_cast(widget_t* widget);
+
+/**
+ * @method audio_view_get_play_list
+ * 获取播放列表。
+ * @param {widget_t*} widget audio_view对象。
+ *
+ * @return {play_list_t*} 返回播放列表。
+ */
+play_list_t* audio_view_get_play_list(widget_t* widget);
 
 #define WIDGET_TYPE_AUDIO_VIEW "audio_view"
 

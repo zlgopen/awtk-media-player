@@ -22,51 +22,100 @@
 #include "tkc/mem.h"
 #include "media_player/widgets/audio_view.h"
 
-static ret_t player_on_play_or_pause(widget_t* widget, event_t* e) {
-  log_debug("player_on_play_or_pause\n");
+static ret_t play_list_play(play_list_t* play_list) {
+  media_player_t* player = media_player();
+  const char* song = play_list_curr(play_list);
+  return_value_if_fail(song != NULL, RET_BAD_PARAMS);
+  media_player_load(player, song);
+  
+  return  media_player_start(player);
+}
+
+static ret_t player_on_play_or_pause(void* ctx, event_t* e) {
+  media_player_t* player = media_player();
+  play_list_t* play_list = (play_list_t*)(ctx);
+  return_value_if_fail(play_list != NULL && player != NULL, RET_BAD_PARAMS);
+
+  media_player_state_t state = media_player_get_state(player);
+
+  if(state == MEDIA_PLAYER_PLAYING) {
+    media_player_start(player);
+  } else if(state == MEDIA_PLAYER_PLAYING) {
+    media_player_pause(player);
+  } else {
+    play_list_play(play_list);
+  }
+
   return RET_OK;
 }
 
-static ret_t player_on_prev(widget_t* widget, event_t* e) {
-  log_debug("prev\n");
-  return RET_OK;
+static ret_t player_on_prev(void* ctx, event_t* e) {
+  play_list_t* play_list = (play_list_t*)(ctx);
+
+  return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
+
+  return play_list_play(play_list);
 }
 
-static ret_t player_on_next(widget_t* widget, event_t* e) {
-  log_debug("next\n");
-  return RET_OK;
+static ret_t player_on_next(void* ctx, event_t* e) {
+  play_list_t* play_list = (play_list_t*)(ctx);
+
+  return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
+  return play_list_play(play_list);
 }
 
-static ret_t player_on_mute_changed(widget_t* widget, event_t* e) {
-  log_debug("mute changed\n");
-  return RET_OK;
+static ret_t player_on_mute_changed(void* ctx, event_t* e) {
+  widget_t* target = WIDGET(e->target);
+  uint32_t mute = widget_get_value(target);
+
+  return media_player_set_mute(media_player(), mute);
 }
 
-static ret_t player_on_mode_changed(widget_t* widget, event_t* e) {
-  log_debug("mode changed\n");
-  return RET_OK;
+static ret_t player_on_mode_changed(void* ctx, event_t* e) {
+  play_list_t* play_list = (play_list_t*)(ctx);
+  widget_t* target = WIDGET(e->target);
+  uint32_t mode = widget_get_value(target);
+
+  return play_list_set_play_mode(play_list, mode);
 }
 
-static ret_t player_on_progress_changed(widget_t* widget, event_t* e) {
+static ret_t player_on_progress_changed(void* ctx, event_t* e) {
+  widget_t* target = WIDGET(e->target);
+  uint32_t percent = widget_get_value(target);
+  media_player_t* player = media_player();
+  uint32_t duration = media_player_get_duration(player);
+  if(duration > 0) {
+    uint32_t offset = percent * duration/100; 
+    media_player_seek(player, offset);
+  }
   log_debug("progress changed\n");
   return RET_OK;
 }
 
-static ret_t audio_view_hook_children(widget_t* widget) {
-  widget_child_on(widget, "next", EVT_CLICK, player_on_next, widget);
-  widget_child_on(widget, "prev", EVT_CLICK, player_on_prev, widget);
-  widget_child_on(widget, "play", EVT_VALUE_CHANGED, player_on_play_or_pause, widget);
-  widget_child_on(widget, "mute", EVT_VALUE_CHANGED, player_on_mute_changed, widget);
-  widget_child_on(widget, "mode", EVT_VALUE_CHANGED, player_on_mode_changed, widget);
-  widget_child_on(widget, "progress", EVT_VALUE_CHANGED, player_on_progress_changed, widget);
+static ret_t player_on_volume_changed(void* ctx, event_t* e) {
+  widget_t* target = WIDGET(e->target);
+  uint32_t volume = widget_get_value(target);
+
+  return media_player_set_volume(media_player(), volume);
+}
+
+static ret_t audio_view_hook_children(widget_t* widget, play_list_t* play_list) {
+  widget_child_on(widget, "next", EVT_CLICK, player_on_next, play_list);
+  widget_child_on(widget, "prev", EVT_CLICK, player_on_prev, play_list);
+  widget_child_on(widget, "play", EVT_VALUE_CHANGED, player_on_play_or_pause, play_list);
+  widget_child_on(widget, "mute", EVT_VALUE_CHANGED, player_on_mute_changed, play_list);
+  widget_child_on(widget, "mode", EVT_VALUE_CHANGED, player_on_mode_changed, play_list);
+  widget_child_on(widget, "progress", EVT_VALUE_CHANGED, player_on_progress_changed, play_list);
+  widget_child_on(widget, "volume", EVT_VALUE_CHANGED, player_on_volume_changed, play_list);
 
   return RET_OK;
 }
 
 static ret_t audio_view_on_event(widget_t* widget, event_t* e) {
+  audio_view_t* audio_view = AUDIO_VIEW(widget);
   switch (e->type) {
     case EVT_WINDOW_WILL_OPEN: {
-      audio_view_hook_children(widget);
+      audio_view_hook_children(widget, audio_view->play_list);
       break;
     }
     case EVT_WINDOW_OPEN: {
@@ -105,6 +154,13 @@ static ret_t audio_view_set_prop(widget_t* widget, const char* name, const value
 }
 
 static ret_t audio_view_on_destroy(widget_t* widget) {
+  audio_view_t* audio_view = AUDIO_VIEW(widget);
+
+  play_list_destroy(audio_view->play_list);
+  if(audio_view->lrc != NULL) {
+    lrc_destroy(audio_view->lrc);
+  }
+
   return RET_OK;
 }
 
@@ -118,13 +174,26 @@ TK_DECL_VTABLE(audio_view) = {.size = sizeof(audio_view_t),
                               .on_destroy = audio_view_on_destroy};
 
 widget_t* audio_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, TK_REF_VTABLE(audio_view), x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(audio_view), x, y, w, h);
+  audio_view_t* audio_view = AUDIO_VIEW(widget);
+  return_value_if_fail(audio_view != NULL, NULL);
+
+  audio_view->play_list = play_list_create();
+
+  return widget;
 }
 
 widget_t* audio_view_cast(widget_t* widget) {
   return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, audio_view), NULL);
 
   return widget;
+}
+
+play_list_t* audio_view_get_play_list(widget_t* widget) {
+  audio_view_t* audio_view = AUDIO_VIEW(widget);
+  return_value_if_fail(audio_view != NULL, NULL);
+
+  return audio_view->play_list;
 }
 
 #include "base/widget_factory.h"

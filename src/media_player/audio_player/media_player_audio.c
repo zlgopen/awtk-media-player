@@ -77,8 +77,9 @@ static ret_t qaction_exec_decode(qaction_t* action) {
   device = audio_device_mixer_create(NULL, &desired, &real);
   return_value_if_fail(device != NULL, RET_FAIL);
 
-  media_player_notify_simple(player, EVT_MEDIA_PLAYER_LOADED);
+  media_player_notify_simple((media_player_t*)player, EVT_MEDIA_PLAYER_LOADED);
   audio_device_set_volume(device, volume);
+  audio_device_start(device);
   while (!(player->abort_request)) {
     memset(buff, 0, sizeof(buff));
 
@@ -91,10 +92,10 @@ static ret_t qaction_exec_decode(qaction_t* action) {
       paused = player->paused;
       if (paused) {
         audio_device_pause(device);
-        media_player_notify_simple(player, EVT_MEDIA_PLAYER_PAUSED);
+        media_player_notify_simple((media_player_t*)player, EVT_MEDIA_PLAYER_PAUSED);
       } else {
         audio_device_start(device);
-        media_player_notify_simple(player, EVT_MEDIA_PLAYER_RESUMED);
+        media_player_notify_simple((media_player_t*)player, EVT_MEDIA_PLAYER_RESUMED);
       }
     }
 
@@ -111,6 +112,7 @@ static ret_t qaction_exec_decode(qaction_t* action) {
     queued_data_size = audio_device_get_queued_data_size(device);
     if (queued_data_size > AUDIO_DEVICE_MAX_QUEUED_SIZE) {
       sleep_ms(10);
+      log_debug("queued_data_size=%u\n", queued_data_size);
       continue;
     }
 
@@ -142,7 +144,7 @@ static ret_t qaction_exec_decode(qaction_t* action) {
     log_debug("wait for audio device done\n");
   }
 
-  media_player_notify_simple(player, EVT_MEDIA_PLAYER_DONE);
+  media_player_notify_simple((media_player_t*)player, EVT_MEDIA_PLAYER_DONE);
   audio_device_destroy(device);
   audio_decoder_destroy(decoder);
   player->decoder = NULL;
@@ -244,11 +246,11 @@ static ret_t media_player_audio_set_volume(media_player_t* player, uint32_t volu
   return RET_OK;
 }
 
-static ret_t media_player_audio_toggle_mute(media_player_t* player) {
+static ret_t media_player_audio_set_mute(media_player_t* player, bool_t mute) {
   media_player_audio_t* aplayer = (media_player_audio_t*)player;
   return_value_if_fail(aplayer->decoder != NULL, RET_BAD_PARAMS);
 
-  aplayer->muted = !aplayer->muted;
+  aplayer->muted = mute;
 
   return RET_OK;
 }
@@ -307,7 +309,7 @@ static const media_player_vtable_t s_media_player_audio = {
     .stop = media_player_audio_stop,
     .seek = media_player_audio_seek,
     .set_volume = media_player_audio_set_volume,
-    .toggle_mute = media_player_audio_toggle_mute,
+    .set_mute = media_player_audio_set_mute,
     .set_on_event = media_player_audio_set_on_event,
     .destroy = media_player_audio_destroy,
     .get_state = media_player_audio_get_state,
@@ -319,6 +321,7 @@ media_player_t* media_player_audio_create(void) {
   media_player_audio_t* player = TKMEM_ZALLOC(media_player_audio_t);
   return_value_if_fail(player != NULL, NULL);
 
+  player->volume = 60;
   player->worker = action_thread_create();
   player->media_player.vt = &s_media_player_audio;
 

@@ -46,47 +46,6 @@ static ret_t on_media_player_event(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t on_load_click(void* ctx, event_t* e) {
-  media_player_t* player = (media_player_t*)ctx;
-
-  media_player_load(player, "./data/song3.mp3");
-
-  return RET_OK;
-}
-
-static ret_t on_forward_click(void* ctx, event_t* e) {
-  media_player_t* player = (media_player_t*)ctx;
-  uint32_t position = media_player_get_position(player) + 3000;
-
-  media_player_seek(player, position);
-
-  return RET_OK;
-}
-
-static ret_t on_start_click(void* ctx, event_t* e) {
-  media_player_t* player = (media_player_t*)ctx;
-
-  media_player_start(player);
-
-  return RET_OK;
-}
-
-static ret_t on_stop_click(void* ctx, event_t* e) {
-  media_player_t* player = (media_player_t*)ctx;
-
-  media_player_stop(player);
-
-  return RET_OK;
-}
-
-static ret_t on_pause_click(void* ctx, event_t* e) {
-  media_player_t* player = (media_player_t*)ctx;
-
-  media_player_pause(player);
-
-  return RET_OK;
-}
-
 static ret_t on_quit_click(void* ctx, event_t* e) {
   tk_quit();
   return RET_OK;
@@ -106,14 +65,21 @@ static ret_t app_global_init(void) {
 
 static ret_t application_init() {
   widget_t* win = NULL;
+  widget_t* audio_view = NULL;
   media_player_t* player = NULL;
-
+ 
   app_global_init();
   log_set_log_level(LOG_LEVEL_DEBUG);
 
   player = media_player();
   win = window_open("audio_player");
+  audio_view = widget_lookup_by_type(win, "audio_view", TRUE);
   media_player_set_on_event(player, on_media_player_event, player);
+
+  play_list_append(audio_view_get_play_list(audio_view), "data/test.mp3");
+  play_list_append(audio_view_get_play_list(audio_view), "data/song1.mp3");
+  play_list_append(audio_view_get_play_list(audio_view), "data/song2.mp3");
+  play_list_append(audio_view_get_play_list(audio_view), "data/song3.mp3");
 
   widget_child_on(win, "close", EVT_CLICK, on_quit_click, NULL);
   widget_layout(win);

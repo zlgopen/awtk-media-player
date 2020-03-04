@@ -13,8 +13,9 @@
       <image_value  name="mode" x="170" y="0" w="30" h="30"
         value="0" image="mode_" click_add_delta="1" min="0" max="2"/>
 
-      <slider name="progress" text=">" x="210" y="0" w="-230" h="30"/>
+      <slider name="progress" x="210" y="0" w="-230" h="30"/>
     </row>
+    <slider name="volume" x="right:20" y="bottom:50" w="20" h="128" vertical="true"/>
   </audio_view>
   <button name="close" text="Close" x="center" y="bottom:10" w="80%" h="30"/>
 </window>

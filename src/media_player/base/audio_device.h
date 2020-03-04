@@ -153,6 +153,10 @@ struct _audio_device_t {
    * 音量。
    */
   uint32_t volume;
+
+  /*private*/
+  audio_spec_t spec;
+  uint16_t buff[512];
 };
 
 /**

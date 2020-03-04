@@ -62,7 +62,7 @@ typedef ret_t (*media_player_pause_t)(media_player_t* player);
 typedef ret_t (*media_player_stop_t)(media_player_t* player);
 typedef ret_t (*media_player_seek_t)(media_player_t* player, uint32_t offset);
 typedef ret_t (*media_player_set_volume_t)(media_player_t* player, uint32_t volume);
-typedef ret_t (*media_player_toggle_mute_t)(media_player_t* player);
+typedef ret_t (*media_player_set_mute_t)(media_player_t* player, bool_t mute);
 typedef ret_t (*media_player_set_on_event_t)(media_player_t* player, event_func_t on_event,
                                              void* ctx);
 typedef ret_t (*media_player_get_video_frame_t)(media_player_t* player, bitmap_t* image);
@@ -81,7 +81,7 @@ typedef struct _media_player_vtable_t {
   media_player_stop_t stop;
   media_player_seek_t seek;
   media_player_set_volume_t set_volume;
-  media_player_toggle_mute_t toggle_mute;
+  media_player_set_mute_t set_mute;
   media_player_set_on_event_t set_on_event;
   media_player_get_video_frame_t get_video_frame;
   media_player_destroy_t destroy;
@@ -176,14 +176,15 @@ ret_t media_player_seek(media_player_t* player, uint32_t offset);
 ret_t media_player_set_volume(media_player_t* player, uint32_t volume);
 
 /**
- * @method media_player_toggle_mute
- * 静音开关。
+ * @method media_player_set_mute
+ * 设置静音。
  *
  * @param {media_player_t*} media_player media_player对象。
+ * @param {bool_t} mute 是否静音。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t media_player_toggle_mute(media_player_t* player);
+ret_t media_player_set_mute(media_player_t* player, bool_t mute);
 
 /**
  * @method media_player_set_on_event
