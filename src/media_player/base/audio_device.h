@@ -26,8 +26,6 @@
 
 BEGIN_C_DECLS
 
-#define AUDIO_DEVICE_MAXVOLUME 128
-
 typedef void (*audio_device_callback_t)(void* userdata, uint8_t* stream, int len);
 
 /**

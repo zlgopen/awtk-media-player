@@ -99,14 +99,31 @@ static ret_t player_on_volume_changed(void* ctx, event_t* e) {
   return media_player_set_volume(media_player(), volume);
 }
 
+static ret_t widget_set_value_without_notify(widget_t* widget, uint32_t value) {
+  emitter_disable(widget->emitter);
+  widget_set_value(widget, value);
+  emitter_enable(widget->emitter);
+
+  return RET_OK;
+}
+
 static ret_t audio_view_hook_children(widget_t* widget, play_list_t* play_list) {
+  media_player_t* player = media_player();
+  widget_t* volume = widget_lookup(widget, "volume", TRUE);
+
   widget_child_on(widget, "next", EVT_CLICK, player_on_next, play_list);
   widget_child_on(widget, "prev", EVT_CLICK, player_on_prev, play_list);
   widget_child_on(widget, "play", EVT_VALUE_CHANGED, player_on_play_or_pause, play_list);
   widget_child_on(widget, "mute", EVT_VALUE_CHANGED, player_on_mute_changed, play_list);
   widget_child_on(widget, "mode", EVT_VALUE_CHANGED, player_on_mode_changed, play_list);
   widget_child_on(widget, "progress", EVT_VALUE_CHANGED, player_on_progress_changed, play_list);
-  widget_child_on(widget, "volume", EVT_VALUE_CHANGED, player_on_volume_changed, play_list);
+
+  if(volume != NULL) {
+    uint32_t v = media_player_get_volume(player);
+    widget_set_prop_int(volume, WIDGET_PROP_MAX, MEDIA_PLAYER_MAX_VOLUME);
+    widget_set_value_without_notify(volume, v);
+    widget_on(volume, EVT_VALUE_CHANGED, player_on_volume_changed, play_list);
+  }
 
   return RET_OK;
 }

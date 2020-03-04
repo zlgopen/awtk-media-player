@@ -60,7 +60,7 @@ static ret_t adjust_data_volume(void* buff, uint32_t size, uint32_t volume, audi
   return_value_if_fail(format == AUDIO_FORMAT_S16LSB || format == AUDIO_FORMAT_S16SYS, RET_FAIL);
 
   for (i = 0; i < n; i++) {
-    p[i] = (p[i] * volume) / AUDIO_DEVICE_MAXVOLUME;
+    p[i] = (p[i] * volume) / MEDIA_PLAYER_MAX_VOLUME;
   }
 
   return RET_OK;
@@ -298,7 +298,6 @@ static media_player_state_t media_player_audio_get_state(media_player_t* player)
 
 static uint32_t media_player_audio_get_volume(media_player_t* player) {
   media_player_audio_t* aplayer = (media_player_audio_t*)player;
-  return_value_if_fail(aplayer->decoder != NULL, 0);
 
   return aplayer->volume;
 }

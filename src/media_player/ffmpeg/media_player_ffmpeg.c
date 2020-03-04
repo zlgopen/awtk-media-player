@@ -117,7 +117,7 @@ static ret_t media_player_ffmpeg_set_volume(media_player_t* player, uint32_t vol
   media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
   return_value_if_fail(ffmpeg->is != NULL, RET_BAD_PARAMS);
 
-  ffmpeg->is->audio_volume = av_clip(volume, 0, AUDIO_DEVICE_MAXVOLUME);
+  ffmpeg->is->audio_volume = av_clip(volume, 0, MEDIA_PLAYER_MAX_VOLUME);
 
   return RET_OK;
 }

@@ -325,6 +325,8 @@ media_player_t* media_player(void);
  */
 ret_t media_player_set(media_player_t* media_layer);
 
+#define MEDIA_PLAYER_MAX_VOLUME 128
+
 END_C_DECLS
 
 #endif /*TK_MEDIA_PLAYER_H*/

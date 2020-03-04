@@ -1836,7 +1836,7 @@ static void audio_device_callback(void* opaque, uint8_t* stream, int len) {
     }
     len1 = is->audio_buf_size - is->audio_buf_index;
     if (len1 > len) len1 = len;
-    if (!is->muted && is->audio_buf && is->audio_volume == AUDIO_DEVICE_MAXVOLUME)
+    if (!is->muted && is->audio_buf && is->audio_volume == MEDIA_PLAYER_MAX_VOLUME)
       memcpy(stream, (uint8_t*)is->audio_buf + is->audio_buf_index, len1);
     else {
       memset(stream, 0, len1);
@@ -2458,7 +2458,7 @@ static VideoState* stream_open(const char* filename, media_player_t* player) {
     av_log(NULL, AV_LOG_WARNING, "-volume=%d > 100, setting to 100\n", startup_volume);
   startup_volume = av_clip(startup_volume, 0, 100);
   startup_volume =
-      av_clip(AUDIO_DEVICE_MAXVOLUME * startup_volume / 100, 0, AUDIO_DEVICE_MAXVOLUME);
+      av_clip(MEDIA_PLAYER_MAX_VOLUME * startup_volume / 100, 0, MEDIA_PLAYER_MAX_VOLUME);
   is->audio_volume = startup_volume;
   is->muted = 0;
   is->av_sync_type = av_sync_type;
