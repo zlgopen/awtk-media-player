@@ -21,204 +21,14 @@
 
 #include "tkc/mem.h"
 #include "tkc/path.h"
-#include "tkc/data_reader.h"
 #include "media_player/widgets/lrc_view.h"
 #include "media_player/widgets/audio_view.h"
-
-static ret_t play_list_play(play_list_t* play_list) {
-  media_player_t* player = media_player();
-  const char* song = play_list_curr(play_list);
-  return_value_if_fail(song != NULL, RET_BAD_PARAMS);
-  media_player_load(player, song);
-
-  return media_player_start(player);
-}
-
-static ret_t player_on_play_or_pause(void* ctx, event_t* e) {
-  media_player_t* player = media_player();
-  play_list_t* play_list = (play_list_t*)(ctx);
-  return_value_if_fail(play_list != NULL && player != NULL, RET_BAD_PARAMS);
-
-  media_player_state_t state = media_player_get_state(player);
-
-  if (state == MEDIA_PLAYER_PLAYING) {
-    media_player_start(player);
-  } else if (state == MEDIA_PLAYER_PLAYING) {
-    media_player_pause(player);
-  } else {
-    play_list_play(play_list);
-  }
-
-  return RET_OK;
-}
-
-static ret_t player_on_prev(void* ctx, event_t* e) {
-  play_list_t* play_list = (play_list_t*)(ctx);
-
-  return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
-  return play_list_play(play_list);
-}
-
-static ret_t player_on_next(void* ctx, event_t* e) {
-  play_list_t* play_list = (play_list_t*)(ctx);
-
-  return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
-  return play_list_play(play_list);
-}
-
-static ret_t player_idle_on_done(const idle_info_t* info) {
-  play_list_t* play_list = (play_list_t*)(info->ctx);
-
-  return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
-
-  play_list_play(play_list);
-  
-  return RET_REMOVE;
-}
-
-static ret_t player_idle_on_load(const idle_info_t* info) {
-  char* lrc_text = NULL;
-  char lrc_filename[MAX_PATH+1];
-  widget_t* widget = WIDGET(info->ctx);
-  audio_view_t* audio_view = AUDIO_VIEW(widget);
-  const char* song = play_list_curr(audio_view->play_list);
-  return_value_if_fail(song != NULL, RET_REMOVE);
-
-  path_replace_extname(lrc_filename, sizeof(lrc_filename), song, "lrc");
-
-  lrc_text = data_reader_read_all(lrc_filename, NULL);
-
-  if(lrc_text != NULL) {
-    widget_t* lrc = widget_lookup(widget, "lrc", TRUE);
-    if(audio_view->lrc != NULL) {
-      lrc_destroy(audio_view->lrc);
-    }
-    audio_view->lrc = lrc_create(lrc_text);
-    TKMEM_FREE(lrc_text);
-   
-    if(lrc != NULL) {
-      lrc_view_set_lrc(lrc, audio_view->lrc);
-    }
-  }
-
-  return RET_REMOVE;
-}
-
-static ret_t audio_view_on_media_player_event(void* ctx, event_t* e) {
-  audio_view_t* audio_view = AUDIO_VIEW(ctx);
-
-  switch (e->type) {
-    case EVT_MEDIA_PLAYER_LOADED: {
-      media_player_loaded_event_t* evt = media_player_loaded_event_cast(e);
-      log_debug("w=%u h=%u duration=%u\n", evt->video_width, evt->video_height, evt->duration);
-      idle_add(player_idle_on_load, audio_view);
-      break;
-    }
-    case EVT_MEDIA_PLAYER_PAUSED: {
-      log_debug("paused\n");
-      break;
-    }
-    case EVT_MEDIA_PLAYER_DONE: {
-      log_debug("done\n");
-      idle_add(player_idle_on_done, audio_view->play_list);
-      break;
-    }
-  }
-  return RET_OK;
-}
-
-static ret_t player_on_mute_changed(void* ctx, event_t* e) {
-  widget_t* target = WIDGET(e->target);
-  uint32_t muted = widget_get_value(target);
-
-  return media_player_set_muted(media_player(), muted);
-}
-
-static ret_t player_on_mode_changed(void* ctx, event_t* e) {
-  play_list_t* play_list = (play_list_t*)(ctx);
-  widget_t* target = WIDGET(e->target);
-  uint32_t mode = widget_get_value(target);
-
-  return play_list_set_play_mode(play_list, mode);
-}
-
-static ret_t player_on_progress_changed(void* ctx, event_t* e) {
-  widget_t* target = WIDGET(e->target);
-  uint32_t position = widget_get_value(target);
-  media_player_t* player = media_player();
-  media_player_seek(player, position);
-  log_debug("progress changed\n");
-
-  return RET_OK;
-}
-
-static ret_t player_on_volume_changed(void* ctx, event_t* e) {
-  widget_t* target = WIDGET(e->target);
-  uint32_t volume = widget_get_value(target);
-
-  return media_player_set_volume(media_player(), volume);
-}
-
-static ret_t widget_set_value_without_notify(widget_t* widget, uint32_t value) {
-  emitter_disable(widget->emitter);
-  widget_set_value(widget, value);
-  emitter_enable(widget->emitter);
-
-  return RET_OK;
-}
-
-static ret_t audio_view_update_timer(const timer_info_t* info) {
-  widget_t* widget = WIDGET(info->ctx);
-  widget_t* play = widget_lookup(widget, "play", TRUE);
-  widget_t* progress = widget_lookup(widget, "progress", TRUE);
-  widget_t* lrc = widget_lookup(widget, "lrc", TRUE);
-  media_player_t* player = media_player();
-  media_player_state_t state = media_player_get_state(player);
-  bool_t paused = (bool_t)widget_get_value(play);
-
-  if (state == MEDIA_PLAYER_PLAYING) {
-    uint32_t elapsed = media_player_get_elapsed(player);
-    uint32_t duration = media_player_get_duration(player);
-
-    widget_set_value_without_notify(play, 1);
-    widget_set_value_without_notify(progress, elapsed);
-    widget_set_prop_int(progress, WIDGET_PROP_MAX, duration);
-    
-    widget_set_value_without_notify(lrc, elapsed);
-  } else {
-    widget_set_value_without_notify(play, 0);
-  }
-
-  return RET_REPEAT;
-}
-
-static ret_t audio_view_hook_children(widget_t* widget, play_list_t* play_list) {
-  media_player_t* player = media_player();
-  widget_t* volume = widget_lookup(widget, "volume", TRUE);
-
-  widget_child_on(widget, "next", EVT_CLICK, player_on_next, play_list);
-  widget_child_on(widget, "prev", EVT_CLICK, player_on_prev, play_list);
-  widget_child_on(widget, "play", EVT_VALUE_CHANGED, player_on_play_or_pause, play_list);
-  widget_child_on(widget, "mute", EVT_VALUE_CHANGED, player_on_mute_changed, play_list);
-  widget_child_on(widget, "mode", EVT_VALUE_CHANGED, player_on_mode_changed, play_list);
-  widget_child_on(widget, "progress", EVT_VALUE_CHANGED, player_on_progress_changed, NULL);
-  widget_child_on(widget, "lrc", EVT_VALUE_CHANGED, player_on_progress_changed, NULL);
-
-  if (volume != NULL) {
-    uint32_t v = media_player_get_volume(player);
-    widget_set_prop_int(volume, WIDGET_PROP_MAX, MEDIA_PLAYER_MAX_VOLUME);
-    widget_set_value_without_notify(volume, v);
-    widget_on(volume, EVT_VALUE_CHANGED, player_on_volume_changed, play_list);
-  }
-
-  return RET_OK;
-}
+#include "media_player/widgets/player_common.h"
 
 static ret_t audio_view_on_event(widget_t* widget, event_t* e) {
-  audio_view_t* audio_view = AUDIO_VIEW(widget);
   switch (e->type) {
     case EVT_WINDOW_WILL_OPEN: {
-      audio_view_hook_children(widget, audio_view->play_list);
+      player_hook_children(widget);
       break;
     }
     case EVT_WINDOW_OPEN: {
@@ -239,10 +49,30 @@ static ret_t audio_view_get_prop(widget_t* widget, const char* name, value_t* v)
   return_value_if_fail(audio_view != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_PLAY_LIST)) {
+    value_set_pointer(v, audio_view->play_list);
     return RET_OK;
   }
 
   return RET_NOT_FOUND;
+}
+
+ret_t audio_view_set_lrc(widget_t* widget, lrc_t* lrc) {
+  widget_t* lrc_widget = NULL;
+  audio_view_t* audio_view = AUDIO_VIEW(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (audio_view->lrc != NULL) {
+    lrc_destroy(audio_view->lrc);
+  }
+  audio_view->lrc = lrc;
+
+  lrc_widget = widget_lookup(widget, WIDGET_NAME_LRC, TRUE);
+  if (lrc_widget != NULL) {
+    lrc_view_set_lrc(lrc_widget, lrc);
+  }
+
+  return RET_OK;
 }
 
 static ret_t audio_view_set_prop(widget_t* widget, const char* name, const value_t* v) {
@@ -250,6 +80,8 @@ static ret_t audio_view_set_prop(widget_t* widget, const char* name, const value
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_LRC)) {
+    audio_view_set_lrc(widget, (lrc_t*)value_pointer(v));
     return RET_OK;
   }
 
@@ -261,6 +93,7 @@ static ret_t audio_view_on_destroy(widget_t* widget) {
 
   media_player_set_on_event(media_player(), NULL, NULL);
   play_list_destroy(audio_view->play_list);
+
   if (audio_view->lrc != NULL) {
     lrc_destroy(audio_view->lrc);
   }
@@ -282,9 +115,9 @@ widget_t* audio_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   audio_view_t* audio_view = AUDIO_VIEW(widget);
   return_value_if_fail(audio_view != NULL, NULL);
 
-  audio_view->timer_id = timer_add(audio_view_update_timer, audio_view, 500);
+  audio_view->timer_id = timer_add(player_on_update_timer, audio_view, 500);
   audio_view->play_list = play_list_create();
-  media_player_set_on_event(media_player(), audio_view_on_media_player_event, audio_view);
+  media_player_set_on_event(media_player(), player_on_media_player_event, audio_view);
 
   return widget;
 }

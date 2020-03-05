@@ -16,3 +16,12 @@
     <over_of_checked icon="pause" />
   </style>
 </check_button>
+
+<label>
+  <style name="author">
+    <normal text_color="blue" text_align_h="right"/>
+  </style>
+  <style name="title">
+    <normal text_color="blue" text_align_h="right"/>
+  </style>
+</label>

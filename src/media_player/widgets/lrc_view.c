@@ -137,8 +137,9 @@ static ret_t lrc_view_paint_self(widget_t* widget, canvas_t* c) {
 static ret_t lrc_view_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r_save;
   style_t* style = widget->astyle;
+  lrc_view_t* lrc_view = LRC_VIEW(widget);
 
-  if (style != NULL) {
+  if (style != NULL && lrc_view->lrc != NULL) {
     int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 5);
     int32_t margin_top = style_get_int(style, STYLE_ID_MARGIN_TOP, margin);
     int32_t margin_bottom = style_get_int(style, STYLE_ID_MARGIN_BOTTOM, margin);
@@ -395,27 +396,11 @@ TK_DECL_VTABLE(lrc_view) = {.size = sizeof(lrc_view_t),
                             .on_event = lrc_view_on_event,
                             .on_destroy = lrc_view_on_destroy};
 
-static ret_t lrc_view_gen(lrc_view_t* lrc_view) {
-  str_t str;
-  uint32_t i = 0;
-  str_init(&str, 1000);
-  for (i = 0; i < 100; i++) {
-    char text[64];
-    tk_snprintf(text, sizeof(text), "[0:%u.0]hello lrc %u\n", i, i);
-    str_append(&str, text);
-  }
-  lrc_view->lrc = lrc_create(str.str);
-  str_reset(&str);
-
-  return RET_OK;
-}
-
 widget_t* lrc_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(lrc_view), x, y, w, h);
   lrc_view_t* lrc_view = LRC_VIEW(widget);
   return_value_if_fail(lrc_view != NULL, NULL);
 
-  lrc_view_gen(lrc_view);
   lrc_view->line_hight = 20;
   lrc_view->current_time = 2000;
 

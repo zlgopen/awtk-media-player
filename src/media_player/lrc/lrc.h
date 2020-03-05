@@ -69,6 +69,10 @@ lrc_t* lrc_create(const char* text);
  */
 ret_t lrc_destroy(lrc_t* list);
 
+#define LRC_ID_BY "by"
+#define LRC_ID_TITLE "ti"
+#define LRC_ID_AUTHOR "ar"
+
 END_C_DECLS
 
 #endif /*TK_LRC_H*/
