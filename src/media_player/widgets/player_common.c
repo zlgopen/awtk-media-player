@@ -66,7 +66,7 @@ static ret_t player_on_play_or_pause(void* ctx, event_t* e) {
 static ret_t player_on_prev(void* ctx, event_t* e) {
   play_list_t* play_list = (play_list_t*)(ctx);
 
-  return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
+  return_value_if_fail(play_list_prev(play_list) == RET_OK, RET_BAD_PARAMS);
 
   return player_play_curr(play_list);
 }
@@ -108,6 +108,8 @@ static ret_t player_idle_on_load(const idle_info_t* info) {
     if (lrc_text != NULL) {
       alrc = lrc_create(lrc_text);
       TKMEM_FREE(lrc_text);
+    } else {
+      alrc = lrc_create("[ar:unkown][ti:unkown][0:0]no lyric");
     }
     widget_set_prop_pointer(widget, WIDGET_PROP_LRC, alrc);
   }

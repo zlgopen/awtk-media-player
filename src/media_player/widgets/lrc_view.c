@@ -25,6 +25,8 @@
 #include "lrc_view.h"
 #include "widget_animators/widget_animator_scroll.h"
 
+static int32_t lrc_view_get_content_height(widget_t* widget);
+
 static ret_t lrc_view_get_prop(widget_t* widget, const char* name, value_t* v) {
   lrc_view_t* lrc_view = LRC_VIEW(widget);
   return_value_if_fail(lrc_view != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -71,6 +73,7 @@ static ret_t lrc_view_paint_self(widget_t* widget, canvas_t* c) {
   style_t* style = widget->astyle;
   lrc_t* lrc = lrc_view->lrc;
   lrc_time_tag_list_t* time_tags = lrc->time_tags;
+  int32_t content_h = lrc_view_get_content_height(widget);
 
   rect_t r;
   int32_t i = 0;
@@ -94,7 +97,11 @@ static ret_t lrc_view_paint_self(widget_t* widget, canvas_t* c) {
   color_t text_color = style_get_color(style, STYLE_ID_TEXT_COLOR, black);
   color_t curr_text_color = style_get_color(style, STYLE_ID_HIGHLIGHT_TEXT_COLOR, black);
 
-  y = margin_top;
+  if (content_h < h) {
+    y = (h - content_h) / 2;
+  } else {
+    y = margin_top;
+  }
   canvas_set_text_align(c, (align_h_t)align_h, ALIGN_V_MIDDLE);
 
   for (i = 0; i < time_tags->size; i++) {
