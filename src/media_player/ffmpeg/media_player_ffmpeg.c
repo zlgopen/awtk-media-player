@@ -37,6 +37,8 @@ static ret_t media_player_ffmpeg_notify_simple(media_player_t* player, uint32_t 
 typedef struct _media_player_ffmpeg_t {
   media_player_t media_player;
   VideoState* is;
+  uint32_t volume;
+  bool_t muted;
 } media_player_ffmpeg_t;
 
 static ret_t media_player_ffmpeg_notify(media_player_t* player, event_t* e) {
@@ -57,7 +59,10 @@ static ret_t media_player_ffmpeg_load(media_player_t* player, const char* url) {
   media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
 
   if (ffmpeg->is != NULL) {
-    stream_close(ffmpeg->is);
+    tk_thread_t* thread = ffmpeg->is->read_tid;
+    ffmpeg->is->abort_request = 1;
+
+    tk_thread_join(thread);
   }
 
   ffmpeg->is = stream_open(url, player);
@@ -65,6 +70,8 @@ static ret_t media_player_ffmpeg_load(media_player_t* player, const char* url) {
     ffmpeg->is->frame_width = 0;
     ffmpeg->is->frame_height = 0;
     toggle_pause(ffmpeg->is);
+    ffmpeg->is->muted = ffmpeg->muted;
+    ffmpeg->is->audio_volume = av_clip(ffmpeg->volume, 0, MEDIA_PLAYER_MAX_VOLUME);
   }
 
   return RET_OK;
@@ -115,18 +122,22 @@ static ret_t media_player_ffmpeg_seek(media_player_t* player, uint32_t offset) {
 
 static ret_t media_player_ffmpeg_set_volume(media_player_t* player, uint32_t volume) {
   media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
-  return_value_if_fail(ffmpeg->is != NULL, RET_BAD_PARAMS);
 
-  ffmpeg->is->audio_volume = av_clip(volume, 0, MEDIA_PLAYER_MAX_VOLUME);
+  ffmpeg->volume = volume;
+  if (ffmpeg->is != NULL) {
+    ffmpeg->is->audio_volume = av_clip(volume, 0, MEDIA_PLAYER_MAX_VOLUME);
+  }
 
   return RET_OK;
 }
 
 static ret_t media_player_ffmpeg_set_muted(media_player_t* player, bool_t muted) {
   media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
-  return_value_if_fail(ffmpeg->is != NULL, RET_BAD_PARAMS);
 
-  ffmpeg->is->muted = muted;
+  ffmpeg->muted = muted;
+  if (ffmpeg->is != NULL) {
+    ffmpeg->is->muted = muted;
+  }
 
   return RET_OK;
 }

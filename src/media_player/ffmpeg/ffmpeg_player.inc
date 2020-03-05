@@ -2413,7 +2413,11 @@ static int read_thread(void* arg) {
 
 fail:
   ret = 0;
-  media_player_ffmpeg_notify_simple(is->player, EVT_MEDIA_PLAYER_DONE);
+  if (is->abort_request) {
+    media_player_ffmpeg_notify_simple(is->player, EVT_MEDIA_PLAYER_ABORT);
+  } else {
+    media_player_ffmpeg_notify_simple(is->player, EVT_MEDIA_PLAYER_DONE);
+  }
 
   if (ic && !is->ic) avformat_close_input(&ic);
 
