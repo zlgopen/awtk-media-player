@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-media_player_t* media_player_create(void);
+media_player_t* media_player_ffmpeg_create(void);
 
 END_C_DECLS
 

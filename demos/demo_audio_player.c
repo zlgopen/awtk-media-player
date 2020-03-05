@@ -47,12 +47,10 @@ static ret_t app_global_init(void) {
 static ret_t application_init() {
   widget_t* win = NULL;
   widget_t* audio_view = NULL;
-  media_player_t* player = NULL;
 
   app_global_init();
   log_set_log_level(LOG_LEVEL_DEBUG);
 
-  player = media_player();
   win = window_open("audio_player");
   audio_view = widget_lookup_by_type(win, "audio_view", TRUE);
 
@@ -68,9 +66,9 @@ static ret_t application_init() {
 }
 
 ret_t application_exit() {
+  media_player_destroy(media_player());
   data_reader_factory_destroy(data_reader_factory());
-
-  return RET_OK;
+  media_player_set(NULL);
 }
 
 #include "awtk_main.inc"

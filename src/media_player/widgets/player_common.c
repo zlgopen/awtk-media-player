@@ -193,14 +193,26 @@ ret_t player_on_update_timer(const timer_info_t* info) {
     uint32_t telapsed = media_player_get_elapsed(player);
     uint32_t tduration = media_player_get_duration(player);
 
-    widget_set_value_without_notify(progress, telapsed);
-    widget_set_prop_int(progress, WIDGET_PROP_MAX, tduration);
-    widget_set_text_utf8(elapsed, player_format_time(buff, sizeof(buff), telapsed));
-    widget_set_text_utf8(duration, player_format_time(buff, sizeof(buff), tduration));
+    if (progress != NULL) {
+      widget_set_value_without_notify(progress, telapsed);
+      widget_set_prop_int(progress, WIDGET_PROP_MAX, tduration);
+    }
 
-    widget_set_value_without_notify(lrc, telapsed);
+    if (elapsed != NULL) {
+      widget_set_text_utf8(elapsed, player_format_time(buff, sizeof(buff), telapsed));
+    }
+
+    if (duration != NULL) {
+      widget_set_text_utf8(duration, player_format_time(buff, sizeof(buff), tduration));
+    }
+
+    if (lrc != NULL) {
+      widget_set_value_without_notify(lrc, telapsed);
+    }
   } else {
-    widget_set_value_without_notify(play, 0);
+    if (play != NULL) {
+      widget_set_value_without_notify(play, 0);
+    }
   }
 
   return RET_REPEAT;

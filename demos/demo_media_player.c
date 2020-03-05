@@ -20,129 +20,45 @@
  */
 
 #include "awtk.h"
+#include "media_player/widgets/lrc_view.h"
+#include "media_player/widgets/video_view.h"
 #include "media_player/base/media_player.h"
+#include "media_player/ffmpeg/media_player_ffmpeg.h"
 
-static ret_t on_media_player_event(void* ctx, event_t* e) {
-  switch (e->type) {
-    case EVT_MEDIA_PLAYER_LOADED: {
-      media_player_loaded_event_t* evt = media_player_loaded_event_cast(e);
-      log_debug("w=%u h=%u duration=%u\n", evt->video_width, evt->video_height, evt->duration);
-      break;
-    }
-    case EVT_MEDIA_PLAYER_PAUSED: {
-      log_debug("paused\n");
-      break;
-    }
-    case EVT_MEDIA_PLAYER_DONE: {
-      log_debug("done\n");
-      break;
-    }
-  }
-  return RET_OK;
-}
-
-static ret_t on_load_click(void* ctx, event_t* e) {
-  media_player_t* player = (media_player_t*)ctx;
-
-  media_player_load(player, "./data/test.mp4");
+static ret_t app_global_init(void) {
+  lrc_view_register();
+  video_view_register();
+  media_player_set(media_player_ffmpeg_create());
+  data_reader_factory_set(data_reader_factory_create());
+  data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
 
   return RET_OK;
 }
 
-static ret_t on_forward_click(void* ctx, event_t* e) {
-  media_player_t* player = (media_player_t*)ctx;
-  uint32_t elapsed = media_player_get_elapsed(player) + 3000;
+ret_t application_init() {
+  widget_t* win = NULL;
+  widget_t* video_view = NULL;
 
-  media_player_seek(player, elapsed);
+  app_global_init();
+  log_set_log_level(LOG_LEVEL_DEBUG);
 
-  return RET_OK;
-}
+  win = window_open("video_player");
+  video_view = widget_lookup_by_type(win, "video_view", TRUE);
 
-static ret_t on_start_click(void* ctx, event_t* e) {
-  media_player_t* player = (media_player_t*)ctx;
-
-  media_player_start(player);
-
-  return RET_OK;
-}
-
-static ret_t on_stop_click(void* ctx, event_t* e) {
-  media_player_t* player = (media_player_t*)ctx;
-
-  media_player_stop(player);
-
-  return RET_OK;
-}
-
-static ret_t on_pause_click(void* ctx, event_t* e) {
-  media_player_t* player = (media_player_t*)ctx;
-
-  media_player_pause(player);
-
-  return RET_OK;
-}
-
-static ret_t on_quit_click(void* ctx, event_t* e) {
-  tk_quit();
-  return RET_OK;
-}
-
-static ret_t mutable_image_prepare_image(void* ctx, bitmap_t* image) {
-  media_player_t* player = (media_player_t*)ctx;
-
-  if (media_player_get_state(player) == MEDIA_PLAYER_PLAYING) {
-    return media_player_get_video_frame(player, image);
-  }
-
-  return RET_OK;
-}
-
-void application_init() {
-  media_player_t* player = media_player_create();
-
-  media_player_set_on_event(player, on_media_player_event, player);
-
-  widget_t* win = window_create(NULL, 0, 0, 0, 0);
-  widget_t* mutable = mutable_image_create(win, 0, 0, win->w, win->h);
-  widget_t* load = button_create(win, 0, 0, 0, 0);
-  widget_t* start = button_create(win, 0, 0, 0, 0);
-  widget_t* forward = button_create(win, 0, 0, 0, 0);
-  widget_t* pause = button_create(win, 0, 0, 0, 0);
-  widget_t* stop = button_create(win, 0, 0, 0, 0);
-  widget_t* quit = button_create(win, 0, 0, 0, 0);
-  widget_t* status = label_create(win, 0, 0, 0, 0);
-
-  mutable_image_set_prepare_image(mutable, mutable_image_prepare_image, player);
-  widget_set_self_layout_params(status, "center", "m:-120", "100%", "30");
-
-  widget_set_text(load, L"load");
-  widget_set_self_layout_params(load, "center", "middle:-80", "50%", "30");
-  widget_on(load, EVT_CLICK, on_load_click, player);
-
-  widget_set_text(start, L"start");
-  widget_set_self_layout_params(start, "center", "middle:-40", "50%", "30");
-  widget_on(start, EVT_CLICK, on_start_click, player);
-
-  widget_set_text(forward, L"forward");
-  widget_set_self_layout_params(forward, "center", "middle", "50%", "30");
-  widget_on(forward, EVT_CLICK, on_forward_click, player);
-
-  widget_set_text(pause, L"pause");
-  widget_set_self_layout_params(pause, "center", "middle:40", "50%", "30");
-  widget_on(pause, EVT_CLICK, on_pause_click, player);
-
-  widget_set_text(stop, L"stop");
-  widget_set_self_layout_params(stop, "center", "m:80", "50%", "30");
-  widget_on(stop, EVT_CLICK, on_stop_click, player);
-
-  widget_set_text(quit, L"Quit");
-  widget_set_self_layout_params(quit, "center", "m:120", "50%", "30");
-  widget_on(quit, EVT_CLICK, on_quit_click, quit);
+  //  play_list_append(video_view_get_play_list(video_view), "data/test.mp3");
+  play_list_append(video_view_get_play_list(video_view), "data/test.mp4");
 
   widget_layout(win);
+
+  return RET_OK;
 }
 
-void application_deinit() {
+ret_t application_exit() {
+  media_player_destroy(media_player());
+  data_reader_factory_destroy(data_reader_factory());
+  media_player_set(NULL);
+
+  return RET_OK;
 }
 
-#include "demo_main.c"
+#include "awtk_main.inc"

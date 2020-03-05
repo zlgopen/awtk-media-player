@@ -21,8 +21,8 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
-
-#include "lrc_view.h"
+#include "media_player/widgets/lrc_view.h"
+#include "media_player/widgets/player_common.h"
 #include "widget_animators/widget_animator_scroll.h"
 
 static int32_t lrc_view_get_content_height(widget_t* widget);
@@ -56,6 +56,8 @@ static ret_t lrc_view_set_prop(widget_t* widget, const char* name, const value_t
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     return lrc_view_set_current_time(widget, value_uint32(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_LRC)) {
+    lrc_view_set_lrc(widget, (lrc_t*)value_pointer(v));
   }
 
   return RET_NOT_FOUND;

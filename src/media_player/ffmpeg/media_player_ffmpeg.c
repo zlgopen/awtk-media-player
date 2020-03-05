@@ -253,7 +253,7 @@ static const media_player_vtable_t s_media_player_ffmpeg = {
     .get_video_width = media_player_ffmpeg_get_video_width,
     .get_video_height = media_player_ffmpeg_get_video_height};
 
-media_player_t* media_player_create(void) {
+media_player_t* media_player_ffmpeg_create(void) {
   media_player_ffmpeg_t* player = TKMEM_ZALLOC(media_player_ffmpeg_t);
   return_value_if_fail(player != NULL, NULL);
 

@@ -1,0 +1,20 @@
+  <column children_layout="default(r=3,c=1)" x="center" y="bottom:10" w="90%" h="90">
+    <row>
+      <label name="elapsed" x="0" y="middle" w="40" h="20" text="00:00"/>
+      <slider name="progress" x="center" y="middle" w="-80" h="20"/>
+      <label name="duration" x="right" y="middle" w="40" h="20" text="10:00"/>
+    </row>
+    <row>
+      <check_button name="mute" style="mute" x="0" y="middle" w="30" h="30"/>
+      <button name="prev" text="<" x="center:-80" y="middle" w="40" h="30"/>
+      <check_button name="play" style="play" x="center" y="middle" w="40" h="30"/>
+      <button name="next" text=">" x="center:80" y="middle" w="40" h="30"/>
+      <image_value  name="mode" x="right" y="middle" w="30" h="30"
+        value="0" image="mode_" click_add_delta="1" min="0" max="2"/>
+    </row>
+    <row>
+      <image name="sound_minus" image="sound_minus" x="0" y="middle" w="30" h="30"/>
+      <slider name="volume" x="40" y="middle" w="-80" h="20"/>
+      <image name="sound_plus" image="sound_plus" x="right" y="middle" w="30" h="30"/>
+    </row>
+  </column>

@@ -21,7 +21,6 @@
 
 #include "tkc/mem.h"
 #include "tkc/path.h"
-#include "media_player/widgets/lrc_view.h"
 #include "media_player/widgets/audio_view.h"
 #include "media_player/widgets/player_common.h"
 
@@ -72,7 +71,7 @@ ret_t audio_view_set_lrc(widget_t* widget, lrc_t* alrc) {
   audio_view->lrc = alrc;
 
   if (lrc != NULL) {
-    lrc_view_set_lrc(lrc, alrc);
+    widget_set_prop_pointer(lrc, WIDGET_PROP_LRC, alrc);
   }
 
   if (alrc != NULL) {
