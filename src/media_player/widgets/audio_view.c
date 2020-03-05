@@ -57,19 +57,34 @@ static ret_t audio_view_get_prop(widget_t* widget, const char* name, value_t* v)
   return RET_NOT_FOUND;
 }
 
-ret_t audio_view_set_lrc(widget_t* widget, lrc_t* lrc) {
-  widget_t* lrc_widget = NULL;
+ret_t audio_view_set_lrc(widget_t* widget, lrc_t* alrc) {
+  const char* ar = "";
+  const char* ti = "";
   audio_view_t* audio_view = AUDIO_VIEW(widget);
+  widget_t* lrc = widget_lookup(widget, WIDGET_NAME_LRC, TRUE);
+  widget_t* title = widget_lookup(widget, WIDGET_NAME_TITLE, TRUE);
+  widget_t* author = widget_lookup(widget, WIDGET_NAME_AUTHOR, TRUE);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (audio_view->lrc != NULL) {
     lrc_destroy(audio_view->lrc);
   }
-  audio_view->lrc = lrc;
+  audio_view->lrc = alrc;
 
-  lrc_widget = widget_lookup(widget, WIDGET_NAME_LRC, TRUE);
-  if (lrc_widget != NULL) {
-    lrc_view_set_lrc(lrc_widget, lrc);
+  if (lrc != NULL) {
+    lrc_view_set_lrc(lrc, alrc);
+  }
+
+  if (alrc != NULL) {
+    ar = lrc_id_tag_list_find(alrc->id_tags, LRC_ID_AUTHOR);
+    ti = lrc_id_tag_list_find(alrc->id_tags, LRC_ID_TITLE);
+  }
+
+  if (title != NULL) {
+    widget_set_text_utf8(title, ti ? ti : "");
+  }
+  if (author != NULL) {
+    widget_set_text_utf8(author, ar ? ar : "");
   }
 
   return RET_OK;

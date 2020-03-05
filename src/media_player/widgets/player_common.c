@@ -94,32 +94,22 @@ static ret_t player_idle_on_load(const idle_info_t* info) {
   char* lrc_text = NULL;
   char lrc_filename[MAX_PATH + 1];
   widget_t* widget = WIDGET(info->ctx);
-  widget_t* lrc = widget_lookup(widget, WIDGET_NAME_LRC, TRUE);
-  widget_t* title = widget_lookup(widget, WIDGET_NAME_TITLE, TRUE);
-  widget_t* author = widget_lookup(widget, WIDGET_NAME_AUTHOR, TRUE);
   play_list_t* play_list = WIDGET_GET_PLAY_LIST(widget);
+  widget_t* lrc = widget_lookup(widget, WIDGET_NAME_LRC, TRUE);
   const char* url = play_list_curr(play_list);
   return_value_if_fail(url != NULL, RET_REMOVE);
 
   if (lrc != NULL) {
+    lrc_t* alrc = NULL;
+
     path_replace_extname(lrc_filename, sizeof(lrc_filename), url, "lrc");
     lrc_text = data_reader_read_all(lrc_filename, NULL);
-    if (lrc_text != NULL) {
-      lrc_t* alrc = lrc_create(lrc_text);
-      if (alrc != NULL) {
-        const char* ar = lrc_id_tag_list_find(alrc->id_tags, LRC_ID_AUTHOR);
-        const char* ti = lrc_id_tag_list_find(alrc->id_tags, LRC_ID_TITLE);
 
-        if (title != NULL) {
-          widget_set_text_utf8(title, ti ? ti : "");
-        }
-        if (author != NULL) {
-          widget_set_text_utf8(author, ar ? ar : "");
-        }
-        widget_set_prop_pointer(widget, WIDGET_PROP_LRC, alrc);
-      }
+    if (lrc_text != NULL) {
+      alrc = lrc_create(lrc_text);
       TKMEM_FREE(lrc_text);
     }
+    widget_set_prop_pointer(widget, WIDGET_PROP_LRC, alrc);
   }
 
   return RET_REMOVE;
@@ -224,7 +214,8 @@ ret_t player_hook_children(widget_t* widget) {
   widget_child_on(widget, WIDGET_NAME_PLAY, EVT_VALUE_CHANGED, player_on_play_or_pause, play_list);
   widget_child_on(widget, WIDGET_NAME_MUTE, EVT_VALUE_CHANGED, player_on_mute_changed, play_list);
   widget_child_on(widget, WIDGET_NAME_MODE, EVT_VALUE_CHANGED, player_on_mode_changed, play_list);
-  widget_child_on(widget, WIDGET_NAME_PROGRESS, EVT_VALUE_CHANGED, player_on_progress_changed, NULL);
+  widget_child_on(widget, WIDGET_NAME_PROGRESS, EVT_VALUE_CHANGED, player_on_progress_changed,
+                  NULL);
   widget_child_on(widget, WIDGET_NAME_LRC, EVT_VALUE_CHANGED, player_on_progress_changed, NULL);
 
   if (volume != NULL) {
