@@ -123,7 +123,7 @@ static ret_t player_idle_on_load(const idle_info_t* info) {
 
   player_prepare_lrc(widget);
 
-  if(volume != NULL) {
+  if (volume != NULL) {
     widget_set_prop_int(volume, WIDGET_PROP_MAX, MEDIA_PLAYER_MAX_VOLUME);
     widget_set_value_without_notify(volume, media_player_get_volume(player));
   }

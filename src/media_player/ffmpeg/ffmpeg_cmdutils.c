@@ -63,7 +63,7 @@
 #include <windows.h>
 #endif
 
-AVDictionary *swr_opts;
+AVDictionary* swr_opts;
 AVDictionary* sws_dict;
 AVDictionary *format_opts, *codec_opts, *resample_opts;
 
@@ -105,7 +105,6 @@ void print_error(const char* filename, int err) {
   av_log(NULL, AV_LOG_ERROR, "%s: %s\n", filename, errbuf_ptr);
 }
 
-
 #define INDENT 1
 #define SHOW_VERSION 2
 #define SHOW_CONFIG 4
@@ -140,7 +139,8 @@ AVDictionary* filter_codec_opts(AVDictionary* opts, enum AVCodecID codec_id, AVF
       prefix = 's';
       flags |= AV_OPT_FLAG_SUBTITLE_PARAM;
       break;
-    default:break;
+    default:
+      break;
   }
 
   while ((t = av_dict_get(opts, "", t, AV_DICT_IGNORE_SUFFIX)) != NULL) {
