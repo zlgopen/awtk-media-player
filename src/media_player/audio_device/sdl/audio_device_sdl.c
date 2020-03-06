@@ -29,12 +29,16 @@
 typedef struct _audio_device_sdl_t {
   audio_device_t audio_device;
   SDL_AudioDeviceID devid;
+  SDL_AudioFormat format;
 } audio_device_sdl_t;
 
 static ret_t audio_device_sdl_mix(audio_device_t* device, uint8_t* dst, const uint8_t* src,
                                   uint32_t len) {
-  SDL_MixAudio(dst, src, len, device->volume);
-  log_debug("audio_volume=%d %d => %d\n", device->volume, *(int16_t*)src, *(int16_t*)dst);;
+  audio_device_sdl_t* sdl = (audio_device_sdl_t*)device;
+
+  SDL_MixAudioFormat(dst, src, sdl->format, len, device->volume);
+  log_debug("audio_volume=%d format=%d %d => %d\n", 
+      device->volume, sdl->format, *(int16_t*)src, *(int16_t*)dst);;
 
   return RET_OK;
 }
@@ -183,6 +187,7 @@ static audio_device_t* audio_device_sdl_create(const char* name, bool_t is_captu
       *real = sdl_audio_spec_to(&sdl_real);
     }
     device->spec = *real;
+    sdl->format = real->format;
   } else {
     SDL_CloseAudioDevice(devid);
   }
