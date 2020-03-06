@@ -961,10 +961,6 @@ static void toggle_pause(VideoState* is) {
   is->step = 0;
 }
 
-static void toggle_mute(VideoState* is) {
-  is->muted = !is->muted;
-}
-
 static void step_to_next_frame(VideoState* is) {
   /* if the stream is paused unpause it, then step */
   if (is->paused) stream_toggle_pause(is);
