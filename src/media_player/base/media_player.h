@@ -56,6 +56,9 @@ typedef enum _media_player_state_t {
 struct _media_player_t;
 typedef struct _media_player_t media_player_t;
 
+typedef ret_t (*media_player_get_prop_t)(media_player_t* player, const char* name, value_t* value);
+typedef ret_t (*media_player_set_prop_t)(media_player_t* player, const char* name,
+                                         const value_t* value);
 typedef ret_t (*media_player_load_t)(media_player_t* player, const char* url);
 typedef ret_t (*media_player_start_t)(media_player_t* player);
 typedef ret_t (*media_player_pause_t)(media_player_t* player);
@@ -75,6 +78,8 @@ typedef uint32_t (*media_player_get_video_width_t)(media_player_t* player);
 typedef uint32_t (*media_player_get_video_height_t)(media_player_t* player);
 
 typedef struct _media_player_vtable_t {
+  media_player_get_prop_t get_prop;
+  media_player_set_prop_t set_prop;
   media_player_load_t load;
   media_player_start_t start;
   media_player_pause_t pause;
@@ -111,6 +116,31 @@ struct _media_player_t {
   void* on_event_ctx;
   event_func_t on_event;
 };
+
+/**
+ * @method media_player_set_prop
+ * 设置指定属性的值。
+ *
+ * @param {media_player_t*} player media player对象。
+ * @param {const char*} name 属性的名称。
+ * @param {value_t*} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t media_player_set_prop(media_player_t* player, const char* name, const value_t* value);
+
+/**
+ * @method media_player_get_prop
+ * 获取指定属性的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {media_player_t*} player media player对象。
+ * @param {const char*} name 属性的名称。
+ * @param {value_t*} value 返回属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t media_player_get_prop(media_player_t* player, const char* name, value_t* value);
 
 /**
  * @method media_player_load

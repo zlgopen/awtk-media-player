@@ -169,3 +169,25 @@ ret_t media_player_set(media_player_t* media_layer) {
 
   return RET_OK;
 }
+
+ret_t media_player_set_prop(media_player_t* player, const char* name, const value_t* value) {
+  return_value_if_fail(name != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(player != NULL && player->vt != NULL, RET_BAD_PARAMS);
+
+  if (player->vt->set_prop != NULL) {
+    return player->vt->set_prop(player, name, value);
+  }
+
+  return RET_NOT_IMPL;
+}
+
+ret_t media_player_get_prop(media_player_t* player, const char* name, value_t* value) {
+  return_value_if_fail(name != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(player != NULL && player->vt != NULL, RET_BAD_PARAMS);
+
+  if (player->vt->get_prop != NULL) {
+    return player->vt->get_prop(player, name, value);
+  }
+
+  return RET_NOT_IMPL;
+}
