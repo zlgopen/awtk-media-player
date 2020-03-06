@@ -37,8 +37,6 @@ static ret_t audio_device_sdl_mix(audio_device_t* device, uint8_t* dst, const ui
   audio_device_sdl_t* sdl = (audio_device_sdl_t*)device;
 
   SDL_MixAudioFormat(dst, src, sdl->format, len, device->volume);
-  log_debug("audio_volume=%d format=%d %d => %d\n", 
-      device->volume, sdl->format, *(int16_t*)src, *(int16_t*)dst);;
 
   return RET_OK;
 }
