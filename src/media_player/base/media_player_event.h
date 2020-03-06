@@ -63,12 +63,10 @@ typedef enum _media_player_event_t {
 } media_player_event_t;
 
 /**
- * @class media_player_loaded_event_t
- * @parent event_t
- * 媒体播放器接口。
+ * @class media_info_t
+ * 媒体信息。
  */
-typedef struct _media_player_loaded_event_t {
-  event_t e;
+typedef struct _media_info_t {
   /**
    * @property {bool_t} has_audio
    * @annotation ["readable"]
@@ -119,6 +117,22 @@ typedef struct _media_player_loaded_event_t {
    * display aspect ratio width。
    */
   uint32_t display_aspect_ratio_h;
+} media_info_t;
+
+/**
+ * @class media_player_loaded_event_t
+ * @parent event_t
+ * 媒体加载事件。
+ */
+typedef struct _media_player_loaded_event_t {
+  event_t e;
+
+  /**
+   * @property {media_info_t} media_info
+   * @annotation ["readable"]
+   * 媒体信息。
+   */
+  media_info_t media_info;
 } media_player_loaded_event_t;
 
 /**

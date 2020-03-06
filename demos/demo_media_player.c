@@ -45,8 +45,8 @@ ret_t application_init() {
   win = window_open("video_player");
   video_view = widget_lookup_by_type(win, "video_view", TRUE);
 
-  //  play_list_append(video_view_get_play_list(video_view), "data/test.mp3");
-  play_list_append(video_view_get_play_list(video_view), "data/test.mp4");
+  play_list_append(video_view_get_play_list(video_view), "data/test1.mp4");
+  play_list_append(video_view_get_play_list(video_view), "data/test2.mp4");
 
   widget_layout(win);
 

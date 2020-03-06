@@ -14,7 +14,7 @@
     </row>
     <row>
       <image name="sound_minus" image="sound_minus" x="0" y="middle" w="30" h="30"/>
-      <slider name="volume" x="40" y="middle" w="-80" h="20"/>
+      <slider name="volume" max="128" value="60" x="40" y="middle" w="-80" h="20"/>
       <image name="sound_plus" image="sound_plus" x="right" y="middle" w="30" h="30"/>
     </row>
   </column>

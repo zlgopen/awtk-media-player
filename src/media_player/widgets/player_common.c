@@ -90,12 +90,11 @@ static ret_t player_idle_on_done(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
-static ret_t player_idle_on_load(const idle_info_t* info) {
+static ret_t player_prepare_lrc(widget_t* widget) {
   char* lrc_text = NULL;
   char lrc_filename[MAX_PATH + 1];
-  widget_t* widget = WIDGET(info->ctx);
-  play_list_t* play_list = WIDGET_GET_PLAY_LIST(widget);
   widget_t* lrc = widget_lookup(widget, WIDGET_NAME_LRC, TRUE);
+  play_list_t* play_list = WIDGET_GET_PLAY_LIST(widget);
   const char* url = play_list_curr(play_list);
   return_value_if_fail(url != NULL, RET_REMOVE);
 
@@ -112,6 +111,21 @@ static ret_t player_idle_on_load(const idle_info_t* info) {
       alrc = lrc_create("[ar:unkown][ti:unkown][0:0]no lyric");
     }
     widget_set_prop_pointer(widget, WIDGET_PROP_LRC, alrc);
+  }
+
+  return RET_OK;
+}
+
+static ret_t player_idle_on_load(const idle_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  media_player_t* player = media_player();
+  widget_t* volume = widget_lookup(widget, WIDGET_NAME_VOLUME, TRUE);
+
+  player_prepare_lrc(widget);
+
+  if(volume != NULL) {
+    widget_set_prop_int(volume, WIDGET_PROP_MAX, MEDIA_PLAYER_MAX_VOLUME);
+    widget_set_value_without_notify(volume, media_player_get_volume(player));
   }
 
   return RET_REMOVE;

@@ -288,7 +288,7 @@ typedef struct _VideoState {
   int eof;
 
   char* filename;
-  int width, height, xleft, ytop;
+  int width, height;
   int step;
 
 #if CONFIG_AVFILTER
@@ -755,31 +755,6 @@ static void decoder_abort(Decoder* d, FrameQueue* fq) {
   tk_thread_join(d->decoder_tid);
   d->decoder_tid = NULL;
   packet_queue_flush(d->queue);
-}
-
-static void calculate_display_rect(rect_t* rect, int scr_xleft, int scr_ytop, int scr_width,
-                                   int scr_height, int pic_width, int pic_height,
-                                   AVRational pic_sar) {
-  AVRational aspect_ratio = pic_sar;
-  int64_t width, height, x, y;
-
-  if (av_cmp_q(aspect_ratio, av_make_q(0, 1)) <= 0) aspect_ratio = av_make_q(1, 1);
-
-  aspect_ratio = av_mul_q(aspect_ratio, av_make_q(pic_width, pic_height));
-
-  /* XXX: we suppose the screen has a 1.0 pixel ratio */
-  height = scr_height;
-  width = av_rescale(height, aspect_ratio.num, aspect_ratio.den) & ~1;
-  if (width > scr_width) {
-    width = scr_width;
-    height = av_rescale(width, aspect_ratio.den, aspect_ratio.num) & ~1;
-  }
-  x = (scr_width - width) / 2;
-  y = (scr_height - height) / 2;
-  rect->x = scr_xleft + x;
-  rect->y = scr_ytop + y;
-  rect->w = FFMAX((int)width, 1);
-  rect->h = FFMAX((int)height, 1);
 }
 
 static void stream_component_close(VideoState* is, int stream_index) {
@@ -1840,9 +1815,12 @@ static void audio_device_callback(void* opaque, uint8_t* stream, int len) {
       memcpy(stream, (uint8_t*)is->audio_buf + is->audio_buf_index, len1);
     else {
       memset(stream, 0, len1);
-      if (!is->muted && is->audio_buf)
+      if (!is->muted && is->audio_buf) {
+        audio_device_set_volume(audio_dev, is->audio_volume);
         audio_device_mix(audio_dev, stream, (uint8_t*)is->audio_buf + is->audio_buf_index, len1);
+      }
     }
+
     len -= len1;
     stream += len1;
     is->audio_buf_index += len1;
@@ -2276,8 +2254,8 @@ static int read_thread(void* arg) {
 
     av_reduce(&display_aspect_ratio_w, &display_aspect_ratio_h, w * (int64_t)sar.num,
               h * (int64_t)sar.den, 1024 * 1024);
-    event.display_aspect_ratio_w = display_aspect_ratio_w;
-    event.display_aspect_ratio_h = display_aspect_ratio_h;
+    event.media_info.display_aspect_ratio_w = display_aspect_ratio_w;
+    event.media_info.display_aspect_ratio_h = display_aspect_ratio_h;
 
     media_player_ffmpeg_notify(is->player, e);
   }
@@ -2434,8 +2412,6 @@ static VideoState* stream_open(const char* filename, media_player_t* player) {
   is->filename = av_strdup(filename);
   if (!is->filename) goto fail;
   is->iformat = iformat;
-  is->ytop = 0;
-  is->xleft = 0;
   is->player = player;
 
   /* start video display */

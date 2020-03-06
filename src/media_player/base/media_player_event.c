@@ -28,12 +28,12 @@ event_t* media_player_loaded_event_init(media_player_loaded_event_t* event, bool
 
   memset(event, 0x00, sizeof(media_player_loaded_event_t));
   event->e.type = EVT_MEDIA_PLAYER_LOADED;
-  event->has_audio = has_audio;
-  event->has_video = has_video;
-  event->has_subtitle = has_subtitle;
-  event->duration = duration;
-  event->video_width = video_width;
-  event->video_height = video_height;
+  event->media_info.has_audio = has_audio;
+  event->media_info.has_video = has_video;
+  event->media_info.has_subtitle = has_subtitle;
+  event->media_info.duration = duration;
+  event->media_info.video_width = video_width;
+  event->media_info.video_height = video_height;
 
   return (event_t*)event;
 }

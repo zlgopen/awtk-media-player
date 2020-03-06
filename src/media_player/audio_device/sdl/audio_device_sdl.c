@@ -34,6 +34,7 @@ typedef struct _audio_device_sdl_t {
 static ret_t audio_device_sdl_mix(audio_device_t* device, uint8_t* dst, const uint8_t* src,
                                   uint32_t len) {
   SDL_MixAudio(dst, src, len, device->volume);
+  log_debug("audio_volume=%d %d => %d\n", device->volume, *(int16_t*)src, *(int16_t*)dst);;
 
   return RET_OK;
 }

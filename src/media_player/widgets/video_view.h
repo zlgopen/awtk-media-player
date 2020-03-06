@@ -64,6 +64,7 @@ typedef struct _video_view_t {
 
   /*private*/
   uint32_t timer_id;
+  media_info_t media_info;
 } video_view_t;
 
 /**

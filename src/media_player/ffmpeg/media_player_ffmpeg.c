@@ -269,6 +269,7 @@ media_player_t* media_player_ffmpeg_create(void) {
   return_value_if_fail(player != NULL, NULL);
 
   ffmpeg_init();
+  player->volume = 60;
   player->media_player.vt = &s_media_player_ffmpeg;
 
   return (media_player_t*)player;
