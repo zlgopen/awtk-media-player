@@ -71,6 +71,7 @@ DefaultEnvironment(
   OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS)
 
 SConscriptFiles=[
+  '3rd/ffmpeg/SConscript',
   'src/media_player/lrc/SConscript', 
   'src/media_player/base/SConscript', 
   'src/media_player/ffmpeg/SConscript', 

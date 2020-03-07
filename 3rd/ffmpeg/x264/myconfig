@@ -1,2 +1,2 @@
-./configure --disable-asm --disable-gpl
+./configure --disable-asm --disable-gpl --bit-depth=8 --chroma-format=422
 
