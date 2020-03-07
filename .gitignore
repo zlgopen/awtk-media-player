@@ -136,11 +136,6 @@ bin
 3rd/ffmpeg/ffmpeg/ffbuild/config.log
 3rd/ffmpeg/ffmpeg/ffbuild/config.mak
 3rd/ffmpeg/ffmpeg/ffbuild/config.sh
-3rd/ffmpeg/ffmpeg/libavcodec/codec_list.c
-3rd/ffmpeg/ffmpeg/libavdevice/indev_list.c
-3rd/ffmpeg/ffmpeg/libavdevice/outdev_list.c
-3rd/ffmpeg/ffmpeg/libavfilter/filter_list.c
-3rd/ffmpeg/ffmpeg/libavformat/protocol_list.c
 3rd/ffmpeg/ffmpeg/config.asm
 3rd/ffmpeg/ffmpeg/config.h
 3rd/ffmpeg/ffmpeg/doc/config.texi
@@ -151,18 +146,8 @@ bin
 3rd/ffmpeg/ffmpeg/ffbuild/config.log
 3rd/ffmpeg/ffmpeg/ffbuild/config.mak
 3rd/ffmpeg/ffmpeg/ffbuild/config.sh
-3rd/ffmpeg/ffmpeg/libavcodec/codec_list.c
-3rd/ffmpeg/ffmpeg/libavdevice/indev_list.c
-3rd/ffmpeg/ffmpeg/libavdevice/outdev_list.c
-3rd/ffmpeg/ffmpeg/libavfilter/filter_list.c
-3rd/ffmpeg/ffmpeg/libavutil/avconfig.h
 3rd/ffmpeg/ffmpeg/.version
 3rd/ffmpeg/ffmpeg/doc/examples/pc-uninstalled/libswresample-uninstalled.pc
 3rd/ffmpeg/ffmpeg/doc/examples/pc-uninstalled/libswscale-uninstalled.pc
 3rd/ffmpeg/ffmpeg/ffbuild/.config
-3rd/ffmpeg/ffmpeg/libavcodec/bsf_list.c
-3rd/ffmpeg/ffmpeg/libavcodec/parser_list.c
-3rd/ffmpeg/ffmpeg/libavformat/demuxer_list.c
-3rd/ffmpeg/ffmpeg/libavformat/muxer_list.c
-3rd/ffmpeg/ffmpeg/libavutil/ffversion.h
 
