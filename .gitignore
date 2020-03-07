@@ -125,7 +125,6 @@ bin
 3rd/ffmpeg/ffmpeg/libswscale/libswscale.pc
 3rd/ffmpeg/ffmpeg/libswscale/libswscale.version
 3rd/ffmpeg/ffmpeg/config.asm
-3rd/ffmpeg/ffmpeg/config.h
 3rd/ffmpeg/ffmpeg/doc/config.texi
 3rd/ffmpeg/ffmpeg/doc/examples/pc-uninstalled/libavcodec-uninstalled.pc
 3rd/ffmpeg/ffmpeg/doc/examples/pc-uninstalled/libavdevice-uninstalled.pc
@@ -137,7 +136,6 @@ bin
 3rd/ffmpeg/ffmpeg/ffbuild/config.mak
 3rd/ffmpeg/ffmpeg/ffbuild/config.sh
 3rd/ffmpeg/ffmpeg/config.asm
-3rd/ffmpeg/ffmpeg/config.h
 3rd/ffmpeg/ffmpeg/doc/config.texi
 3rd/ffmpeg/ffmpeg/doc/examples/pc-uninstalled/libavdevice-uninstalled.pc
 3rd/ffmpeg/ffmpeg/doc/examples/pc-uninstalled/libavfilter-uninstalled.pc
