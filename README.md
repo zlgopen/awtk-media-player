@@ -13,11 +13,15 @@ cd awtk; scons; cd -
 
 2.获取awtk-media-player并编译
 
+
 ```
 git clone https://github.com/zlgopen/awtk-media-player.git
-cd awtk-c-demos; scons
+cd awtk-media-player
+cd 3rd/ffmpeg && ./build.sh && cd -
+scons
 ```
 
+> 目前仅仅支持macos 和 linux
 
 ### 2.运行Demo：
 
