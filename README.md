@@ -48,8 +48,9 @@ scons
 ### 4.TODO
 
 * 优化完善。
+*  移植 ffmpeg 到 Windows(主要是用 scons 脚本写编译脚本)
 * 基于 sndio 实现 audio device 用于嵌入式 linux 平台。
-* 移植 ffmpeg 到 Windows(主要是用 scons 脚本写编译脚本)
+*  基于 aworks 实现 audio device。
 * 移植 ffmpeg 到 aworks
 * 完整的媒体播放器应用程序。
 * 完整的音乐播放器应用程序。
