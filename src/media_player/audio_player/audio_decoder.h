@@ -41,7 +41,7 @@ typedef struct _audio_decoder_vtable_t {
 
 /**
  * @class audio_decoder_t
- * 媒体播放器接口。
+ * 音频格式解码器接口。
  */
 struct _audio_decoder_t {
   const audio_decoder_vtable_t* vt;

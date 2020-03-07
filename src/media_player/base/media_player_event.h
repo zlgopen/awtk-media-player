@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @enum media_player_event_t
- * @prefix MEDIA_PLAYER_
+ * @prefix EVT_MEDIA_PLAYER_
  * 媒体播放器的事件。
  */
 typedef enum _media_player_event_t {

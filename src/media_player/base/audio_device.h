@@ -43,17 +43,8 @@ typedef enum _audio_format_t {
    * @const AUDIO_FORMAT_S16SYS
    * 16位有符号采样(系统原生字节顺序)。
    */
-  AUDIO_FORMAT_S16SYS,
-  /**
-   * @const AUDIO_FORMAT_S16LSB
-   * 32位有符号采样(小端字节顺序)。
-   */
-  AUDIO_FORMAT_S16LSB,
-  /**
-   * @const AUDIO_FORMAT_S16MSB
-   * 16位无符号采样(大端字节顺序)。
-   */
-  AUDIO_FORMAT_S16MSB
+  AUDIO_FORMAT_S16SYS
+
 } audio_format_t;
 
 /**
@@ -140,7 +131,7 @@ typedef struct _audio_device_vtable_t {
 
 /**
  * @class audio_device_t
- * 媒体播放器接口。
+ * 音频设备接口。
  */
 struct _audio_device_t {
   const audio_device_vtable_t* vt;
@@ -154,7 +145,6 @@ struct _audio_device_t {
 
   /*private*/
   audio_spec_t spec;
-  uint16_t buff[512];
 };
 
 /**

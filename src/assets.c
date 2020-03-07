@@ -101,14 +101,14 @@
 #include "assets/default/inc/images/arrow_down_n.data"
 #include "assets/default/inc/images/arrow_left_n.data"
 #include "assets/default/inc/images/edit_clear_p.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
-#endif /*WITH_VGCANVAS*/
+#endif/*WITH_VGCANVAS*/
 #if defined(WITH_TRUETYPE_FONT)
 #include "assets/default/inc/fonts/default.res"
-#else  /*WITH_TRUETYPE_FONT*/
-#endif /*WITH_TRUETYPE_FONT*/
-#endif /*WITH_FS_RES*/
+#else/*WITH_TRUETYPE_FONT*/
+#endif/*WITH_TRUETYPE_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
@@ -178,7 +178,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, style_default);
   assets_manager_add(am, style_window1);
 #ifdef WITH_VGCANVAS
-#endif /*WITH_VGCANVAS*/
+#endif/*WITH_VGCANVAS*/
 #endif
 
   tk_init_assets();

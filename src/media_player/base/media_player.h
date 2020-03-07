@@ -121,6 +121,8 @@ struct _media_player_t {
  * @method media_player_set_prop
  * 设置指定属性的值。
  *
+ * > 具体实现可能提供了一些特定的属性，以通过本函数进行设置。
+ * 
  * @param {media_player_t*} player media player对象。
  * @param {const char*} name 属性的名称。
  * @param {value_t*} value 属性的值。
@@ -133,6 +135,8 @@ ret_t media_player_set_prop(media_player_t* player, const char* name, const valu
  * @method media_player_get_prop
  * 获取指定属性的值。
  *
+ * > 具体实现可能提供了一些特定的属性，以通过本函数进行获取。
+ * 
  * @annotation ["scriptable"]
  * @param {media_player_t*} player media player对象。
  * @param {const char*} name 属性的名称。
@@ -147,7 +151,7 @@ ret_t media_player_get_prop(media_player_t* player, const char* name, value_t* v
  * 加载指定的文件。
  *
  * @param {media_player_t*} media_player media_player对象。
- * @param {const char*} url 文件名。
+ * @param {const char*} url URL(支持的协议与具体实现有关，缺省为本地文件)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -155,7 +159,7 @@ ret_t media_player_load(media_player_t* player, const char* url);
 
 /**
  * @method media_player_start
- * 开始播放刚加载或暂停的文件。
+ * 开始播放刚加载或暂停的曲目。
  *
  * @param {media_player_t*} media_player media_player对象。
  *
@@ -341,7 +345,7 @@ media_player_t* media_player_create(void);
 
 /**
  * @method media_player
- * 获取全局的media_player对象。
+ * 获取全局缺省的media_player对象。
  *
  * @return {media_player_t*} 返回media_player对象。
  */
@@ -349,7 +353,7 @@ media_player_t* media_player(void);
 
 /**
  * @method media_player_set
- * 设置全局的media_player对象。
+ * 设置全局缺省的media_player对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -97,9 +97,6 @@ static uint32_t sdl_audio_format_from(uint32_t format) {
     case AUDIO_FORMAT_S16SYS: {
       return AUDIO_S16SYS;
     }
-    case AUDIO_FORMAT_S16MSB: {
-      return AUDIO_S16MSB;
-    }
   }
 
   return AUDIO_S16SYS;
@@ -109,9 +106,6 @@ static uint32_t sdl_audio_format_to(uint32_t format) {
   switch (format) {
     case AUDIO_S16SYS: {
       return AUDIO_FORMAT_S16SYS;
-    }
-    case AUDIO_S16MSB: {
-      return AUDIO_FORMAT_S16MSB;
     }
   }
 
