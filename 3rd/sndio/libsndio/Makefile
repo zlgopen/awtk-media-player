@@ -5,17 +5,16 @@ INCLUDE = -I../bsd-compat
 LIB =
 
 # extra defines (-D options)
-DEFS = -DDEBUG -DHAVE_ARC4RANDOM -DHAVE_ISSETUGID \
-		-DHAVE_STRLCAT -DHAVE_STRLCPY
+DEFS = -DDEBUG -D_GNU_SOURCE -DHAVE_SOCK_CLOEXEC -DHAVE_CLOCK_GETTIME -DUSE_ALSA
 
 # extra libraries (-l options)
-LDADD = 
+LDADD = -lrt -lasound
 
 # extra compiler flags to produce objects for shared library
 SO_CFLAGS = -fPIC
 
 # extra compiler flags to produce a shared library with the given name
-SO_LDFLAGS = -shared 
+SO_LDFLAGS = -shared -Wl,-soname=libsndio.so.${MAJ}.${MIN}
 
 # variables defined on configure script command line (if any)
 
@@ -45,8 +44,8 @@ MAN7 = sndio.7
 #
 MAJ = 7
 MIN = 0
-SO = libsndio.${MAJ}.${MIN}.dylib
-SO_LINK = libsndio.dylib
+SO = libsndio.so.${MAJ}.${MIN}
+SO_LINK = libsndio.so
 
 all:		${SO} ${SO_LINK}
 

@@ -354,7 +354,7 @@ AVUTIL_SOURCES=[
 "ffmpeg/libavutil/twofish.c",
 "ffmpeg/libavutil/imgutils.c",
 "ffmpeg/libavutil/lls.c",
-"ffmpeg/libavutil/hwcontext_videotoolbox.c",
+#"ffmpeg/libavutil/hwcontext_videotoolbox.c",
 "ffmpeg/libavutil/parseutils.c",
 "ffmpeg/libavutil/mem.c",
 "ffmpeg/libavutil/hdr_dynamic_metadata.c",
@@ -699,7 +699,7 @@ AVFORMAT_SOURCES=[
 "ffmpeg/libavformat/rtpdec_g726.c",
 "ffmpeg/libavformat/ads.c",
 "ffmpeg/libavformat/v210.c",
-"ffmpeg/libavformat/tls_securetransport.c",
+#"ffmpeg/libavformat/tls_securetransport.c",
 "ffmpeg/libavformat/g729dec.c",
 "ffmpeg/libavformat/rawdec.c",
 "ffmpeg/libavformat/rtpenc_amr.c",
@@ -1076,7 +1076,7 @@ AVCODEC_SOURCES=[
 "ffmpeg/libavcodec/huffyuvenc.c",
 "ffmpeg/libavcodec/aacdec.c",
 "ffmpeg/libavcodec/h261dec.c",
-"ffmpeg/libavcodec/videotoolbox.c",
+#"ffmpeg/libavcodec/videotoolbox.c",
 "ffmpeg/libavcodec/elbg.c",
 "ffmpeg/libavcodec/fraps.c",
 "ffmpeg/libavcodec/vc2enc_dwt.c",
@@ -1249,7 +1249,7 @@ AVCODEC_SOURCES=[
 "ffmpeg/libavcodec/h264_cavlc.c",
 "ffmpeg/libavcodec/mlp.c",
 "ffmpeg/libavcodec/sunrast.c",
-"ffmpeg/libavcodec/audiotoolboxenc.c",
+#"ffmpeg/libavcodec/audiotoolboxenc.c",
 "ffmpeg/libavcodec/vp8dsp.c",
 "ffmpeg/libavcodec/lzw.c",
 "ffmpeg/libavcodec/faanidct.c",
@@ -1582,7 +1582,7 @@ AVCODEC_SOURCES=[
 "ffmpeg/libavcodec/tiff_common.c",
 "ffmpeg/libavcodec/yuv4enc.c",
 "ffmpeg/libavcodec/h264dec.c",
-"ffmpeg/libavcodec/videotoolboxenc.c",
+#"ffmpeg/libavcodec/videotoolboxenc.c",
 "ffmpeg/libavcodec/h261.c",
 "ffmpeg/libavcodec/frwu.c",
 "ffmpeg/libavcodec/dirac_vlc.c",
@@ -1635,7 +1635,7 @@ AVCODEC_SOURCES=[
 "ffmpeg/libavcodec/vorbisdec.c",
 "ffmpeg/libavcodec/jpeglsenc.c",
 "ffmpeg/libavcodec/filter_units_bsf.c",
-"ffmpeg/libavcodec/audiotoolboxdec.c",
+#"ffmpeg/libavcodec/audiotoolboxdec.c",
 "ffmpeg/libavcodec/decode.c",
 "ffmpeg/libavcodec/dca_core_bsf.c",
 "ffmpeg/libavcodec/dv_profile.c",
@@ -1734,7 +1734,7 @@ X264_SOURCES =[
 ]
 
 env=DefaultEnvironment().Clone()
-X264_FLAGS=" -std=gnu99 -D_GNU_SOURCE -mstack-alignment=64 -D_GNU_SOURCE -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8 "
+X264_FLAGS=" -std=gnu99 -D_GNU_SOURCE -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8 "
 env["CCFLAGS"] = env["CCFLAGS"] + X264_FLAGS 
 
 env.Library(os.path.join(LIB_DIR, 'x264'), X264_SOURCES)

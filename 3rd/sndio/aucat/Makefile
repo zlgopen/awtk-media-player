@@ -5,11 +5,10 @@ INCLUDE = -I../libsndio -I../bsd-compat
 LIB = -L../libsndio
 
 # extra defines (-D options)
-DEFS = -DDEBUG -DSNDIO_USER=\"_sndio\" -DADATA_BITS=16 -DHAVE_ARC4RANDOM -DHAVE_ISSETUGID \
-		-DHAVE_STRLCAT -DHAVE_STRLCPY
+DEFS = -DDEBUG -DSNDIO_USER=\"sndiod\" -DADATA_BITS=16 -D_GNU_SOURCE -DHAVE_SOCK_CLOEXEC -DHAVE_CLOCK_GETTIME -DUSE_ALSA
 
 # extra libraries (-l options)
-LDADD = -lsndio 
+LDADD = -lsndio -lrt -lasound
 
 # variables defined on configure script command line (if any)
 

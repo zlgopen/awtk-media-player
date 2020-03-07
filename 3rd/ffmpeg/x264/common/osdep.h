@@ -35,7 +35,7 @@
 #include <inttypes.h>
 #include <stdarg.h>
 
-#include "config.h"
+#include "ffmpeg/x264/config.h"
 
 #ifdef __INTEL_COMPILER
 #include <mathimf.h>
