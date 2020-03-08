@@ -314,6 +314,7 @@ FFMPEG_SOURCES = [
 "ffmpeg/libswresample/audioconvert.c",
 "ffmpeg/libswresample/swresample.c",
 ]
+env.Library(os.path.join(LIB_DIR, 'ffmpeg'), FFMPEG_SOURCES)
 
 env=DefaultEnvironment().Clone()
 X264_FLAGS=" -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8 "

@@ -5,43 +5,6 @@ import platform
 env=DefaultEnvironment().Clone()
 BIN_DIR=os.environ['BIN_DIR'];
 
-X264_ROOT=os.path.abspath(os.path.join('../', '3rd/ffmpeg/x264'))
-FFMPEG_ROOT=os.path.abspath(os.path.join('../', '3rd/ffmpeg/ffmpeg'))
-
-PLAYER_CPPPATH=[]
-PLAYER_LINKFLAGS=""
-PLAYER_LIBS = ["media_player_audio", "media_player_ffmpeg", "", "audio_device_sdl", "media_player_base"]
-
-OS_NAME = platform.system();
-
-FFMPEG_LIBS=[
- "avformat",
- "avcodec", 
- "avformat",
- "avdevice",
- "avresample", 
- "avfilter",
- "avutil", 
- "swscale",
- "swresample",
- "postproc",
- "x264"]
-
-if OS_NAME == 'Darwin':
-  PLAYER_LINKFLAGS=" -framework  VideoToolbox -framework CoreVideo -framework CoreMedia " 
-  PLAYER_LINKFLAGS = PLAYER_LINKFLAGS + " -framework AudioToolbox -framework AVFoundation"
-  PLAYER_LINKFLAGS = PLAYER_LINKFLAGS + " -framework VideoDecodeAcceleration -framework Security"
-  PLAYER_LINKFLAGS = PLAYER_LINKFLAGS + " -framework CoreFoundation"
-  PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS + ['iconv', 'pthread', 'lzma', 'bz2', 'z']
-elif OS_NAME == 'Linux':
-  PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS + ["xcb","xcb-shm","xcb-shape", 
-    "xcb-xfixes", "Xv", "asound", "z"]
-elif OS_NAME == 'Windows':
-  print("debug");
-
-env['LIBS'] = PLAYER_LIBS +  env['LIBS']
-env['LINKFLAGS'] = env['LINKFLAGS'] + PLAYER_LINKFLAGS
-
 env.Program(os.path.join(BIN_DIR, 'demo_media_player'), ['demo_media_player.c'])
 env.Program(os.path.join(BIN_DIR, 'demo_audio_player'), ['demo_audio_player.c'])
 
