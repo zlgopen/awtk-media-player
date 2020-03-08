@@ -20,16 +20,7 @@ PLAYER_LIBS = ["media_player_ffmpeg", "media_player_audio", "audio_device_sdl", 
 
 OS_NAME = platform.system();
 
-FFMPEG_LIBS=[
- "avformat",
- "avcodec", 
- "avformat",
- "avdevice",
- "avfilter",
- "avutil", 
- "avswscale",
- "avswresample",
- "x264"]
+FFMPEG_LIBS=["ffmpeg", "x264"]
 
 if OS_NAME == 'Darwin':
   PLAYER_LINKFLAGS=" -framework  VideoToolbox -framework CoreVideo -framework CoreMedia " 

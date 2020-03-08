@@ -18,5 +18,5 @@
   --enable-gpl \
   --enable-libx264 \
   --disable-postproc \
-  --enable-filter=aresample 
+  --enable-filter=aresample --enable-rdft 
 

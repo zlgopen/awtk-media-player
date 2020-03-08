@@ -7,7 +7,7 @@ env=DefaultEnvironment().Clone()
 LIB_DIR=os.environ['LIB_DIR'];
 env["CCFLAGS"] = env["CCFLAGS"] + FFMPEG_FLAGS 
 
-AVFILTER_SOURCES=[
+FFMPEG_SOURCES = [
 "ffmpeg/libavfilter/fifo.c",
 "ffmpeg/libavfilter/framequeue.c",
 "ffmpeg/libavfilter/formats.c",
@@ -25,10 +25,6 @@ AVFILTER_SOURCES=[
 "ffmpeg/libavfilter/buffersink.c",
 "ffmpeg/libavfilter/avfilter.c",
 "ffmpeg/libavfilter/avfiltergraph.c",
-]
-env.Library(os.path.join(LIB_DIR, 'avfilter'), AVFILTER_SOURCES)
-
-AVUTIL_SOURCES=[
 "ffmpeg/libavutil/reverse.c",
 "ffmpeg/libavutil/time.c",
 "ffmpeg/libavutil/hwcontext.c",
@@ -100,17 +96,9 @@ AVUTIL_SOURCES=[
 "ffmpeg/libavutil/downmix_info.c",
 "ffmpeg/libavutil/hash.c",
 "ffmpeg/libavutil/avstring.c",
-]
-env.Library(os.path.join(LIB_DIR, 'avutil'), AVUTIL_SOURCES)
-
-AVDEVICE_SOURCES=[
 "ffmpeg/libavdevice/utils.c",
 "ffmpeg/libavdevice/avdevice.c",
 "ffmpeg/libavdevice/alldevices.c",
-]
-env.Library(os.path.join(LIB_DIR, 'avdevice'), AVDEVICE_SOURCES)
-
-AVFORMAT_SOURCES=[
 "ffmpeg/libavformat/utils.c",
 "ffmpeg/libavformat/dump.c",
 "ffmpeg/libavformat/os_support.c",
@@ -131,6 +119,7 @@ AVFORMAT_SOURCES=[
 "ffmpeg/libavformat/riff.c",
 "ffmpeg/libavformat/metadata.c",
 "ffmpeg/libavformat/options.c",
+"ffmpeg/libavformat/h263dec.c",
 "ffmpeg/libavformat/mp3enc.c",
 "ffmpeg/libavformat/vorbiscomment.c",
 "ffmpeg/libavformat/url.c",
@@ -159,11 +148,6 @@ AVFORMAT_SOURCES=[
 "ffmpeg/libavformat/cutils.c",
 "ffmpeg/libavformat/av1.c",
 "ffmpeg/libavformat/rmsipr.c",
-]
-env.Library(os.path.join(LIB_DIR, 'avformat'), AVFORMAT_SOURCES)
-
-
-AVSWSCALE_SOURCES=[
 "ffmpeg/libswscale/utils.c",
 "ffmpeg/libswscale/input.c",
 "ffmpeg/libswscale/hscale_fast_bilinear.c",
@@ -178,11 +162,8 @@ AVSWSCALE_SOURCES=[
 "ffmpeg/libswscale/swscale_unscaled.c",
 "ffmpeg/libswscale/alphablend.c",
 "ffmpeg/libswscale/yuv2rgb.c",
-]
-env.Library(os.path.join(LIB_DIR, 'avswscale'), AVSWSCALE_SOURCES)
-
-AVCODEC_SOURCES=[
 "ffmpeg/libavcodec/adts_parser.c",
+"ffmpeg/libavcodec/rl.c",
 "ffmpeg/libavcodec/opus_rc.c",
 "ffmpeg/libavcodec/opus.c",
 "ffmpeg/libavcodec/mjpegenc_huffman.c",
@@ -195,14 +176,20 @@ AVCODEC_SOURCES=[
 "ffmpeg/libavcodec/idctdsp.c",
 "ffmpeg/libavcodec/h264_slice.c",
 "ffmpeg/libavcodec/profiles.c",
+"ffmpeg/libavcodec/mpegvideodata.c",
 "ffmpeg/libavcodec/h264chroma.c",
 "ffmpeg/libavcodec/pixblockdsp.c",
 "ffmpeg/libavcodec/mdct_fixed_32.c",
+"ffmpeg/libavcodec/mpeg4video.c",
 "ffmpeg/libavcodec/qsv_api.c",
 "ffmpeg/libavcodec/h264_cabac.c",
+"ffmpeg/libavcodec/hpeldsp.c",
+"ffmpeg/libavcodec/h263_parser.c",
 "ffmpeg/libavcodec/faandct.c",
+"ffmpeg/libavcodec/flvdec.c",
 "ffmpeg/libavcodec/bitstream_filter.c",
 "ffmpeg/libavcodec/jfdctfst.c",
+"ffmpeg/libavcodec/h263dsp.c",
 "ffmpeg/libavcodec/fft_fixed_32.c",
 "ffmpeg/libavcodec/opustab.c",
 "ffmpeg/libavcodec/mpeg12framerate.c",
@@ -227,18 +214,23 @@ AVCODEC_SOURCES=[
 "ffmpeg/libavcodec/h264dsp.c",
 "ffmpeg/libavcodec/error_resilience.c",
 "ffmpeg/libavcodec/simple_idct.c",
+"ffmpeg/libavcodec/blockdsp.c",
 "ffmpeg/libavcodec/mpegaudiodecheader.c",
+"ffmpeg/libavcodec/h263.c",
 "ffmpeg/libavcodec/cabac.c",
 "ffmpeg/libavcodec/adts_header.c",
 "ffmpeg/libavcodec/xiph.c",
+"ffmpeg/libavcodec/mpegutils.c",
 "ffmpeg/libavcodec/sbrdsp.c",
 "ffmpeg/libavcodec/d3d11va.c",
 "ffmpeg/libavcodec/opusdsp.c",
 "ffmpeg/libavcodec/me_cmp.c",
+"ffmpeg/libavcodec/mpegvideo_motion.c",
 "ffmpeg/libavcodec/options.c",
 "ffmpeg/libavcodec/h264_cavlc.c",
 "ffmpeg/libavcodec/faanidct.c",
 "ffmpeg/libavcodec/aacdec_fixed.c",
+"ffmpeg/libavcodec/h263dec.c",
 "ffmpeg/libavcodec/avfft.c",
 "ffmpeg/libavcodec/h264_picture.c",
 "ffmpeg/libavcodec/aacps_fixed.c",
@@ -250,6 +242,7 @@ AVCODEC_SOURCES=[
 "ffmpeg/libavcodec/h264idct.c",
 "ffmpeg/libavcodec/aacps_float.c",
 "ffmpeg/libavcodec/vorbis.c",
+"ffmpeg/libavcodec/ituh263dec.c",
 "ffmpeg/libavcodec/ac3dsp.c",
 "ffmpeg/libavcodec/golomb.c",
 "ffmpeg/libavcodec/aac_ac3_parser.c",
@@ -269,6 +262,7 @@ AVCODEC_SOURCES=[
 "ffmpeg/libavcodec/cbrt_data_fixed.c",
 "ffmpeg/libavcodec/h264_sei.c",
 "ffmpeg/libavcodec/pthread.c",
+"ffmpeg/libavcodec/rdft.c",
 "ffmpeg/libavcodec/pthread_frame.c",
 "ffmpeg/libavcodec/avdct.c",
 "ffmpeg/libavcodec/ac3dec_fixed.c",
@@ -277,36 +271,40 @@ AVCODEC_SOURCES=[
 "ffmpeg/libavcodec/ac3.c",
 "ffmpeg/libavcodec/opusdec.c",
 "ffmpeg/libavcodec/startcode.c",
+"ffmpeg/libavcodec/qpeldsp.c",
 "ffmpeg/libavcodec/parsers.c",
+"ffmpeg/libavcodec/mpegvideo.c",
 "ffmpeg/libavcodec/fmtconvert.c",
 "ffmpeg/libavcodec/ac3_parser.c",
 "ffmpeg/libavcodec/ac3tab.c",
 "ffmpeg/libavcodec/mdct_float.c",
 "ffmpeg/libavcodec/cbrt_data.c",
+"ffmpeg/libavcodec/mpeg_er.c",
 "ffmpeg/libavcodec/kbdwin.c",
 "ffmpeg/libavcodec/aacsbr.c",
 "ffmpeg/libavcodec/bswapdsp.c",
 "ffmpeg/libavcodec/imgconvert.c",
 "ffmpeg/libavcodec/h264_direct.c",
+"ffmpeg/libavcodec/mpegvideodsp.c",
 "ffmpeg/libavcodec/mpeg4audio.c",
+"ffmpeg/libavcodec/h263data.c",
 "ffmpeg/libavcodec/vorbis_parser.c",
 "ffmpeg/libavcodec/avpicture.c",
+"ffmpeg/libavcodec/mpegpicture.c",
 "ffmpeg/libavcodec/h264_refs.c",
 "ffmpeg/libavcodec/h264dec.c",
+"ffmpeg/libavcodec/mpeg4videodec.c",
 "ffmpeg/libavcodec/h264pred.c",
 "ffmpeg/libavcodec/encode.c",
 "ffmpeg/libavcodec/sbrdsp_fixed.c",
 "ffmpeg/libavcodec/h2645_parse.c",
+"ffmpeg/libavcodec/intelh263dec.c",
 "ffmpeg/libavcodec/videodsp.c",
 "ffmpeg/libavcodec/vorbisdec.c",
 "ffmpeg/libavcodec/decode.c",
 "ffmpeg/libavcodec/dv_profile.c",
 "ffmpeg/libavcodec/jfdctint.c",
 "ffmpeg/libavcodec/mathtables.c",
-]
-env.Library(os.path.join(LIB_DIR, 'avcodec'), AVCODEC_SOURCES)
-
-AVSWRESAMPLE_SOURCES =[
 "ffmpeg/libswresample/resample.c",
 "ffmpeg/libswresample/dither.c",
 "ffmpeg/libswresample/swresample_frame.c",
@@ -317,8 +315,9 @@ AVSWRESAMPLE_SOURCES =[
 "ffmpeg/libswresample/swresample.c",
 ]
 
-env.Library(os.path.join(LIB_DIR, 'avswresample'), AVSWRESAMPLE_SOURCES)
-
+env=DefaultEnvironment().Clone()
+X264_FLAGS=" -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8 "
+env["CCFLAGS"] = env["CCFLAGS"] + X264_FLAGS 
 X264_SOURCES =[
 "x264/filters/video/internal.c",
 "x264/filters/video/fix_vfr_pts.c",
@@ -373,10 +372,6 @@ X264_SOURCES =[
 "x264/encoder/api.c",
 "x264/common/threadpool.c",
 ]
-
-env=DefaultEnvironment().Clone()
-X264_FLAGS=" -DHIGH_BIT_DEPTH=0 -DBIT_DEPTH=8 "
-env["CCFLAGS"] = env["CCFLAGS"] + X264_FLAGS 
 
 env.Library(os.path.join(LIB_DIR, 'x264'), X264_SOURCES)
 
