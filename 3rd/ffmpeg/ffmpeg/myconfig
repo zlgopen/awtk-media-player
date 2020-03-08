@@ -5,4 +5,18 @@
   --disable-libxcb --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxcb-shape \
   --disable-libxml2 --disable-libxvid --disable-coreimage --disable-alsa \
   --disable-videotoolbox --disable-autodetect --disable-doc \
-  --disable-outdevs --disable-indevs
+  --disable-outdevs --disable-indevs --disable-network \
+  --disable-everything \
+  --disable-network \
+  --disable-autodetect \
+  --enable-small \
+  --enable-decoder=aac*,ac3*,opus,vorbis,h264,h263 \
+  --enable-demuxer=mov,m4v,matroska,h264,h263 \
+  --enable-muxer=mp3,mp4,h264,h263 \
+  --enable-protocol=file \
+  --enable-parser=h264,h263 \
+  --enable-gpl \
+  --enable-libx264 \
+  --disable-postproc \
+  --enable-filter=aresample 
+
