@@ -315,6 +315,7 @@ FFMPEG_SOURCES = [
 "ffmpeg/libswresample/rematrix.c",
 "ffmpeg/libswresample/audioconvert.c",
 "ffmpeg/libswresample/swresample.c",
+"ffmpeg/win32_dummy.c",
 ]
 env.Library(os.path.join(LIB_DIR, 'ffmpeg'), FFMPEG_SOURCES)
 
