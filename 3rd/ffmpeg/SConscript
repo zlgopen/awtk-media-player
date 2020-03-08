@@ -164,8 +164,6 @@ FFMPEG_SOURCES = [
 "ffmpeg/libswscale/yuv2rgb.c",
 "ffmpeg/libavcodec/ac3tab.c",
 "ffmpeg/libavcodec/eac3_data.c",
-"ffmpeg/libavcodec/ac3enc.c",
-"ffmpeg/libavcodec/ac3dec.c",
 "ffmpeg/libavcodec/adts_parser.c",
 "ffmpeg/libavcodec/rl.c",
 "ffmpeg/libavcodec/opus_rc.c",

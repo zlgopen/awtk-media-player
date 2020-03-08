@@ -1,0 +1,158 @@
+scons: Reading SConscript files ...
+MACH=AMD64 ARCH=('64bit', 'WindowsPE') TARGET_ARCH=
+TK_ROOT: D:\work\awtk\awtk
+scons: done reading SConscript files.
+scons: Building targets ...
+link /MACHINE:X64 /DEBUG /OUT:bin\demo_audio_player.exe /LIBPATH:lib /LIBPATH:D:\work\awtk\awtk\lib assets.lib media_player_widgets.lib media_player_ffmpeg.lib media_player_audio.lib audio_device_sdl.lib media_player_base.lib lrc.lib ffmpeg.lib x264.lib awtk.lib extwidgets.lib widgets.lib base.lib gpinyin.lib miniz.lib tkc.lib linebreak.lib nanovg.lib SDL2.lib glad.lib gdi32.lib user32.lib winmm.lib imm32.lib version.lib shell32.lib ole32.lib Oleaut32.lib Advapi32.lib DelayImp.lib psapi.lib demos\demo_audio_player.obj
+Microsoft (R) Incremental Linker Version 14.16.27035.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+LINK : 没有找到 bin\demo_audio_player.exe 或上一个增量链接没有生成它；正在执行完全链接
+link /MACHINE:X64 /DEBUG /OUT:bin\demo_media_player.exe /LIBPATH:lib /LIBPATH:D:\work\awtk\awtk\lib assets.lib media_player_widgets.lib media_player_ffmpeg.lib media_player_audio.lib audio_device_sdl.lib media_player_base.lib lrc.lib ffmpeg.lib x264.lib awtk.lib extwidgets.lib widgets.lib base.lib gpinyin.lib miniz.lib tkc.lib linebreak.lib nanovg.lib SDL2.lib glad.lib gdi32.lib user32.lib winmm.lib imm32.lib version.lib shell32.lib ole32.lib Oleaut32.lib Advapi32.lib DelayImp.lib psapi.lib demos\demo_media_player.obj
+Microsoft (R) Incremental Linker Version 14.16.27035.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+  正在创建库 bin\demo_audio_player.lib 和对象 bin\demo_audio_player.exp
+  正在创建库 bin\demo_media_player.lib 和对象 bin\demo_media_player.exp
+ffmpeg.lib(mem.obj) : error LNK2019: 无法解析的外部符号 posix_memalign，该符号在函数 av_malloc 中被引用
+ffmpeg.lib(dict.obj) : error LNK2019: 无法解析的外部符号 gmtime_r，该符号在函数 avpriv_dict_set_timestamp 中被引用
+ffmpeg.lib(utils.obj) : error LNK2019: 无法解析的外部符号 ff_frame_thread_encoder_init，该符号在函数 avcodec_open2 中被引用
+ffmpeg.lib(utils.obj) : error LNK2019: 无法解析的外部符号 ff_frame_thread_encoder_free，该符号在函数 avcodec_close 中被引用
+ffmpeg.lib(utils.obj) : error LNK2019: 无法解析的外部符号 ff_yuv2rgb_init_tables_ppc，该符号在函数 sws_setColorspaceDetails 中被引用
+ffmpeg.lib(swscale.obj) : error LNK2019: 无法解析的外部符号 ff_sws_init_swscale_ppc，该符号在函数 ff_getSwsFunc 中被引用
+ffmpeg.lib(swscale.obj) : error LNK2019: 无法解析的外部符号 ff_sws_init_swscale_x86，该符号在函数 ff_getSwsFunc 中被引用
+ffmpeg.lib(swscale.obj) : error LNK2019: 无法解析的外部符号 ff_sws_init_swscale_aarch64，该符号在函数 ff_getSwsFunc 中被引用
+ffmpeg.lib(swscale.obj) : error LNK2019: 无法解析的外部符号 ff_sws_init_swscale_arm，该符号在函数 ff_getSwsFunc 中被引用
+ffmpeg.lib(error.obj) : error LNK2019: 无法解析的外部符号 strerror_r，该符号在函数 av_strerror 中被引用
+ffmpeg.lib(h263dec.obj) : error LNK2019: 无法解析的外部符号 ff_mpeg4_find_frame_end，该符号在函数 ff_update_block_index 中被引用
+ffmpeg.lib(h263dec.obj) : error LNK2019: 无法解析的外部符号 ff_msmpeg4_decode_picture_header，该符号在函数 ff_update_block_index 中被引用
+ffmpeg.lib(h263dec.obj) : error LNK2019: 无法解析的外部符号 ff_wmv2_decode_picture_header，该符号在函数 ff_update_block_index 中被引用
+ffmpeg.lib(h263dec.obj) : error LNK2019: 无法解析的外部符号 ff_wmv2_decode_secondary_picture_header，该符号在函数 ff_update_block_index 中被引用
+ffmpeg.lib(aacdec.obj) : error LNK2019: 无法解析的外部符号 ff_aacdec_init_mips，该符号在函数 aacdec_init 中被引用
+ffmpeg.lib(cpu.obj) : error LNK2019: 无法解析的外部符号 ff_get_cpu_flags_aarch64，该符号在函数 get_cpu_flags 中被引用
+ffmpeg.lib(cpu.obj) : error LNK2019: 无法解析的外部符号 ff_get_cpu_flags_arm，该符号在函数 get_cpu_flags 中被引用
+ffmpeg.lib(cpu.obj) : error LNK2019: 无法解析的外部符号 ff_get_cpu_flags_ppc，该符号在函数 get_cpu_flags 中被引用
+ffmpeg.lib(cpu.obj) : error LNK2019: 无法解析的外部符号 ff_get_cpu_flags_x86，该符号在函数 get_cpu_flags 中被引用
+ffmpeg.lib(cpu.obj) : error LNK2019: 无法解析的外部符号 ff_get_cpu_max_align_aarch64，该符号在函数 av_cpu_max_align 中被引用
+ffmpeg.lib(cpu.obj) : error LNK2019: 无法解析的外部符号 ff_get_cpu_max_align_arm，该符号在函数 av_cpu_max_align 中被引用
+ffmpeg.lib(cpu.obj) : error LNK2019: 无法解析的外部符号 ff_get_cpu_max_align_ppc，该符号在函数 av_cpu_max_align 中被引用
+ffmpeg.lib(cpu.obj) : error LNK2019: 无法解析的外部符号 ff_get_cpu_max_align_x86，该符号在函数 av_cpu_max_align 中被引用
+ffmpeg.lib(rgb2rgb.obj) : error LNK2019: 无法解析的外部符号 rgb2rgb_init_x86，该符号在函数 ff_sws_rgb2rgb_init 中被引用
+ffmpeg.lib(yuv2rgb.obj) : error LNK2019: 无法解析的外部符号 ff_yuv2rgb_init_x86，该符号在函数 ff_yuv2rgb_get_func_ptr 中被引用
+ffmpeg.lib(yuv2rgb.obj) : error LNK2019: 无法解析的外部符号 ff_yuv2rgb_init_ppc，该符号在函数 ff_yuv2rgb_get_func_ptr 中被引用
+ffmpeg.lib(swscale_unscaled.obj) : error LNK2019: 无法解析的外部符号 ff_get_unscaled_swscale_ppc，该符号在函数 ff_get_unscaled_swscale 中被引用
+ffmpeg.lib(swscale_unscaled.obj) : error LNK2019: 无法解析的外部符号 ff_get_unscaled_swscale_arm，该符号在函数 ff_get_unscaled_swscale 中被引用
+ffmpeg.lib(swscale_unscaled.obj) : error LNK2019: 无法解析的外部符号 ff_get_unscaled_swscale_aarch64，该符号在函数 ff_get_unscaled_swscale 中被引用
+ffmpeg.lib(fft_float.obj) : error LNK2019: 无法解析的外部符号 ff_fft_init_aarch64，该符号在函数 ff_fft_init 中被引用
+ffmpeg.lib(fft_float.obj) : error LNK2019: 无法解析的外部符号 ff_fft_init_x86，该符号在函数 ff_fft_init 中被引用
+ffmpeg.lib(fft_float.obj) : error LNK2019: 无法解析的外部符号 ff_fft_init_arm，该符号在函数 ff_fft_init 中被引用
+ffmpeg.lib(fft_float.obj) : error LNK2019: 无法解析的外部符号 ff_fft_init_mips，该符号在函数 ff_fft_init 中被引用
+ffmpeg.lib(fft_float.obj) : error LNK2019: 无法解析的外部符号 ff_fft_init_ppc，该符号在函数 ff_fft_init 中被引用
+ffmpeg.lib(rdft.obj) : error LNK2019: 无法解析的外部符号 ff_rdft_init_arm，该符号在函数 ff_rdft_init 中被引用
+ffmpeg.lib(rematrix.obj) : error LNK2019: 无法解析的外部符号 swri_rematrix_init_x86，该符号在函数 swri_rematrix_init 中被引用
+ffmpeg.lib(audioconvert.obj) : error LNK2019: 无法解析的外部符号 swri_audio_convert_init_aarch64，该符号在函数 swri_audio_convert_alloc 中被引用
+ffmpeg.lib(audioconvert.obj) : error LNK2019: 无法解析的外部符号 swri_audio_convert_init_arm，该符号在函数 swri_audio_convert_alloc 中被引用
+ffmpeg.lib(audioconvert.obj) : error LNK2019: 无法解析的外部符号 swri_audio_convert_init_x86，该符号在函数 swri_audio_convert_alloc 中被引用
+ffmpeg.lib(mpegvideo.obj) : error LNK2019: 无法解析的外部符号 ff_mpv_common_init_arm，该符号在函数 dct_init 中被引用
+ffmpeg.lib(mpegvideo.obj) : error LNK2019: 无法解析的外部符号 ff_mpv_common_init_axp，该符号在函数 dct_init 中被引用
+ffmpeg.lib(mpegvideo.obj) : error LNK2019: 无法解析的外部符号 ff_mpv_common_init_neon，该符号在函数 dct_init 中被引用
+ffmpeg.lib(mpegvideo.obj) : error LNK2019: 无法解析的外部符号 ff_mpv_common_init_ppc，该符号在函数 dct_init 中被引用
+ffmpeg.lib(mpegvideo.obj) : error LNK2019: 无法解析的外部符号 ff_mpv_common_init_x86，该符号在函数 dct_init 中被引用
+ffmpeg.lib(mpegvideo.obj) : error LNK2019: 无法解析的外部符号 ff_mpv_common_init_mips，该符号在函数 dct_init 中被引用
+ffmpeg.lib(mpegvideo.obj) : error LNK2019: 无法解析的外部符号 ff_wmv2_add_mb，该符号在函数 mpv_reconstruct_mb_internal 中被引用
+ffmpeg.lib(h263dsp.obj) : error LNK2019: 无法解析的外部符号 ff_h263dsp_init_x86，该符号在函数 ff_h263dsp_init 中被引用
+ffmpeg.lib(h263dsp.obj) : error LNK2019: 无法解析的外部符号 ff_h263dsp_init_mips，该符号在函数 ff_h263dsp_init 中被引用
+ffmpeg.lib(qpeldsp.obj) : error LNK2019: 无法解析的外部符号 ff_qpeldsp_init_x86，该符号在函数 ff_qpeldsp_init 中被引用
+ffmpeg.lib(qpeldsp.obj) : error LNK2019: 无法解析的外部符号 ff_qpeldsp_init_mips，该符号在函数 ff_qpeldsp_init 中被引用
+ffmpeg.lib(ituh263dec.obj) : error LNK2019: 无法解析的外部符号 ff_rv_decode_dc，该符号在函数 h263_decode_block 中被引用
+ffmpeg.lib(mpeg4videodec.obj) : error LNK2019: 无法解析的外部符号 ff_xvid_idct_init，该符号在函数 decode_studiovisualobject 中被引用
+ffmpeg.lib(idctdsp.obj) : error LNK2001: 无法解析的外部符号 ff_xvid_idct_init
+ffmpeg.lib(float_dsp.obj) : error LNK2019: 无法解析的外部符号 ff_float_dsp_init_aarch64，该符号在函数 avpriv_float_dsp_alloc 中被引用
+ffmpeg.lib(float_dsp.obj) : error LNK2019: 无法解析的外部符号 ff_float_dsp_init_arm，该符号在函数 avpriv_float_dsp_alloc 中被引用
+ffmpeg.lib(float_dsp.obj) : error LNK2019: 无法解析的外部符号 ff_float_dsp_init_ppc，该符号在函数 avpriv_float_dsp_alloc 中被引用
+ffmpeg.lib(float_dsp.obj) : error LNK2019: 无法解析的外部符号 ff_float_dsp_init_x86，该符号在函数 avpriv_float_dsp_alloc 中被引用
+ffmpeg.lib(float_dsp.obj) : error LNK2019: 无法解析的外部符号 ff_float_dsp_init_mips，该符号在函数 avpriv_float_dsp_alloc 中被引用
+ffmpeg.lib(mdct15.obj) : error LNK2019: 无法解析的外部符号 ff_mdct15_init_x86，该符号在函数 ff_mdct15_init 中被引用
+ffmpeg.lib(aacsbr.obj) : error LNK2019: 无法解析的外部符号 ff_aacsbr_func_ptr_init_mips，该符号在函数 aacsbr_func_ptr_init 中被引用
+ffmpeg.lib(fixed_dsp.obj) : error LNK2019: 无法解析的外部符号 ff_fixed_dsp_init_x86，该符号在函数 avpriv_alloc_fixed_dsp 中被引用
+ffmpeg.lib(ac3dsp.obj) : error LNK2019: 无法解析的外部符号 ff_ac3dsp_init_arm，该符号在函数 ff_ac3dsp_init 中被引用
+ffmpeg.lib(ac3dsp.obj) : error LNK2019: 无法解析的外部符号 ff_ac3dsp_init_x86，该符号在函数 ff_ac3dsp_init 中被引用
+ffmpeg.lib(ac3dsp.obj) : error LNK2019: 无法解析的外部符号 ff_ac3dsp_init_mips，该符号在函数 ff_ac3dsp_init 中被引用
+ffmpeg.lib(ac3dsp.obj) : error LNK2019: 无法解析的外部符号 ff_ac3dsp_set_downmix_x86，该符号在函数 ff_ac3dsp_downmix 中被引用
+ffmpeg.lib(bswapdsp.obj) : error LNK2019: 无法解析的外部符号 ff_bswapdsp_init_x86，该符号在函数 ff_bswapdsp_init 中被引用
+ffmpeg.lib(fmtconvert.obj) : error LNK2019: 无法解析的外部符号 ff_fmt_convert_init_aarch64，该符号在函数 ff_fmt_convert_init 中被引用
+ffmpeg.lib(fmtconvert.obj) : error LNK2019: 无法解析的外部符号 ff_fmt_convert_init_arm，该符号在函数 ff_fmt_convert_init 中被引用
+ffmpeg.lib(fmtconvert.obj) : error LNK2019: 无法解析的外部符号 ff_fmt_convert_init_ppc，该符号在函数 ff_fmt_convert_init 中被引用
+ffmpeg.lib(fmtconvert.obj) : error LNK2019: 无法解析的外部符号 ff_fmt_convert_init_x86，该符号在函数 ff_fmt_convert_init 中被引用
+ffmpeg.lib(fmtconvert.obj) : error LNK2019: 无法解析的外部符号 ff_fmt_convert_init_mips，该符号在函数 ff_fmt_convert_init 中被引用
+ffmpeg.lib(vorbisdsp.obj) : error LNK2019: 无法解析的外部符号 ff_vorbisdsp_init_aarch64，该符号在函数 ff_vorbisdsp_init 中被引用
+ffmpeg.lib(vorbisdsp.obj) : error LNK2019: 无法解析的外部符号 ff_vorbisdsp_init_x86，该符号在函数 ff_vorbisdsp_init 中被引用
+ffmpeg.lib(vorbisdsp.obj) : error LNK2019: 无法解析的外部符号 ff_vorbisdsp_init_arm，该符号在函数 ff_vorbisdsp_init 中被引用
+ffmpeg.lib(vorbisdsp.obj) : error LNK2019: 无法解析的外部符号 ff_vorbisdsp_init_ppc，该符号在函数 ff_vorbisdsp_init 中被引用
+ffmpeg.lib(resample_dsp.obj) : error LNK2019: 无法解析的外部符号 swri_resample_dsp_x86_init，该符号在函数 swri_resample_dsp_init 中被引用
+ffmpeg.lib(resample_dsp.obj) : error LNK2019: 无法解析的外部符号 swri_resample_dsp_arm_init，该符号在函数 swri_resample_dsp_init 中被引用
+ffmpeg.lib(resample_dsp.obj) : error LNK2019: 无法解析的外部符号 swri_resample_dsp_aarch64_init，该符号在函数 swri_resample_dsp_init 中被引用
+ffmpeg.lib(blockdsp.obj) : error LNK2019: 无法解析的外部符号 ff_blockdsp_init_alpha，该符号在函数 ff_blockdsp_init 中被引用
+ffmpeg.lib(blockdsp.obj) : error LNK2019: 无法解析的外部符号 ff_blockdsp_init_arm，该符号在函数 ff_blockdsp_init 中被引用
+ffmpeg.lib(blockdsp.obj) : error LNK2019: 无法解析的外部符号 ff_blockdsp_init_ppc，该符号在函数 ff_blockdsp_init 中被引用
+ffmpeg.lib(blockdsp.obj) : error LNK2019: 无法解析的外部符号 ff_blockdsp_init_x86，该符号在函数 ff_blockdsp_init 中被引用
+ffmpeg.lib(blockdsp.obj) : error LNK2019: 无法解析的外部符号 ff_blockdsp_init_mips，该符号在函数 ff_blockdsp_init 中被引用
+ffmpeg.lib(h264chroma.obj) : error LNK2019: 无法解析的外部符号 ff_h264chroma_init_aarch64，该符号在函数 ff_h264chroma_init 中被引用
+ffmpeg.lib(h264chroma.obj) : error LNK2019: 无法解析的外部符号 ff_h264chroma_init_arm，该符号在函数 ff_h264chroma_init 中被引用
+ffmpeg.lib(h264chroma.obj) : error LNK2019: 无法解析的外部符号 ff_h264chroma_init_ppc，该符号在函数 ff_h264chroma_init 中被引用
+ffmpeg.lib(h264chroma.obj) : error LNK2019: 无法解析的外部符号 ff_h264chroma_init_x86，该符号在函数 ff_h264chroma_init 中被引用
+ffmpeg.lib(h264chroma.obj) : error LNK2019: 无法解析的外部符号 ff_h264chroma_init_mips，该符号在函数 ff_h264chroma_init 中被引用
+ffmpeg.lib(idctdsp.obj) : error LNK2019: 无法解析的外部符号 ff_init_scantable_permutation_x86，该符号在函数 ff_init_scantable_permutation 中被引用
+ffmpeg.lib(idctdsp.obj) : error LNK2019: 无法解析的外部符号 ff_idctdsp_init_aarch64，该符号在函数 ff_idctdsp_init 中被引用
+ffmpeg.lib(idctdsp.obj) : error LNK2019: 无法解析的外部符号 ff_idctdsp_init_alpha，该符号在函数 ff_idctdsp_init 中被引用
+ffmpeg.lib(idctdsp.obj) : error LNK2019: 无法解析的外部符号 ff_idctdsp_init_arm，该符号在函数 ff_idctdsp_init 中被引用
+ffmpeg.lib(idctdsp.obj) : error LNK2019: 无法解析的外部符号 ff_idctdsp_init_ppc，该符号在函数 ff_idctdsp_init 中被引用
+ffmpeg.lib(idctdsp.obj) : error LNK2019: 无法解析的外部符号 ff_idctdsp_init_x86，该符号在函数 ff_idctdsp_init 中被引用
+ffmpeg.lib(idctdsp.obj) : error LNK2019: 无法解析的外部符号 ff_idctdsp_init_mips，该符号在函数 ff_idctdsp_init 中被引用
+ffmpeg.lib(hpeldsp.obj) : error LNK2019: 无法解析的外部符号 ff_hpeldsp_init_aarch64，该符号在函数 ff_hpeldsp_init 中被引用
+ffmpeg.lib(hpeldsp.obj) : error LNK2019: 无法解析的外部符号 ff_hpeldsp_init_alpha，该符号在函数 ff_hpeldsp_init 中被引用
+ffmpeg.lib(hpeldsp.obj) : error LNK2019: 无法解析的外部符号 ff_hpeldsp_init_arm，该符号在函数 ff_hpeldsp_init 中被引用
+ffmpeg.lib(hpeldsp.obj) : error LNK2019: 无法解析的外部符号 ff_hpeldsp_init_ppc，该符号在函数 ff_hpeldsp_init 中被引用
+ffmpeg.lib(hpeldsp.obj) : error LNK2019: 无法解析的外部符号 ff_hpeldsp_init_x86，该符号在函数 ff_hpeldsp_init 中被引用
+ffmpeg.lib(hpeldsp.obj) : error LNK2019: 无法解析的外部符号 ff_hpeldsp_init_mips，该符号在函数 ff_hpeldsp_init 中被引用
+ffmpeg.lib(mpegvideodsp.obj) : error LNK2019: 无法解析的外部符号 ff_mpegvideodsp_init_ppc，该符号在函数 ff_mpegvideodsp_init 中被引用
+ffmpeg.lib(mpegvideodsp.obj) : error LNK2019: 无法解析的外部符号 ff_mpegvideodsp_init_x86，该符号在函数 ff_mpegvideodsp_init 中被引用
+ffmpeg.lib(videodsp.obj) : error LNK2019: 无法解析的外部符号 ff_videodsp_init_aarch64，该符号在函数 ff_videodsp_init 中被引用
+ffmpeg.lib(videodsp.obj) : error LNK2019: 无法解析的外部符号 ff_videodsp_init_arm，该符号在函数 ff_videodsp_init 中被引用
+ffmpeg.lib(videodsp.obj) : error LNK2019: 无法解析的外部符号 ff_videodsp_init_ppc，该符号在函数 ff_videodsp_init 中被引用
+ffmpeg.lib(videodsp.obj) : error LNK2019: 无法解析的外部符号 ff_videodsp_init_x86，该符号在函数 ff_videodsp_init 中被引用
+ffmpeg.lib(videodsp.obj) : error LNK2019: 无法解析的外部符号 ff_videodsp_init_mips，该符号在函数 ff_videodsp_init 中被引用
+ffmpeg.lib(mpegvideo_motion.obj) : error LNK2019: 无法解析的外部符号 ff_h261_loop_filter，该符号在函数 mpeg_motion_internal 中被引用
+ffmpeg.lib(mpegvideo_motion.obj) : error LNK2019: 无法解析的外部符号 ff_mspel_motion，该符号在函数 mpv_motion_internal 中被引用
+ffmpeg.lib(me_cmp.obj) : error LNK2019: 无法解析的外部符号 ff_me_cmp_init_alpha，该符号在函数 ff_me_cmp_init 中被引用
+ffmpeg.lib(me_cmp.obj) : error LNK2019: 无法解析的外部符号 ff_me_cmp_init_arm，该符号在函数 ff_me_cmp_init 中被引用
+ffmpeg.lib(me_cmp.obj) : error LNK2019: 无法解析的外部符号 ff_me_cmp_init_ppc，该符号在函数 ff_me_cmp_init 中被引用
+ffmpeg.lib(me_cmp.obj) : error LNK2019: 无法解析的外部符号 ff_me_cmp_init_x86，该符号在函数 ff_me_cmp_init 中被引用
+ffmpeg.lib(me_cmp.obj) : error LNK2019: 无法解析的外部符号 ff_me_cmp_init_mips，该符号在函数 ff_me_cmp_init 中被引用
+ffmpeg.lib(h264dsp.obj) : error LNK2019: 无法解析的外部符号 ff_h264dsp_init_aarch64，该符号在函数 ff_h264dsp_init 中被引用
+ffmpeg.lib(h264dsp.obj) : error LNK2019: 无法解析的外部符号 ff_h264dsp_init_arm，该符号在函数 ff_h264dsp_init 中被引用
+ffmpeg.lib(h264dsp.obj) : error LNK2019: 无法解析的外部符号 ff_h264dsp_init_ppc，该符号在函数 ff_h264dsp_init 中被引用
+ffmpeg.lib(h264dsp.obj) : error LNK2019: 无法解析的外部符号 ff_h264dsp_init_x86，该符号在函数 ff_h264dsp_init 中被引用
+ffmpeg.lib(h264dsp.obj) : error LNK2019: 无法解析的外部符号 ff_h264dsp_init_mips，该符号在函数 ff_h264dsp_init 中被引用
+ffmpeg.lib(h264pred.obj) : error LNK2019: 无法解析的外部符号 ff_h264_pred_init_aarch64，该符号在函数 ff_h264_pred_init 中被引用
+ffmpeg.lib(h264pred.obj) : error LNK2019: 无法解析的外部符号 ff_h264_pred_init_arm，该符号在函数 ff_h264_pred_init 中被引用
+ffmpeg.lib(h264pred.obj) : error LNK2019: 无法解析的外部符号 ff_h264_pred_init_x86，该符号在函数 ff_h264_pred_init 中被引用
+ffmpeg.lib(h264pred.obj) : error LNK2019: 无法解析的外部符号 ff_h264_pred_init_mips，该符号在函数 ff_h264_pred_init 中被引用
+ffmpeg.lib(h264qpel.obj) : error LNK2019: 无法解析的外部符号 ff_h264qpel_init_aarch64，该符号在函数 ff_h264qpel_init 中被引用
+ffmpeg.lib(h264qpel.obj) : error LNK2019: 无法解析的外部符号 ff_h264qpel_init_arm，该符号在函数 ff_h264qpel_init 中被引用
+ffmpeg.lib(h264qpel.obj) : error LNK2019: 无法解析的外部符号 ff_h264qpel_init_ppc，该符号在函数 ff_h264qpel_init 中被引用
+ffmpeg.lib(h264qpel.obj) : error LNK2019: 无法解析的外部符号 ff_h264qpel_init_x86，该符号在函数 ff_h264qpel_init 中被引用
+ffmpeg.lib(h264qpel.obj) : error LNK2019: 无法解析的外部符号 ff_h264qpel_init_mips，该符号在函数 ff_h264qpel_init 中被引用
+ffmpeg.lib(sbrdsp.obj) : error LNK2019: 无法解析的外部符号 ff_sbrdsp_init_arm，该符号在函数 ff_sbrdsp_init 中被引用
+ffmpeg.lib(sbrdsp.obj) : error LNK2019: 无法解析的外部符号 ff_sbrdsp_init_aarch64，该符号在函数 ff_sbrdsp_init 中被引用
+ffmpeg.lib(sbrdsp.obj) : error LNK2019: 无法解析的外部符号 ff_sbrdsp_init_x86，该符号在函数 ff_sbrdsp_init 中被引用
+ffmpeg.lib(sbrdsp.obj) : error LNK2019: 无法解析的外部符号 ff_sbrdsp_init_mips，该符号在函数 ff_sbrdsp_init 中被引用
+ffmpeg.lib(opus_pvq.obj) : error LNK2019: 无法解析的外部符号 ff_celt_pvq_init_x86，该符号在函数 ff_celt_pvq_init 中被引用
+ffmpeg.lib(opusdsp.obj) : error LNK2019: 无法解析的外部符号 ff_opus_dsp_init_x86，该符号在函数 ff_opus_dsp_init 中被引用
+ffmpeg.lib(opusdsp.obj) : error LNK2019: 无法解析的外部符号 ff_opus_dsp_init_aarch64，该符号在函数 ff_opus_dsp_init 中被引用
+ffmpeg.lib(aacpsdsp_float.obj) : error LNK2019: 无法解析的外部符号 ff_psdsp_init_arm，该符号在函数 ff_psdsp_init 中被引用
+ffmpeg.lib(aacpsdsp_float.obj) : error LNK2019: 无法解析的外部符号 ff_psdsp_init_aarch64，该符号在函数 ff_psdsp_init 中被引用
+ffmpeg.lib(aacpsdsp_float.obj) : error LNK2019: 无法解析的外部符号 ff_psdsp_init_mips，该符号在函数 ff_psdsp_init 中被引用
+ffmpeg.lib(aacpsdsp_float.obj) : error LNK2019: 无法解析的外部符号 ff_psdsp_init_x86，该符号在函数 ff_psdsp_init 中被引用
+bin\demo_media_player.exe : fatal error LNK1120: 139 个无法解析的外部命令
+scons: building terminated because of errors.
