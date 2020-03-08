@@ -55,10 +55,6 @@
 #include "ffmpeg_cmdutils.h"
 #if CONFIG_NETWORK
 #endif
-#if HAVE_SYS_RESOURCE_H
-#include <sys/time.h>
-#include <sys/resource.h>
-#endif
 #ifdef _WIN32
 #include <windows.h>
 #endif

@@ -7,11 +7,65 @@
 #define FFMPEG_DATADIR "/usr/local/share/ffmpeg"
 #define AVCONV_DATADIR "/usr/local/share/ffmpeg"
 #define CC_IDENT "Apple clang version 11.0.0 (clang-1100.0.33.17)"
+
+#ifdef WIN32
+#define av_restrict 
+#define HAVE_W32THREADS 1
+#define HAVE_PTHREAD_CANCEL 0
+#define HAVE_PTHREADS 0
+#define CONFIG_ERROR_RESILIENCE 0
+#define HAVE_TERMIOS_H 0
+#define HAVE_SYS_UN_H 0
+#define HAVE_UNISTD_H 0
+#define HAVE_WINDOWS_H 1
+#define HAVE_WINSOCK2_H 0
+#define SLIBSUF ".dll"
+#define HAVE_POLL_H 0
+#define HAVE_INET_ATON 0
+#define HAVE_ARPA_INET_H 0
+#define CONFIG_NETWORK 0
+#define HAVE_DIRENT_H 0
+#define HAVE_IO_H 1
+#define HAVE_MMAP 0
+#define HAVE_ISATTY 0
+#define HAVE_MPROTECT 0
+#define HAVE_NANOSLEEP 0
+#define HAVE_LSTAT 0
+#define HAVE_SYS_RESOURCE_H 0
+#define HAVE_MACH_ABSOLUTE_TIME 0
+#else 
+#ifdef MACOS
+#define HAVE_MACH_ABSOLUTE_TIME 1
+#endif
+
+#define HAVE_SYS_RESOURCE_H 1
 #define av_restrict restrict
+#define HAVE_PTHREAD_CANCEL 1
+#define HAVE_PTHREADS 1
+#define HAVE_W32THREADS 0
+#define CONFIG_ERROR_RESILIENCE 1
+#define HAVE_TERMIOS_H 1
+#define HAVE_SYS_UN_H 1
+#define HAVE_UNISTD_H 1
+#define HAVE_WINDOWS_H 0
+#define HAVE_WINSOCK2_H 0
+#define SLIBSUF ".dylib"
+#define HAVE_POLL_H 1
+#define HAVE_INET_ATON 1
+#define HAVE_ARPA_INET_H 1
+#define CONFIG_NETWORK 1
+#define HAVE_DIRENT_H 1
+#define HAVE_IO_H 0
+#define HAVE_MMAP 1
+#define HAVE_ISATTY 1
+#define HAVE_MPROTECT 1
+#define HAVE_NANOSLEEP 1
+#define HAVE_LSTAT 1
+#endif/*WIN32*/
+
 #define EXTERN_PREFIX "_"
 #define EXTERN_ASM _
 #define BUILDSUF ""
-#define SLIBSUF ".dylib"
 #define HAVE_MMX2 HAVE_MMXEXT
 #define SWS_MAX_FILTER_SIZE 256
 #define ARCH_AARCH64 0
@@ -198,7 +252,6 @@
 #define HAVE_X86ASM 0
 #define HAVE_BIGENDIAN 0
 #define HAVE_FAST_UNALIGNED 0
-#define HAVE_ARPA_INET_H 0
 #define HAVE_ASM_TYPES_H 0
 #define HAVE_CDIO_PARANOIA_H 0
 #define HAVE_CDIO_PARANOIA_PARANOIA_H 0
@@ -209,33 +262,22 @@
 #define HAVE_DEV_IC_BT8XX_H 0
 #define HAVE_DEV_VIDEO_BKTR_IOCTL_BT848_H 0
 #define HAVE_DEV_VIDEO_METEOR_IOCTL_METEOR_H 0
-#define HAVE_DIRECT_H 0
-#define HAVE_DIRENT_H 1
 #define HAVE_DXGIDEBUG_H 0
 #define HAVE_DXVA_H 0
 #define HAVE_ES2_GL_H 0
 #define HAVE_GSM_H 0
-#define HAVE_IO_H 0
 #define HAVE_LINUX_PERF_EVENT_H 0
 #define HAVE_MACHINE_IOCTL_BT848_H 0
 #define HAVE_MACHINE_IOCTL_METEOR_H 0
 #define HAVE_MALLOC_H 0
 #define HAVE_OPENCV2_CORE_CORE_C_H 0
 #define HAVE_OPENGL_GL3_H 0
-#define HAVE_POLL_H 1
 #define HAVE_SYS_PARAM_H 1
-#define HAVE_SYS_RESOURCE_H 1
 #define HAVE_SYS_SELECT_H 1
 #define HAVE_SYS_SOUNDCARD_H 0
 #define HAVE_SYS_TIME_H 1
-#define HAVE_SYS_UN_H 1
 #define HAVE_SYS_VIDEOIO_H 0
-#define HAVE_TERMIOS_H 1
-#define HAVE_UDPLITE_H 0
-#define HAVE_UNISTD_H 1
 #define HAVE_VALGRIND_VALGRIND_H 0
-#define HAVE_WINDOWS_H 0
-#define HAVE_WINSOCK2_H 0
 #define HAVE_INTRINSICS_NEON 0
 #define HAVE_ATANF 1
 #define HAVE_ATAN2F 1
@@ -292,22 +334,13 @@
 #define HAVE_GLOB 1
 #define HAVE_GLXGETPROCADDRESS 0
 #define HAVE_GMTIME_R 1
-#define HAVE_INET_ATON 0
-#define HAVE_ISATTY 1
 #define HAVE_KBHIT 0
 #define HAVE_LOCALTIME_R 1
-#define HAVE_LSTAT 1
 #define HAVE_LZO1X_999_COMPRESS 0
-#define HAVE_MACH_ABSOLUTE_TIME 1
 #define HAVE_MAPVIEWOFFILE 0
 #define HAVE_MEMALIGN 0
 #define HAVE_MKSTEMP 1
-#define HAVE_MMAP 1
-#define HAVE_MPROTECT 1
-#define HAVE_NANOSLEEP 1
 #define HAVE_PEEKNAMEDPIPE 0
-#define HAVE_POSIX_MEMALIGN 1
-#define HAVE_PTHREAD_CANCEL 1
 #define HAVE_SCHED_GETAFFINITY 0
 #define HAVE_SECITEMIMPORT 0
 #define HAVE_SETCONSOLETEXTATTRIBUTE 0
@@ -326,9 +359,6 @@
 #define HAVE_VAAPI_DRM 0
 #define HAVE_VAAPI_X11 0
 #define HAVE_VDPAU_X11 0
-#define HAVE_PTHREADS 1
-#define HAVE_OS2THREADS 0
-#define HAVE_W32THREADS 0
 #define HAVE_AS_ARCH_DIRECTIVE 0
 #define HAVE_AS_DN_DIRECTIVE 0
 #define HAVE_AS_FPU_DIRECTIVE 0
@@ -561,7 +591,6 @@
 #define CONFIG_FFMPEG 0
 #define CONFIG_DCT 0
 #define CONFIG_DWT 0
-#define CONFIG_ERROR_RESILIENCE 1
 #define CONFIG_FAAN 1
 #define CONFIG_FAST_UNALIGNED 0
 #define CONFIG_FFT 1
@@ -569,7 +598,6 @@
 #define CONFIG_LZO 1
 #define CONFIG_MDCT 1
 #define CONFIG_PIXELUTILS 0
-#define CONFIG_NETWORK 0
 #define CONFIG_RDFT 0
 #define CONFIG_AUTODETECT 0
 #define CONFIG_FONTCONFIG 0

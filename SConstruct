@@ -42,6 +42,7 @@ if OS_NAME == 'Darwin':
 elif OS_NAME == 'Linux':
   PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS  + ["asound"] 
 elif OS_NAME == 'Windows':
+  PLAYER_CPPPATH=[os.path.join(APP_ROOT, '3rd/ffmpeg/ffmpeg/compat/atomics/win32')]
   print("debug");
 
 APP_CPPPATH = ['.', 
@@ -49,7 +50,7 @@ APP_CPPPATH = ['.',
   os.path.join(APP_ROOT, '3rd'),
   os.path.join(APP_ROOT, '3rd/ffmpeg/ffmpeg'),
   os.path.join(APP_ROOT, '3rd/ffmpeg/x264')
-]
+] + PLAYER_CPPPATH
 
 os.environ['APP_SRC'] = APP_SRC;
 os.environ['APP_ROOT'] = APP_ROOT;
