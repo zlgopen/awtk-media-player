@@ -26,6 +26,7 @@ AVFILTER_SOURCES=[
 "ffmpeg/libavfilter/avfilter.c",
 "ffmpeg/libavfilter/avfiltergraph.c",
 ]
+env.Library(os.path.join(LIB_DIR, 'avfilter'), AVFILTER_SOURCES)
 
 AVUTIL_SOURCES=[
 "ffmpeg/libavutil/reverse.c",

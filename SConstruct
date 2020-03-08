@@ -25,12 +25,10 @@ FFMPEG_LIBS=[
  "avcodec", 
  "avformat",
  "avdevice",
- "avresample", 
  "avfilter",
  "avutil", 
- "swscale",
- "swresample",
- "postproc",
+ "avswscale",
+ "avswresample",
  "x264"]
 
 if OS_NAME == 'Darwin':
@@ -38,12 +36,12 @@ if OS_NAME == 'Darwin':
   PLAYER_LINKFLAGS = PLAYER_LINKFLAGS + " -framework AudioToolbox -framework AVFoundation"
   PLAYER_LINKFLAGS = PLAYER_LINKFLAGS + " -framework VideoDecodeAcceleration -framework Security"
   PLAYER_LINKFLAGS = PLAYER_LINKFLAGS + " -framework CoreFoundation"
-  PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS #+ ['iconv', 'pthread', 'lzma', 'bz2', 'z']
+  PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS 
 elif OS_NAME == 'Linux':
   PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS  + ["asound"] 
 elif OS_NAME == 'Windows':
+  PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS
   PLAYER_CPPPATH=[os.path.join(APP_ROOT, '3rd/ffmpeg/ffmpeg/compat/atomics/win32')]
-  print("debug");
 
 APP_CPPPATH = ['.', 
   os.path.join(APP_ROOT, 'src'),

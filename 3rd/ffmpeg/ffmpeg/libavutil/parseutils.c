@@ -721,11 +721,14 @@ int av_parse_time(int64_t *timeval, const char *timestr, int duration)
             is_utc = 1;
         }
         if (today) { /* fill in today's date */
+#ifndef WIN32
+	    /*FIXME*/
             struct tm dt2 = is_utc ? *gmtime_r(&now, &tmbuf) : *localtime_r(&now, &tmbuf);
             dt2.tm_hour = dt.tm_hour;
             dt2.tm_min  = dt.tm_min;
             dt2.tm_sec  = dt.tm_sec;
             dt = dt2;
+#endif
         }
         dt.tm_isdst = is_utc ? 0 : -1;
         t = is_utc ? av_timegm(&dt) : mktime(&dt);
