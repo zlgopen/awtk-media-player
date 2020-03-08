@@ -44,12 +44,15 @@
 #else
 
 #ifdef MACOS
-#define HAVE_MACH_ABSOLUTE_TIME 1
 #define SLIBSUF ".dynlib"
+#define HAVE_ARC4RANDOM 1
+#define HAVE_MACH_ABSOLUTE_TIME 1
 #endif/*MACOS*/
 
 #ifdef LINUX
 #define SLIBSUF ".so"
+#define HAVE_ARC4RANDOM 0
+#define HAVE_MACH_ABSOLUTE_TIME 0
 #endif/*LINUX*/
 
 #define av_restrict restrict
@@ -333,7 +336,6 @@
 #define HAVE_WINRT 0
 #define HAVE_ACCESS 1
 #define HAVE_ALIGNED_MALLOC 0
-#define HAVE_ARC4RANDOM 1
 #define HAVE_CLOCK_GETTIME 1
 #define HAVE_CLOSESOCKET 0
 #define HAVE_COMMANDLINETOARGVW 0
