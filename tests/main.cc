@@ -40,7 +40,6 @@ GTEST_API_ int main(int argc, char** argv) {
   system_info_init(APP_SIMULATOR, NULL, "./");
   tk_init_internal();
 
-  assets_init();
   tk_init_assets();
 
   RUN_ALL_TESTS();
