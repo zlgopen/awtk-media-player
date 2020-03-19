@@ -5,7 +5,7 @@ import platform
 env=DefaultEnvironment().Clone()
 BIN_DIR=os.environ['BIN_DIR'];
 
-env.Program(os.path.join(BIN_DIR, 'demo_media_player'), ['demo_media_player.c'])
-env.Program(os.path.join(BIN_DIR, 'demo_audio_player'), ['demo_audio_player.c'])
+env.Program(os.path.join(BIN_DIR, 'demo_media_player'), ['demo_media_player.c', 'assets.c'])
+env.Program(os.path.join(BIN_DIR, 'demo_audio_player'), ['demo_audio_player.c', 'assets.c'])
 
 

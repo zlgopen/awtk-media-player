@@ -101,22 +101,40 @@
 #include "assets/default/inc/images/arrow_down_n.data"
 #include "assets/default/inc/images/arrow_left_n.data"
 #include "assets/default/inc/images/edit_clear_p.data"
-#endif/*WITH_STB_IMAGE*/
+#endif /*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
-#endif/*WITH_VGCANVAS*/
-#if defined(WITH_TRUETYPE_FONT)
+#endif /*WITH_VGCANVAS*/
+#if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
+#include "assets/default/inc/fonts/default_mini.res"
+#include "assets/default/inc/fonts/thin.res"
+#include "assets/default/inc/fonts/bold.res"
 #include "assets/default/inc/fonts/default.res"
-#else/*WITH_TRUETYPE_FONT*/
-#endif/*WITH_TRUETYPE_FONT*/
-#endif/*WITH_FS_RES*/
+#include "assets/default/inc/fonts/ko_KR.res"
+#include "assets/default/inc/fonts/italic.res"
+#include "assets/default/inc/fonts/zh_TW.res"
+#include "assets/default/inc/fonts/mono.res"
+#include "assets/default/inc/fonts/light.res"
+#include "assets/default/inc/fonts/led.res"
+#else/*WITH_STB_FONT or WITH_FT_FONT*/
+#endif /*WITH_STB_FONT or WITH_FT_FONT*/
+#endif /*WITH_FS_RES*/
 
-ret_t assets_init(void) {
+ret_t assets_init_default(void) {
   assets_manager_t* am = assets_manager();
 
 #ifdef WITH_FS_RES
   assets_manager_preload(am, ASSET_TYPE_FONT, "default");
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
 #else
+  assets_manager_add(am, strings_ko_KR);
+  assets_manager_add(am, strings_zh_CN);
+  assets_manager_add(am, strings_zh_TW);
+  assets_manager_add(am, strings_en_US);
+  assets_manager_add(am, style_player);
+  assets_manager_add(am, style_main);
+  assets_manager_add(am, style_keyboard);
+  assets_manager_add(am, style_default);
+  assets_manager_add(am, style_window1);
   assets_manager_add(am, ui_kb_ascii);
   assets_manager_add(am, ui_kb_phone);
   assets_manager_add(am, ui_main);
@@ -130,10 +148,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_kb_default);
   assets_manager_add(am, ui_audio_player);
   assets_manager_add(am, ui_kb_uint);
-  assets_manager_add(am, strings_ko_KR);
-  assets_manager_add(am, strings_zh_CN);
-  assets_manager_add(am, strings_zh_TW);
-  assets_manager_add(am, strings_en_US);
   assets_manager_add(am, image_arrow_right_o);
   assets_manager_add(am, image_sound_plus);
   assets_manager_add(am, image_muted);
@@ -172,13 +186,21 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_arrow_down_n);
   assets_manager_add(am, image_arrow_left_n);
   assets_manager_add(am, image_edit_clear_p);
-  assets_manager_add(am, style_player);
-  assets_manager_add(am, style_main);
-  assets_manager_add(am, style_keyboard);
-  assets_manager_add(am, style_default);
-  assets_manager_add(am, style_window1);
+#if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
+  assets_manager_add(am, font_default_mini);
+  assets_manager_add(am, font_thin);
+  assets_manager_add(am, font_bold);
+  assets_manager_add(am, font_default);
+  assets_manager_add(am, font_ko_KR);
+  assets_manager_add(am, font_italic);
+  assets_manager_add(am, font_zh_TW);
+  assets_manager_add(am, font_mono);
+  assets_manager_add(am, font_light);
+  assets_manager_add(am, font_led);
+#else /*WITH_STB_FONT or WITH_FT_FONT*/
+#endif /*WITH_STB_FONT or WITH_FT_FONT*/
 #ifdef WITH_VGCANVAS
-#endif/*WITH_VGCANVAS*/
+#endif /*WITH_VGCANVAS*/
 #endif
 
   tk_init_assets();
