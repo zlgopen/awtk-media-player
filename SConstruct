@@ -1,17 +1,10 @@
-import os
-import sys
+﻿import os
 import platform
+import scripts.app_helper as app
 
-sys.path.insert(0, '../awtk/')
-import awtk_config as awtk
-
-RES_ROOT    = awtk.TK_DEMO_ROOT.replace("\\", "\\\\")
-APP_ROOT    = os.path.normpath(os.getcwd())
-APP_SRC     = os.path.join(APP_ROOT, 'src')
-APP_BIN_DIR = os.path.join(APP_ROOT, 'bin')
-APP_LIB_DIR = os.path.join(APP_ROOT, 'lib')
-
-X264_ROOT=os.path.abspath(os.path.join(APP_ROOT, '3rd/ffmpeg/x264'))
+helper = app.Helper(ARGUMENTS);
+APP_ROOT = helper.APP_ROOT
+X264_ROOT=os.path.abspath(os.path.join(helper.APP_ROOT, '3rd/ffmpeg/x264'))
 FFMPEG_ROOT=os.path.abspath(os.path.join(APP_ROOT, '3rd/ffmpeg/ffmpeg'))
 
 PLAYER_CPPPATH=[]
@@ -41,24 +34,11 @@ APP_CPPPATH = ['.',
   os.path.join(APP_ROOT, '3rd/ffmpeg/x264')
 ] + PLAYER_CPPPATH
 
-os.environ['APP_SRC'] = APP_SRC;
-os.environ['APP_ROOT'] = APP_ROOT;
-os.environ['BIN_DIR'] = APP_BIN_DIR;
-os.environ['LIB_DIR'] = APP_LIB_DIR;
-
-APP_LIBPATH = [APP_LIB_DIR]
-APP_LIBS = ['media_player_widgets'] + PLAYER_LIBS
 APP_LINKFLAGS = PLAYER_LINKFLAGS
-APP_CCFLAGS = ' -DBUILDING_LIBCURL -DRES_ROOT=\"\\\"'+RES_ROOT+'\\\"\" '
+APP_CCFLAGS = ' -DBUILDING_LIBCURL '
+APP_LIBS = ['media_player_widgets', 'SDL2'] + PLAYER_LIBS
 
-DefaultEnvironment(
-  CPPPATH   = awtk.CPPPATH + APP_CPPPATH,
-  LINKFLAGS = awtk.LINKFLAGS + APP_LINKFLAGS,
-  LIBS      = APP_LIBS + awtk.LIBS,
-  LIBPATH   = APP_LIBPATH + awtk.LIBPATH,
-  CCFLAGS   = APP_CCFLAGS + awtk.CCFLAGS, 
-  OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
-  OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS)
+helper.add_libs(APP_LIBS).add_linkflags(APP_LINKFLAGS).add_cpppath(APP_CPPPATH).call(DefaultEnvironment)
 
 SConscriptFiles=[
   '3rd/ffmpeg/SConscript',

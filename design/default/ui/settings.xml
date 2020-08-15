@@ -1,0 +1,11 @@
+<window anim_hint="htranslate">
+    <label  tr_text="ok" x="c" y="10" w="50%" h="40"/>
+    <label  tr_text="cancel" x="c" y="50" w="50%" h="40"/>
+    <label  tr_text="test" x="c" y="90" w="90%" h="100"/>
+    
+    <button name="ko_KR" text="ko_KR" x="center" y="bottom:170" w="80%" h="30"/>
+    <button name="en_US" text="en_US" x="center" y="bottom:130" w="80%" h="30"/>
+    <button name="zh_CN" text="zh_CN" x="center" y="bottom:90" w="80%" h="30"/>
+    <button name="zh_TW" text="zh_TW" x="center" y="bottom:50" w="80%" h="30"/>
+    <button name="close" text="Close" x="center" y="bottom:10" w="80%" h="30"/>
+</window>

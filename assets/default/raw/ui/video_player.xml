@@ -1,6 +1,0 @@
-<window anim_hint="htranslate" theme="player">
-  <video_view x="0" y="0" w="100%" h="100%">
-    <mutable_image name="mutable_image" x="0" y="0" w="100%" h="-100"/>
-    <?include filename="player_common.xml" ?>
-  </video_view>
-</window>

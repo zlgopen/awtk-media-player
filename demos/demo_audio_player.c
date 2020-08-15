@@ -71,4 +71,5 @@ ret_t application_exit() {
   media_player_set(NULL);
 }
 
+#include "../res/assets.inc"
 #include "awtk_main.inc"

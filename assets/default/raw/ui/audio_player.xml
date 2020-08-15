@@ -1,9 +1,0 @@
-<window anim_hint="htranslate" theme="player">
-  <audio_view x="0" y="0" w="100%" h="100%">
-    <lrc_view name="lrc" x="0" y="0" w="100%" h="-100"/>
-
-    <label name="author" style="author" text="" x="right:10" y="10" w="100" h="30"/>
-    <label name="title" style="title" text="" x="right:10" y="40" w="100" h="30"/>
-    <?include filename="player_common.xml" ?>
-  </audio_view>
-</window>
