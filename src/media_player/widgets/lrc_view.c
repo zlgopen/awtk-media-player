@@ -473,9 +473,17 @@ ret_t lrc_view_set_current_time(widget_t* widget, uint32_t current_time) {
 
   if (lrc_view->lrc != NULL) {
     if (lrc_view->current_time != current_time) {
-      widget_dispatch_simple_event(widget, EVT_VALUE_WILL_CHANGE);
-      lrc_view->current_time = current_time;
-      widget_dispatch_simple_event(widget, EVT_VALUE_CHANGED);
+      value_change_event_t evt;
+      value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+      value_set_uint32(&(evt.old_value), lrc_view->current_time);
+      value_set_uint32(&(evt.new_value), current_time);
+
+      if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+        lrc_view->current_time = current_time;
+        evt.e.type = EVT_VALUE_CHANGED;
+        widget_dispatch(widget, (event_t*)&evt);
+        widget_invalidate(widget, NULL);
+      }
     }
 
     current_index = lrc_time_tag_list_find_index(lrc_view->lrc->time_tags, current_time);

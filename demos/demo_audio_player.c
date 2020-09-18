@@ -69,6 +69,8 @@ ret_t application_exit() {
   media_player_destroy(media_player());
   data_reader_factory_destroy(data_reader_factory());
   media_player_set(NULL);
+
+  return RET_OK;
 }
 
 #include "../res/assets.inc"
