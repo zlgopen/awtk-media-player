@@ -21,7 +21,7 @@
 
 #include "tkc/mem.h"
 
-#ifdef WITH_SDL
+#if defined(WITH_SDL) || defined(WITH_SDL_AUDIO)
 
 #include "SDL.h"
 #include "media_player/base/audio_device.h"
