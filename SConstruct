@@ -13,15 +13,15 @@ PLAYER_CPPPATH=[]
 PLAYER_LINKFLAGS=""
 PLAYER_LIB_PATH=[]
 FFMPEG_LIBS = []
-
-PLAYER_LIBS = ["media_player_ffmpeg", "media_player_audio", "audio_device_sdl", "media_player_base", "lrc"]
-
 OS_NAME = platform.system();
 
-os.environ['WITH_FFMPEG'] = 'false'
+PLAYER_LIBS = ["media_player_audio", "audio_device_sdl", "media_player_base", "lrc"]
+
+#os.environ['WITH_FFMPEG'] = 'false'
 os.environ['WITH_FFMPEG'] = 'true'
 
 if os.environ['WITH_FFMPEG'] == 'true':
+    PLAYER_LIBS = ["media_player_ffmpeg"] + PLAYER_LIBS
     FFMPEG_LIBS=["ffmpeg", "x264"]
     PLAYER_PROJS = [
       '3rd/ffmpeg/SConscript',
