@@ -12,12 +12,22 @@ PLAYER_CCFLAGS = ''
 PLAYER_CPPPATH=[]
 PLAYER_LINKFLAGS=""
 PLAYER_LIB_PATH=[]
+FFMPEG_LIBS = []
 
 PLAYER_LIBS = ["media_player_ffmpeg", "media_player_audio", "audio_device_sdl", "media_player_base", "lrc"]
 
 OS_NAME = platform.system();
 
-FFMPEG_LIBS=["ffmpeg", "x264"]
+#os.environ['WITH_FFMPEG'] = 'false'
+os.environ['WITH_FFMPEG'] = 'true'
+
+if os.environ['WITH_FFMPEG'] == 'true':
+    FFMPEG_LIBS=["ffmpeg", "x264"]
+    PLAYER_PROJS = [
+      '3rd/ffmpeg/SConscript',
+      'src/media_player/ffmpeg/SConscript', 
+    ]
+  
 
 if OS_NAME == 'Darwin':
   PLAYER_LINKFLAGS=" -framework  VideoToolbox -framework CoreVideo -framework CoreMedia " 
@@ -27,10 +37,8 @@ if OS_NAME == 'Darwin':
   PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS 
 elif OS_NAME == 'Linux':
   if os.environ['NATIVE_WINDOW'] == 'raw':
-    PLAYER_PROJS = [
-      '3rd/SDL/SConscript',
-      '3rd/ffmpeg/SConscript',
-      'src/media_player/ffmpeg/SConscript', 
+    PLAYER_PROJS += [
+      '3rd/SDL/SConscript'
     ]
     PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS + ["SDL2", "asound"] 
     PLAYER_CCFLAGS = PLAYER_CCFLAGS + ' -D__USE_POSIX'
@@ -48,10 +56,6 @@ elif OS_NAME == 'Linux':
       os.path.join(APP_ROOT, "usr/lib")
     ]
   else:
-    PLAYER_PROJS = [
-      '3rd/ffmpeg/SConscript',
-      'src/media_player/ffmpeg/SConscript', 
-    ]
     PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS  + ["asound"] 
 
 elif OS_NAME == 'Windows':
