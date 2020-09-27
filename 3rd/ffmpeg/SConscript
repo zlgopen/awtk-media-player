@@ -317,6 +317,10 @@ FFMPEG_SOURCES = [
 "ffmpeg/libswresample/swresample.c",
 "ffmpeg/win32_dummy.c",
 ]
+
+if os.environ['LINUX_FB'] == 'true':
+  FFMPEG_SOURCES += ["ffmpeg/compat/atomics/pthread/stdatomic.c"]
+
 env.Library(os.path.join(LIB_DIR, 'ffmpeg'), FFMPEG_SOURCES)
 
 env=DefaultEnvironment().Clone()

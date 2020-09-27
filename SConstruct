@@ -1,4 +1,4 @@
-﻿import os
+import os
 import platform
 import scripts.app_helper as app
 
@@ -18,7 +18,7 @@ PLAYER_LIBS = ["media_player_ffmpeg", "media_player_audio", "audio_device_sdl", 
 
 OS_NAME = platform.system();
 
-#os.environ['WITH_FFMPEG'] = 'false'
+os.environ['WITH_FFMPEG'] = 'false'
 os.environ['WITH_FFMPEG'] = 'true'
 
 if os.environ['WITH_FFMPEG'] == 'true':
@@ -36,12 +36,12 @@ if OS_NAME == 'Darwin':
   PLAYER_LINKFLAGS = PLAYER_LINKFLAGS + " -framework CoreFoundation"
   PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS 
 elif OS_NAME == 'Linux':
-  if os.environ['NATIVE_WINDOW'] == 'raw':
+  if os.environ['LINUX_FB'] == 'true':
     PLAYER_PROJS += [
       '3rd/SDL/SConscript'
     ]
     PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS + ["SDL2", "asound"] 
-    PLAYER_CCFLAGS = PLAYER_CCFLAGS + ' -D__USE_POSIX'
+    PLAYER_CCFLAGS = PLAYER_CCFLAGS + ' -D__USE_POSIX '
     PLAYER_CCFLAGS = PLAYER_CCFLAGS + ' -DSDL_TIMER_UNIX -DSDL_VIDEO_DRIVER_DUMMY '
     PLAYER_CCFLAGS = PLAYER_CCFLAGS + ' -DSDL_AUDIO_DRIVER_ALSA -DWITH_SDL_AUDIO '
     PLAYER_CCFLAGS = PLAYER_CCFLAGS + ' -DSDL_LOADSO_DLOPEN  -DSDL_STATIC_LIB -D__FLTUSED__ '
@@ -50,7 +50,8 @@ elif OS_NAME == 'Linux':
     PLAYER_CPPPATH = PLAYER_CPPPATH + [
       os.path.join(APP_ROOT, "usr/include"),
       os.path.join(APP_ROOT, "3rd/SDL/src"),
-      os.path.join(APP_ROOT, "3rd/SDL/include")
+      os.path.join(APP_ROOT, "3rd/SDL/include"),
+      os.path.join(APP_ROOT, "3rd/ffmpeg/ffmpeg/compat/atomics/pthread")
     ]
     PLAYER_LIB_PATH = [
       os.path.join(APP_ROOT, "usr/lib")
