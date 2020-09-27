@@ -12,7 +12,6 @@
 &_snd_module_pcm_null,
 &_snd_module_pcm_empty,
 &_snd_module_pcm_share,
-&_snd_module_pcm_meter,
 &_snd_module_pcm_hooks,
 &_snd_module_pcm_lfloat,
 &_snd_module_pcm_ladspa,
