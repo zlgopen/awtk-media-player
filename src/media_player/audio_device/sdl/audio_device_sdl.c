@@ -165,6 +165,14 @@ static audio_device_t* audio_device_sdl_create(const char* name, bool_t is_captu
   sdl_desired = sdl_audio_spec_from(desired);
   memset(&sdl_real, 0x00, sizeof(sdl_real));
 
+  if (!SDL_WasInit(SDL_INIT_AUDIO)) {
+		if (SDL_Init(SDL_INIT_AUDIO) != 0) {
+			log_debug("Failed to initialize SDL: %s", SDL_GetError());
+			exit(0);
+			return NULL;
+		}
+  }
+
   devid = SDL_OpenAudioDevice(name, is_capture, &sdl_desired, &sdl_real, flags);
   return_value_if_fail(devid != 0, NULL);
 

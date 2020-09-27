@@ -27,6 +27,13 @@
 
 static int32_t lrc_view_get_content_height(widget_t* widget);
 
+static lrc_time_tag_list_t* lrc_view_get_time_tags(widget_t* widget) {
+  lrc_view_t* lrc_view = LRC_VIEW(widget);
+  lrc_t* lrc = lrc_view->lrc;
+
+  return lrc != NULL ? lrc->time_tags : NULL;
+}
+
 static ret_t lrc_view_get_prop(widget_t* widget, const char* name, value_t* v) {
   lrc_view_t* lrc_view = LRC_VIEW(widget);
   return_value_if_fail(lrc_view != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -74,8 +81,8 @@ static ret_t lrc_view_paint_self(widget_t* widget, canvas_t* c) {
   lrc_view_t* lrc_view = LRC_VIEW(widget);
   style_t* style = widget->astyle;
   lrc_t* lrc = lrc_view->lrc;
-  lrc_time_tag_list_t* time_tags = lrc->time_tags;
   int32_t content_h = lrc_view_get_content_height(widget);
+  lrc_time_tag_list_t* time_tags = lrc_view_get_time_tags(widget);
 
   rect_t r;
   int32_t i = 0;
@@ -98,6 +105,8 @@ static ret_t lrc_view_paint_self(widget_t* widget, canvas_t* c) {
   color_t black = color_init(0, 0, 0, 0xff);
   color_t text_color = style_get_color(style, STYLE_ID_TEXT_COLOR, black);
   color_t curr_text_color = style_get_color(style, STYLE_ID_HIGHLIGHT_TEXT_COLOR, black);
+  
+  return_value_if_fail(time_tags != NULL, RET_BAD_PARAMS);
 
   if (content_h < h) {
     y = (h - content_h) / 2;
@@ -209,7 +218,7 @@ static int32_t lrc_view_get_content_height(widget_t* widget) {
   lrc_view_t* lrc_view = LRC_VIEW(widget);
   style_t* style = widget->astyle;
   lrc_t* lrc = lrc_view->lrc;
-  lrc_time_tag_list_t* time_tags = lrc->time_tags;
+  lrc_time_tag_list_t* time_tags = lrc_view_get_time_tags(widget);
 
   uint32_t current_time = lrc_view->current_time;
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 5);
@@ -217,6 +226,7 @@ static int32_t lrc_view_get_content_height(widget_t* widget) {
   int32_t margin_top = style_get_int(style, STYLE_ID_MARGIN_TOP, margin);
   int32_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
   int32_t current_font_size = style_get_int(style, STYLE_ID_HIGHLIGHT_FONT_SIZE, font_size);
+  return_value_if_fail(time_tags != NULL, RET_BAD_PARAMS);
 
   y = margin_top;
   for (i = 0; i < time_tags->size; i++) {
@@ -265,13 +275,14 @@ static ret_t lrc_view_set_current_time_by_y(widget_t* widget, int32_t pointer_y)
   style_t* style = widget->astyle;
   lrc_t* lrc = lrc_view->lrc;
 
-  lrc_time_tag_list_t* time_tags = lrc->time_tags;
+  lrc_time_tag_list_t* time_tags = lrc_view_get_time_tags(widget);
   uint32_t current_time = lrc_view->current_time;
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 5);
   int32_t spacer = style_get_int(style, STYLE_ID_SPACER, 2);
   int32_t margin_top = style_get_int(style, STYLE_ID_MARGIN_TOP, margin);
   int32_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
   int32_t current_font_size = style_get_int(style, STYLE_ID_HIGHLIGHT_FONT_SIZE, font_size);
+  return_value_if_fail(time_tags != NULL, RET_BAD_PARAMS);
 
   y = margin_top;
   pointer_y += lrc_view->yoffset;
