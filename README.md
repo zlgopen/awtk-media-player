@@ -56,6 +56,15 @@ make install
 
 > 请根据工具链的前缀自行调整参数。
 
+#### 1.2.5 去掉 ffmpeg
+
+如果不需要视频播放器，可以去掉ffmpeg相关的东西: 修改SConstruct，将环境变量WITH\_FFMPEG设置为false，然后重新编译。
+
+```
+#os.environ['WITH_FFMPEG'] = 'true'
+os.environ['WITH_FFMPEG'] = 'false'
+```
+
 ## 2. 运行 Demo：
 
 * 视频播放器演示

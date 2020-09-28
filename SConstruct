@@ -17,6 +17,7 @@ OS_NAME = platform.system();
 
 PLAYER_LIBS = ["media_player_audio", "audio_device_sdl", "media_player_base", "lrc"]
 
+#If you need not ffmpeg, set it false
 #os.environ['WITH_FFMPEG'] = 'false'
 os.environ['WITH_FFMPEG'] = 'true'
 
