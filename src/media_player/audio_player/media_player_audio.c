@@ -147,7 +147,8 @@ static ret_t qaction_exec_decode(qaction_t* action) {
   if (player->abort_request) {
     audio_device_clear_queued_data(device);
   } else {
-    while (TRUE) {
+    uint32_t count = 0;
+    while (count++ < 5) {
       queued_data_size = audio_device_get_queued_data_size(device);
       if (queued_data_size > 0) {
         log_debug("queued_data_size=%d\n", queued_data_size);

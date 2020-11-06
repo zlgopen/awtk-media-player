@@ -405,7 +405,9 @@ static inline int64_t get_valid_channel_layout(int64_t channel_layout, int chann
 static int packet_queue_put_private(PacketQueue* q, AVPacket* pkt) {
   MyAVPacketList* pkt1;
 
-  if (q->abort_request) return -1;
+  if (q->abort_request) {
+    return -1;
+  }
 
   pkt1 = av_malloc(sizeof(MyAVPacketList));
   if (!pkt1) return -1;
@@ -586,7 +588,9 @@ static int decoder_decode_frame(Decoder* d, AVFrame* frame, AVSubtitle* sub) {
               }
             }
             break;
-          default: { break; }
+          default: {
+            break;
+          }
         }
         if (ret == AVERROR_EOF) {
           d->finished = d->pkt_serial;

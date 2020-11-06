@@ -117,6 +117,7 @@ static ret_t video_view_set_prop(widget_t* widget, const char* name, const value
 static ret_t video_view_on_destroy(widget_t* widget) {
   video_view_t* video_view = VIDEO_VIEW(widget);
 
+  media_player_stop(media_player());
   media_player_set_on_event(media_player(), NULL, NULL);
   play_list_destroy(video_view->play_list);
 

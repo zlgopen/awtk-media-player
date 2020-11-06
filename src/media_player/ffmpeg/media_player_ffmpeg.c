@@ -61,8 +61,11 @@ static ret_t media_player_ffmpeg_load(media_player_t* player, const char* url) {
   if (ffmpeg->is != NULL) {
     tk_thread_t* thread = ffmpeg->is->read_tid;
     ffmpeg->is->abort_request = 1;
-
+#ifdef WIN32
+    sleep_ms(300);
+#else
     tk_thread_join(thread);
+#endif    
   }
 
   ffmpeg->is = stream_open(url, player);
