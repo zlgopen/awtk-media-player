@@ -48,8 +48,9 @@ typedef struct _action_play_info_t {
   media_player_audio_t* player;
 } action_play_info_t;
 
+#define AUDIO_DECODE_BUFFER_SIZE 40 * 1024
 #ifndef AUDIO_DEVICE_MAX_QUEUED_SIZE
-#define AUDIO_DEVICE_MAX_QUEUED_SIZE 10 * 1024
+#define AUDIO_DEVICE_MAX_QUEUED_SIZE 40 * 1024
 #endif /*AUDIO_DEVICE_MAX_QUEUED_SIZE*/
 
 static ret_t adjust_data_volume(void* buff, uint32_t size, uint32_t volume, audio_format_t format) {
@@ -68,16 +69,17 @@ static ret_t adjust_data_volume(void* buff, uint32_t size, uint32_t volume, audi
 
 static ret_t qaction_exec_decode(qaction_t* action) {
   int32_t ret = 0;
-  int16_t buff[1024];
   audio_spec_t real;
   audio_spec_t desired;
   audio_device_t* device = NULL;
+  int16_t *buff = (int16_t*)TKMEM_ALLOC(AUDIO_DECODE_BUFFER_SIZE);
   action_play_info_t* info = (action_play_info_t*)(action->args);
   media_player_audio_t* player = info->player;
   audio_decoder_t* decoder = player->decoder;
   uint32_t queued_data_size = 0;
   uint32_t volume = player->volume;
   bool_t paused = player->paused;
+  return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
 
   memset(&real, 0x00, sizeof(real));
   memset(&desired, 0x00, sizeof(desired));
@@ -93,7 +95,7 @@ static ret_t qaction_exec_decode(qaction_t* action) {
   audio_device_set_volume(device, volume);
   audio_device_start(device);
   while (!(player->abort_request)) {
-    memset(buff, 0, sizeof(buff));
+    memset(buff, 0, AUDIO_DECODE_BUFFER_SIZE);
 
     if (volume != player->volume) {
       volume = player->volume;
@@ -128,7 +130,7 @@ static ret_t qaction_exec_decode(qaction_t* action) {
       continue;
     }
 
-    ret = audio_decoder_decode(decoder, buff, sizeof(buff));
+    ret = audio_decoder_decode(decoder, buff, AUDIO_DECODE_BUFFER_SIZE);
     if (ret > 0) {
       if (player->muted) {
         memset(buff, 0x00, ret);
@@ -165,6 +167,7 @@ static ret_t qaction_exec_decode(qaction_t* action) {
   }
   player->seek_request = -1;
   player->abort_request = FALSE;
+  TKMEM_FREE(buff);
   audio_device_destroy(device);
   audio_decoder_destroy(decoder);
 

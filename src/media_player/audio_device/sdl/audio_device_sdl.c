@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/fs.h"
 #include "tkc/mem.h"
 
 #if defined(WITH_SDL) || defined(WITH_SDL_AUDIO)
