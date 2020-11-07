@@ -35,7 +35,7 @@ if OS_NAME == 'Darwin':
   PLAYER_LINKFLAGS = PLAYER_LINKFLAGS + " -framework AudioToolbox -framework AVFoundation"
   PLAYER_LINKFLAGS = PLAYER_LINKFLAGS + " -framework VideoDecodeAcceleration -framework Security"
   PLAYER_LINKFLAGS = PLAYER_LINKFLAGS + " -framework CoreFoundation"
-  PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS 
+  PLAYER_LIBS = PLAYER_LIBS + FFMPEG_LIBS + ["SDL2"] 
 elif OS_NAME == 'Linux':
   if os.environ['LINUX_FB'] == 'true':
     PLAYER_PROJS += [
