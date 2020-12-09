@@ -26,26 +26,25 @@ python ./scripts/update_res.py all
 
 > 或者通过 designer 生成资源
 
-
-#### 1.2.2 编译PC版本
+#### 1.2.2 编译 PC 版本
 
 ```
 scons
 ```
 
-#### 1.2.3 编译LINUX FB版本
+#### 1.2.3 编译 LINUX FB 版本
 
 ```
 scons LINUX_FB=true
 ```
 
-> 完整编译选项请参考[编译选项](https://github.com/zlgopen/awtk-widget-generator/blob/master/docs/build_options.md)
+> 完整编译选项请参考 [编译选项](https://github.com/zlgopen/awtk-widget-generator/blob/master/docs/build_options.md)
 
 > 目前仅仅支持 macos 和 linux
 
-#### 1.2.4 编译arm-linux的alas lib
+#### 1.2.4 编译 arm-linux 的 alas lib
 
-对于arm-linux，需要在编译项目之前，自己编译alsa lib。先设置arm-linux-gcc的路径到PATH中，然后执行下面的命令。
+对于 arm-linux，需要在编译项目之前，自己编译 alsa lib。先设置 arm-linux-gcc 的路径到 PATH 中，然后执行下面的命令。
 
 ```
 cd 3rd/alsa-lib/
@@ -58,7 +57,7 @@ make install
 
 #### 1.2.5 去掉 ffmpeg
 
-如果不需要视频播放器，可以去掉ffmpeg相关的东西: 修改SConstruct，将环境变量WITH\_FFMPEG设置为false，然后重新编译。
+如果不需要视频播放器，可以去掉 ffmpeg 相关的东西：修改 SConstruct，将环境变量 WITH\_FFMPEG 设置为 false，然后重新编译。
 
 ```
 #os.environ['WITH_FFMPEG'] = 'true'
@@ -90,8 +89,6 @@ os.environ['WITH_FFMPEG'] = 'false'
 ## 4.TODO
 
 * 优化完善。
-* 移植 ffmpeg 到 Windows
 * 移植 ffmpeg 到 aworks
 * 基于 aworks 实现 audio device。
 * 基于 linux 实现 audio device。
-
