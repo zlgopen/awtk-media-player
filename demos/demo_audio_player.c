@@ -23,8 +23,8 @@
 #include "media_player/widgets/lrc_view.h"
 #include "media_player/widgets/audio_view.h"
 #include "media_player/base/media_player.h"
-#include "media_player/audio_player/audio_decoder_mp3.h"
-#include "media_player/audio_player/audio_decoder_factory.h"
+#include "media_player/base/audio_decoder_factory.h"
+#include "media_player/audio_decoders/audio_decoder_mp3.h"
 #include "media_player/audio_player/media_player_audio.h"
 
 static ret_t on_quit_click(void* ctx, event_t* e) {

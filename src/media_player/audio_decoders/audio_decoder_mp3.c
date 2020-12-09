@@ -24,7 +24,7 @@
 #include "tkc/mem.h"
 #include "minimp3/minimp3_ex.h"
 #include "media_player/base/audio_device.h"
-#include "media_player/audio_player/audio_decoder_mp3.h"
+#include "media_player/audio_decoders/audio_decoder_mp3.h"
 
 typedef struct _audio_decoder_mp3_t {
   audio_decoder_t audio_decoder;

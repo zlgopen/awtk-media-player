@@ -28,8 +28,8 @@
 #include "tkc/data_reader_factory.h"
 #include "media_player/base/audio_device.h"
 #include "media_player/base/media_player_event.h"
+#include "media_player/base/audio_decoder_factory.h"
 #include "media_player/audio_player/media_player_audio.h"
-#include "media_player/audio_player/audio_decoder_factory.h"
 
 typedef struct _media_player_audio_t {
   media_player_t media_player;

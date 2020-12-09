@@ -19,7 +19,7 @@
  *
  */
 
-#include "media_player/audio_player/audio_decoder.h"
+#include "media_player/base/audio_decoder.h"
 
 int32_t audio_decoder_decode(audio_decoder_t* decoder, void* buff, uint32_t size) {
   return_value_if_fail(buff != NULL && size > 0, 0);

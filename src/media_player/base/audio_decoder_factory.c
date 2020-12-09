@@ -21,7 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
-#include "media_player/audio_player/audio_decoder_factory.h"
+#include "media_player/base/audio_decoder_factory.h"
 
 static audio_decoder_factory_t* audio_decoder_factory_init(audio_decoder_factory_t* factory);
 static ret_t audio_decoder_factory_deinit(audio_decoder_factory_t* factory);

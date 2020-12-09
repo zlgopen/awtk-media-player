@@ -24,7 +24,7 @@
 
 #include "tkc/darray.h"
 #include "tkc/data_reader.h"
-#include "media_player/audio_player/audio_decoder.h"
+#include "media_player/base/audio_decoder.h"
 
 BEGIN_C_DECLS
 
