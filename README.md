@@ -91,4 +91,5 @@ os.environ['WITH_FFMPEG'] = 'false'
 * 优化完善。
 * 移植 ffmpeg 到 aworks
 * 基于 aworks 实现 audio device。
-* 基于 linux 实现 audio device。
+* 基于 linux alsa 实现 audio device。
+

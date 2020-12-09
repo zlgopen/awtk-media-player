@@ -26,6 +26,18 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class media_player_ffmpeg_t
+ * @parent media_player_t
+ * @annotation ["fake"]
+ * 基于ffmpeg实现的视频播放器。
+ */
+
+/**
+ * @method media_player_ffmpeg_create
+ * 创建视频播放器对象。
+ * @return {media_player_t*} 返回media player对象。
+ */
 media_player_t* media_player_ffmpeg_create(void);
 
 END_C_DECLS

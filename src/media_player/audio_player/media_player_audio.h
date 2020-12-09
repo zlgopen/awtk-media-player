@@ -26,6 +26,18 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class media_player_audio_t
+ * @parent media_player_t
+ * @annotation ["fake"]
+ * 音频播放器。
+ */
+
+/**
+ * @method media_player_audio_create
+ * 创建音频播放器对象。
+ * @return {media_player_t*} 返回media player对象。
+ */
 media_player_t* media_player_audio_create(void);
 
 END_C_DECLS
