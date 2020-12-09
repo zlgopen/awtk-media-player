@@ -12,6 +12,7 @@
 #define BUILDSUF ""
 
 #if defined(WIN32)
+#define HAVE_GETSYSTEMTIMEASFILETIME 1
 #define av_restrict 
 #define HAVE_W32THREADS 1
 #define HAVE_WINDOWS_H 1
@@ -46,6 +47,7 @@
 #define HAVE_GMTIME_R 0
 #define HAVE_STRERROR_R 0
 #else
+#define HAVE_GETSYSTEMTIMEASFILETIME 0
 
 #ifdef MACOS
 #define SLIBSUF ".dynlib"
@@ -354,7 +356,6 @@
 #define HAVE_GETPROCESSMEMORYINFO 0
 #define HAVE_GETPROCESSTIMES 0
 #define HAVE_GETRUSAGE 1
-#define HAVE_GETSYSTEMTIMEASFILETIME 0
 #define HAVE_GLOB 1
 #define HAVE_GLXGETPROCADDRESS 0
 #define HAVE_KBHIT 0
