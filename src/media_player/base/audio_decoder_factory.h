@@ -22,7 +22,7 @@
 #ifndef TK_AUDIO_DECODER_FACTORY_H
 #define TK_AUDIO_DECODER_FACTORY_H
 
-#include "tkc/darray.h"
+#include "tkc/object.h"
 #include "tkc/data_reader.h"
 #include "media_player/base/audio_decoder.h"
 
@@ -37,7 +37,7 @@ typedef audio_decoder_t* (*audio_decoder_create_t)(data_reader_t* reader);
  */
 typedef struct _audio_decoder_factory_t {
   /*private*/
-  darray_t creators;
+  object_t* creators;
 } audio_decoder_factory_t;
 
 /**
