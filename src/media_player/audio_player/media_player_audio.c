@@ -285,7 +285,6 @@ static ret_t media_player_audio_set_on_event(media_player_t* player, event_func_
 
 static ret_t media_player_audio_destroy(media_player_t* player) {
   media_player_audio_t* aplayer = (media_player_audio_t*)player;
-  return_value_if_fail(aplayer->decoder != NULL, RET_BAD_PARAMS);
 
   media_player_stop(player);
   action_thread_destroy(aplayer->worker);

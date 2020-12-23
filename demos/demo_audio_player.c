@@ -36,7 +36,9 @@ static ret_t app_global_init(void) {
   lrc_view_register();
   audio_view_register();
   media_player_set(media_player_audio_create());
-  data_reader_factory_set(data_reader_factory_create());
+  if (NULL == data_reader_factory()) {
+    data_reader_factory_set(data_reader_factory_create());
+  }
   data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
   audio_decoder_factory_set(audio_decoder_factory_create());
   audio_decoder_factory_register(audio_decoder_factory(), "mp3", audio_decoder_mp3_create);
@@ -67,6 +69,7 @@ static ret_t application_init() {
 
 ret_t application_exit() {
   media_player_destroy(media_player());
+  audio_decoder_factory_destroy(audio_decoder_factory());
   data_reader_factory_destroy(data_reader_factory());
   media_player_set(NULL);
 
