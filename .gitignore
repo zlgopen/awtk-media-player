@@ -150,3 +150,6 @@ bin
 3rd/ffmpeg/ffmpeg/ffbuild/.config
 res
 usr
+t.mp3
+t.pcm
+test.pcm

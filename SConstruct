@@ -15,7 +15,7 @@ PLAYER_LIB_PATH=[]
 FFMPEG_LIBS = []
 OS_NAME = platform.system();
 
-PLAYER_LIBS = ["media_player_audio", "audio_decoders", "audio_device", "media_player_base", "lrc"]
+PLAYER_LIBS = ["media_player_audio", "audio_decoders", "audio_encoders", "audio_device", "media_player_base", "lrc", "shine"]
 
 #If you need not ffmpeg, set it false
 #os.environ['WITH_FFMPEG'] = 'false'
@@ -68,7 +68,8 @@ APP_CPPPATH = ['.',
   os.path.join(APP_ROOT, 'src'),
   os.path.join(APP_ROOT, '3rd'),
   os.path.join(APP_ROOT, '3rd/ffmpeg/ffmpeg'),
-  os.path.join(APP_ROOT, '3rd/ffmpeg/x264')
+  os.path.join(APP_ROOT, '3rd/ffmpeg/x264'),
+  os.path.join(APP_ROOT, '3rd/shine/src/lib')
 ] + PLAYER_CPPPATH
 
 APP_LIB_PATH = PLAYER_LIB_PATH
@@ -80,6 +81,8 @@ helper.add_ccflags(APP_CCFLAGS).add_libpath(APP_LIB_PATH)
 helper.add_libs(APP_LIBS).add_linkflags(APP_LINKFLAGS).add_cpppath(APP_CPPPATH).call(DefaultEnvironment)
 
 SConscriptFiles=[
+  '3rd/shine/src/lib/SConscript',
+  'src/media_player/audio_encoders/SConscript',
   'src/media_player/lrc/SConscript', 
   'src/media_player/base/SConscript', 
   'src/media_player/audio_decoders/SConscript', 
@@ -87,6 +90,7 @@ SConscriptFiles=[
   'src/media_player/audio_player/SConscript', 
   'src/media_player/audio_device/SConscript', 
   'demos/SConscript', 
+  'tools/SConscript', 
   'tests/SConscript', 
 ] + PLAYER_PROJS;
 
