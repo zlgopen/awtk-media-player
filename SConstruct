@@ -66,7 +66,7 @@ APP_CPPPATH = ['.',
   os.path.join(APP_ROOT, '3rd'),
   os.path.join(APP_ROOT, '3rd/ffmpeg/ffmpeg'),
   os.path.join(APP_ROOT, '3rd/ffmpeg/x264'),
-  os.path.join(APP_ROOT, '3rd/shine/src/lib')
+  os.path.join(APP_ROOT, '3rd/shine/src')
 ] + PLAYER_CPPPATH
 
 APP_LIBS = PLAYER_LIBS
@@ -80,7 +80,7 @@ helper.add_libs(APP_LIBS).add_linkflags(APP_LINKFLAGS).add_cpppath(APP_CPPPATH).
 
 SConscriptFiles=[
   '3rd/ffmpeg/SConscript',
-  '3rd/shine/src/lib/SConscript',
+  '3rd/shine/SConscript',
   'src/media_player/SConscript',
   'demos/SConscript', 
   'tools/SConscript', 
