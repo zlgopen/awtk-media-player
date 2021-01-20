@@ -15,7 +15,7 @@ PLAYER_LIB_PATH=[]
 FFMPEG_LIBS = []
 OS_NAME = platform.system();
 
-PLAYER_LIBS = ["media_player_audio", "audio_decoders", "audio_encoders", "audio_device", "media_player_base", "lrc", "shine"]
+PLAYER_LIBS = ["media_player_audio", "audio_recorder", "audio_decoders", "audio_encoders", "audio_device", "media_player_base", "lrc", "shine"]
 
 #If you need not ffmpeg, set it false
 #os.environ['WITH_FFMPEG'] = 'false'
@@ -89,6 +89,7 @@ SConscriptFiles=[
   'src/media_player/widgets/SConscript', 
   'src/media_player/audio_player/SConscript', 
   'src/media_player/audio_device/SConscript', 
+  'src/media_player/audio_recorder/SConscript',
   'demos/SConscript', 
   'tools/SConscript', 
   'tests/SConscript', 

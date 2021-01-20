@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/time_now.h"
 #include "audio_device.h"
 
 ret_t audio_device_mix(audio_device_t* device, uint8_t* dst, const uint8_t* src, uint32_t len) {
@@ -36,6 +37,51 @@ uint32_t audio_device_dequeue_data(audio_device_t* device, void* data, uint32_t 
   return_value_if_fail(data != NULL, RET_BAD_PARAMS);
 
   return device->vt->dequeue_data(device, data, len);
+}
+
+uint32_t audio_device_dequeue_data_len(audio_device_t* device, void* buff, uint32_t len, uint32_t timeout_ms) {
+  uint32_t now = 0;
+  uint32_t end = 0;
+  int32_t offset = 0;
+  int32_t read_bytes = 0;
+  uint32_t max_size = len;
+  int32_t remain_bytes = max_size;
+  uint8_t* p = (uint8_t*)buff;
+  return_value_if_fail(buff != NULL, 0);
+  return_value_if_fail(buff != NULL && device != NULL, -1);
+
+  now = time_now_ms();
+  end = now + timeout_ms;
+
+  do {
+    read_bytes = audio_device_dequeue_data(device, p + offset, remain_bytes);
+
+    now = time_now_ms();
+    if (read_bytes == 0) {
+      if (now > end) {
+        break;
+      }
+      sleep_ms(10);
+      continue;
+    }
+
+    offset += read_bytes;
+    remain_bytes -= read_bytes;
+
+    if (remain_bytes == 0) {
+      break;
+    }
+
+    if (now > end) {
+      break;
+    }
+  } while (remain_bytes > 0);
+    
+  if(len != offset) {
+    log_debug("read: %d/%u\n", offset, max_size);
+  }
+
+  return offset;
 }
 
 int32_t audio_device_queue_data(audio_device_t* device, const void* data, uint32_t len) {

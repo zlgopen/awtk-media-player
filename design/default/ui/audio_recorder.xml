@@ -1,0 +1,5 @@
+<window anim_hint="htranslate" theme="player">
+   <label name="duration" x="center" y="middle:-80" w="100" h="30"/>
+   <check_button name="start_stop" style="play" x="center" y="middle:-40" w="40" h="30"/>
+   <button name="quit" text="Quit" x="c" y="middle:40" w="100" h="30" on:click="quit()"/>
+</window>

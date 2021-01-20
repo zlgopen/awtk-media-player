@@ -173,6 +173,19 @@ ret_t audio_device_mix(audio_device_t* device, uint8_t* dst, const uint8_t* src,
 uint32_t audio_device_dequeue_data(audio_device_t* device, void* data, uint32_t len);
 
 /**
+ * @method audio_device_dequeue_data_len
+ * 获取指定长度的录音数据。
+ *
+ * @param {audio_device_t*} device audio_device对象。
+ * @param {void*} data 用于返回数据。
+ * @param {uint32_t} len 最大数据长度。
+ * @param {uint32_t} timeout_ms 超时时间(ms)。 
+ *
+ * @return {uint32_t} 返回实际数据长度。
+ */
+uint32_t audio_device_dequeue_data_len(audio_device_t* device, void* data, uint32_t len, uint32_t timeout_ms);
+
+/**
  * @method audio_device_queue_data
  * 追加播放的音频数据。
  *
@@ -249,7 +262,7 @@ ret_t audio_device_destroy(audio_device_t* device);
  * @method audio_device_mixer_create
  * 创建用于播放的音频设备。
  *
- * @param {const char*} name 名称。
+ * @param {const char*} name 名称(为NULL时使用默认的设备)。
  * @param {const audio_spec_t*} desired 期望的audio spec。
  * @param {audio_spec_t*} real 实际支持的audio spec。
  *
@@ -262,7 +275,7 @@ audio_device_t* audio_device_mixer_create(const char* name, const audio_spec_t* 
  * @method audio_device_recorder_create
  * 创建用于录音的音频设备。
  *
- * @param {const char*} name 名称。
+ * @param {const char*} name 名称(为NULL时使用默认的设备)。
  * @param {const audio_spec_t*} desired 期望的audio spec。
  * @param {audio_spec_t*} real 实际支持的audio spec。
  *
@@ -274,3 +287,4 @@ audio_device_t* audio_device_recorder_create(const char* name, const audio_spec_
 END_C_DECLS
 
 #endif /*TK_AUDIO_DEVICE_H*/
+
