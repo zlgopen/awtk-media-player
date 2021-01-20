@@ -154,3 +154,5 @@ t.mp3
 t.pcm
 test.pcm
 *.os
+idl/idl.json
+src/media_player.def
