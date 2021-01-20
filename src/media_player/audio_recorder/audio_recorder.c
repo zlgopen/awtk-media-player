@@ -214,7 +214,7 @@ audio_recorder_t* audio_recorder_create(void) {
   audio_recorder_t* recorder = TKMEM_ZALLOC(audio_recorder_t);
   return_value_if_fail(recorder != NULL, NULL);
 
-  recorder->volume = 60;
+  recorder->volume = 100;
   recorder->worker = action_thread_create();
 
   return (audio_recorder_t*)recorder;

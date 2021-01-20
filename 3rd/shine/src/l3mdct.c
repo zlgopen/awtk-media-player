@@ -93,7 +93,7 @@ void shine_mdct_sub(shine_global_config *config, int stride)
         for(k=18; k--; )
         {
 		  int32_t vm;
-#ifdef __BORLANDC__
+#if defined(__BORLANDC__) || defined(WIN32)
 		  uint32_t vm_lo;
 #else
 		  uint32_t vm_lo __attribute__((unused));

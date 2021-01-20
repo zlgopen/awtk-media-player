@@ -336,14 +336,6 @@ ret_t media_player_notify_simple(media_player_t* player, uint32_t event_type);
 ret_t media_player_notify(media_player_t* player, event_t* e);
 
 /**
- * @method media_player_create
- * 创建media_player对象。
- *
- * @return {media_player_t*} 返回media_player对象。
- */
-media_player_t* media_player_create(void);
-
-/**
  * @method media_player
  * 获取全局缺省的media_player对象。
  *

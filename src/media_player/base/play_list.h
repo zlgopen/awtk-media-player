@@ -107,7 +107,7 @@ ret_t play_list_append(play_list_t* list, const char* filename);
 ret_t play_list_remove(play_list_t* list, const char* filename);
 
 /**
- * @method play_list_get_queued_data_size
+ * @method play_list_get_size
  * 获取曲目个数。
  *
  * @param {play_list_t*} list play_list对象。
