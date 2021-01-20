@@ -117,15 +117,17 @@ lrc_builder_t* lrc_builder_default_init(lrc_builder_default_t* b, lrc_t* lrc, ch
 }
 
 static lrc_t* lrc_parse(lrc_t* lrc, const char* text) {
+  ret_t ret = RET_OK;
   lrc_builder_default_t builder;
   uint32_t size = strlen(text) + 1;
   char* strs = TKMEM_ALLOC(size);
   lrc_builder_t* b = lrc_builder_default_init(&builder, lrc, strs, size);
 
-  return_value_if_fail(lrc_parser_parse(b, text) == RET_OK, NULL);
+  ret = lrc_parser_parse(b, text);
   lrc_time_tag_list_sort(lrc->time_tags);
+  lrc_builder_destroy(&builder);
 
-  return lrc;
+  return ret == RET_OK ? lrc : NULL;
 }
 
 lrc_t* lrc_create(const char* text) {
@@ -153,12 +155,13 @@ lrc_t* lrc_create(const char* text) {
   return lrc;
 }
 
-ret_t lrc_destroy(lrc_t* list) {
-  return_value_if_fail(list != NULL, RET_BAD_PARAMS);
+ret_t lrc_destroy(lrc_t* lrc) {
+  return_value_if_fail(lrc != NULL, RET_BAD_PARAMS);
 
-  lrc_id_tag_list_destroy(list->id_tags);
-  lrc_time_tag_list_destroy(list->time_tags);
-  TKMEM_FREE(list);
+  lrc_id_tag_list_destroy(lrc->id_tags);
+  lrc_time_tag_list_destroy(lrc->time_tags);
+  TKMEM_FREE(lrc->strs);
+  TKMEM_FREE(lrc);
 
   return RET_OK;
 }
