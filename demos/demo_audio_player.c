@@ -19,30 +19,10 @@
  *
  */
 
-#include "awtk.h"
-#include "media_player/widgets/lrc_view.h"
-#include "media_player/widgets/audio_view.h"
-#include "media_player/base/media_player.h"
-#include "media_player/base/audio_decoder_factory.h"
-#include "media_player/audio_decoders/audio_decoder_mp3.h"
-#include "media_player/audio_player/media_player_audio.h"
+#include "media_player/media_player_helper.h"
 
 static ret_t on_quit_click(void* ctx, event_t* e) {
   tk_quit();
-  return RET_OK;
-}
-
-static ret_t app_global_init(void) {
-  lrc_view_register();
-  audio_view_register();
-  media_player_set(media_player_audio_create());
-  if (NULL == data_reader_factory()) {
-    data_reader_factory_set(data_reader_factory_create());
-  }
-  data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
-  audio_decoder_factory_set(audio_decoder_factory_create());
-  audio_decoder_factory_register(audio_decoder_factory(), "mp3", audio_decoder_mp3_create);
-
   return RET_OK;
 }
 
@@ -50,7 +30,7 @@ static ret_t application_init() {
   widget_t* win = NULL;
   widget_t* audio_view = NULL;
 
-  app_global_init();
+  media_player_init();
   log_set_log_level(LOG_LEVEL_DEBUG);
 
   win = window_open("audio_player");
@@ -68,10 +48,7 @@ static ret_t application_init() {
 }
 
 ret_t application_exit() {
-  media_player_destroy(media_player());
-  audio_decoder_factory_destroy(audio_decoder_factory());
-  data_reader_factory_destroy(data_reader_factory());
-  media_player_set(NULL);
+  media_player_deinit();
 
   return RET_OK;
 }

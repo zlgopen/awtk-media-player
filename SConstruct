@@ -4,9 +4,6 @@ import scripts.app_helper as app
 
 helper = app.Helper(ARGUMENTS);
 APP_ROOT = helper.APP_ROOT
-X264_ROOT=os.path.abspath(os.path.join(helper.APP_ROOT, '3rd/ffmpeg/x264'))
-FFMPEG_ROOT=os.path.abspath(os.path.join(APP_ROOT, '3rd/ffmpeg/ffmpeg'))
-
 PLAYER_PROJS=[]
 PLAYER_CCFLAGS = ''
 PLAYER_CPPPATH=[]
@@ -15,14 +12,14 @@ PLAYER_LIB_PATH=[]
 FFMPEG_LIBS = []
 OS_NAME = platform.system();
 
-PLAYER_LIBS = ["media_player_audio", "audio_recorder", "audio_decoders", "audio_encoders", "audio_device", "media_player_base", "lrc", "shine"]
+PLAYER_LIBS = ["shine"]
 
 #If you need not ffmpeg, set it false
 #os.environ['WITH_FFMPEG'] = 'false'
 os.environ['WITH_FFMPEG'] = 'true'
 
 if os.environ['WITH_FFMPEG'] == 'true':
-    PLAYER_LIBS = ["media_player_ffmpeg"] + PLAYER_LIBS
+    PLAYER_CCFLAGS += ' -DWITH_PLAYER_FFMPEG '
     FFMPEG_LIBS=["ffmpeg", "x264"]
     PLAYER_PROJS = [
       '3rd/ffmpeg/SConscript',
@@ -72,28 +69,23 @@ APP_CPPPATH = ['.',
   os.path.join(APP_ROOT, '3rd/shine/src/lib')
 ] + PLAYER_CPPPATH
 
+APP_LIBS = PLAYER_LIBS
 APP_LIB_PATH = PLAYER_LIB_PATH
 APP_LINKFLAGS = PLAYER_LINKFLAGS
 APP_CCFLAGS = ' -DBUILDING_LIBCURL ' + PLAYER_CCFLAGS
-APP_LIBS = ['media_player_widgets'] + PLAYER_LIBS
 
+helper.set_dll_def('src/media_player.def')
 helper.add_ccflags(APP_CCFLAGS).add_libpath(APP_LIB_PATH)
 helper.add_libs(APP_LIBS).add_linkflags(APP_LINKFLAGS).add_cpppath(APP_CPPPATH).call(DefaultEnvironment)
 
 SConscriptFiles=[
+  '3rd/ffmpeg/SConscript',
   '3rd/shine/src/lib/SConscript',
-  'src/media_player/audio_encoders/SConscript',
-  'src/media_player/lrc/SConscript', 
-  'src/media_player/base/SConscript', 
-  'src/media_player/audio_decoders/SConscript', 
-  'src/media_player/widgets/SConscript', 
-  'src/media_player/audio_player/SConscript', 
-  'src/media_player/audio_device/SConscript', 
-  'src/media_player/audio_recorder/SConscript',
+  'src/media_player/SConscript',
   'demos/SConscript', 
   'tools/SConscript', 
   'tests/SConscript', 
-] + PLAYER_PROJS;
+]
 
 SConscript(SConscriptFiles)
 

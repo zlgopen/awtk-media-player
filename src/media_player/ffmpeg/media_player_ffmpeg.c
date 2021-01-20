@@ -196,9 +196,12 @@ static ret_t media_player_ffmpeg_get_video_frame(media_player_t* player, bitmap_
 
 static ret_t media_player_ffmpeg_destroy(media_player_t* player) {
   media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
-  return_value_if_fail(ffmpeg->is != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ffmpeg != NULL, RET_BAD_PARAMS);
 
-  media_player_stop(player);
+  if (ffmpeg->is != NULL) {
+    media_player_stop(player);
+  }
+
   TKMEM_FREE(player);
 
   return RET_OK;

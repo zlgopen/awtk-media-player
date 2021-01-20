@@ -4,6 +4,7 @@ import platform
 
 env=DefaultEnvironment().Clone()
 BIN_DIR=os.environ['BIN_DIR'];
+env['LIBS'] = ['media_player'] + env['LIBS']
 env.Program(os.path.join(BIN_DIR, 'mp3_to_pcm'), ['mp3_to_pcm.c'])
 env.Program(os.path.join(BIN_DIR, 'pcm_to_mp3'), ['pcm_to_mp3.c'])
 

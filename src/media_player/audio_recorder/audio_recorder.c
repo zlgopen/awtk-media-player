@@ -185,7 +185,9 @@ ret_t audio_recorder_set_volume(audio_recorder_t* recorder, uint32_t volume) {
 ret_t audio_recorder_destroy(audio_recorder_t* recorder) {
   return_value_if_fail(recorder != NULL, RET_BAD_PARAMS);
 
-  audio_recorder_stop(recorder);
+  if (recorder->encoder != NULL) {
+    audio_recorder_stop(recorder);
+  }
   action_thread_destroy(recorder->worker);
   TKMEM_FREE(recorder);
 

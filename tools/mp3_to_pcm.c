@@ -20,31 +20,7 @@
  */
 
 #include "pcm.h"
-#include "awtk.h"
-#include "media_player/widgets/lrc_view.h"
-#include "media_player/widgets/audio_view.h"
-#include "media_player/base/media_player.h"
-#include "media_player/base/audio_decoder_factory.h"
-#include "media_player/audio_decoders/audio_decoder_mp3.h"
-#include "media_player/base/audio_encoder_factory.h"
-#include "media_player/audio_encoders/audio_encoder_mp3.h"
-#include "media_player/audio_player/media_player_audio.h"
-
-static ret_t app_global_init(void) {
-  data_reader_factory_set(data_reader_factory_create());
-  data_writer_factory_set(data_writer_factory_create());
-
-  data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
-  data_writer_factory_register(data_writer_factory(), "file", data_writer_file_create);
-
-  audio_decoder_factory_set(audio_decoder_factory_create());
-  audio_decoder_factory_register(audio_decoder_factory(), "mp3", audio_decoder_mp3_create);
-
-  audio_encoder_factory_set(audio_encoder_factory_create());
-  audio_encoder_factory_register(audio_encoder_factory(), "mp3", audio_encoder_mp3_create);
-
-  return RET_OK;
-}
+#include "media_player/media_player_helper.h"
 
 int main(int argc, char* argv[]) {
   int32_t ret = 0;
@@ -62,7 +38,7 @@ int main(int argc, char* argv[]) {
   }
 
   platform_prepare();
-  app_global_init();
+  media_player_init();
   log_set_log_level(LOG_LEVEL_DEBUG);
 
   infile = argv[1];
@@ -93,6 +69,7 @@ int main(int argc, char* argv[]) {
   
   data_writer_destroy(writer);
   audio_decoder_destroy(decoder);
+  media_player_deinit();
 
   return RET_OK;
 }

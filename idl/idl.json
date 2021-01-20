@@ -1,0 +1,2833 @@
+[
+  {
+    "type": "enum",
+    "desc": "录音状态。",
+    "consts": [
+      {
+        "desc": "无效状态。",
+        "name": "AUDIO_RECODER_NONE"
+      },
+      {
+        "desc": "暂停状态。",
+        "name": "AUDIO_RECODER_PAUSED"
+      },
+      {
+        "desc": "录音状态。",
+        "name": "AUDIO_RECODER_RECORDING"
+      }
+    ],
+    "header": "audio_recorder/audio_recorder.h",
+    "name": "audio_recorder_state_t",
+    "prefix": "AUDIO_RECODER_",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建音频录音对象。",
+        "name": "audio_recorder_create",
+        "return": {
+          "type": "audio_recorder_t*",
+          "desc": "返回audio_recorder对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_recorder_t*",
+            "name": "audio_recorder",
+            "desc": "audio_recorder对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "volume",
+            "desc": "音量(0-100)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置音量。",
+        "name": "audio_recorder_set_volume",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_recorder_t*",
+            "name": "audio_recorder",
+            "desc": "audio_recorder对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取音量。",
+        "name": "audio_recorder_get_volume",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回音量。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_recorder_t*",
+            "name": "audio_recorder",
+            "desc": "audio_recorder对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取录音状态。",
+        "name": "audio_recorder_get_state",
+        "return": {
+          "type": "audio_recorder_state_t",
+          "desc": "返回录音状态。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_recorder_t*",
+            "name": "audio_recorder",
+            "desc": "audio_recorder对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "url",
+            "desc": "保持数据的URL。"
+          }
+        ],
+        "annotation": {},
+        "desc": "开始录音。",
+        "name": "audio_recorder_start",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_recorder_t*",
+            "name": "audio_recorder",
+            "desc": "audio_recorder对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "暂停录音。",
+        "name": "audio_recorder_pause",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_recorder_t*",
+            "name": "audio_recorder",
+            "desc": "audio_recorder对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "停止录音。",
+        "name": "audio_recorder_stop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_recorder_t*",
+            "name": "audio_recorder",
+            "desc": "audio_recorder对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁音频录音对象。",
+        "name": "audio_recorder_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": "获取全局缺省的audio_recorder对象。",
+        "name": "audio_recorder",
+        "return": {
+          "type": "audio_recorder_t*",
+          "desc": "返回audio_recorder对象。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": "设置全局缺省的audio_recorder对象。",
+        "name": "audio_recorder_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "audio_recorder/audio_recorder.h",
+    "desc": "音频录音。\n\n从音频设备读取声音数据，然后将数据传到音频编码器。",
+    "name": "audio_recorder_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "获取缺省的audio decoder工厂对象。",
+        "name": "audio_decoder_factory",
+        "return": {
+          "type": "audio_decoder_factory_t*",
+          "desc": "返回audio decoder工厂对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_decoder_factory_t*",
+            "name": "factory",
+            "desc": "audio decoder工厂对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省的audio decoder工厂对象。",
+        "name": "audio_decoder_factory_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建audio decoder工厂对象。",
+        "name": "audio_decoder_factory_create",
+        "return": {
+          "type": "audio_decoder_factory_t*",
+          "desc": "返回audio decoder工厂对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_decoder_factory_t*",
+            "name": "factory",
+            "desc": "decoder工厂对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "type",
+            "desc": "类型(如mp3)。"
+          },
+          {
+            "type": "audio_decoder_create_t",
+            "name": "create",
+            "desc": "audio decoder创建函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "注册audio decoder创建函数。",
+        "name": "audio_decoder_factory_register",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_decoder_factory_t*",
+            "name": "factory",
+            "desc": "audio decoder工厂对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "type",
+            "desc": "类型(如mp3)。"
+          },
+          {
+            "type": "data_reader_t*",
+            "name": "reader",
+            "desc": "reader对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建指定类型的audio decoder对象。",
+        "name": "audio_decoder_factory_create_decoder",
+        "return": {
+          "type": "audio_decoder_t*",
+          "desc": "返回audio decoder对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_decoder_factory_t*",
+            "name": "factory",
+            "desc": "audio decoder工厂对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "析构并释放audio decoder工厂对象。",
+        "name": "audio_decoder_factory_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/audio_decoder_factory.h",
+    "desc": "audio decoder工厂。",
+    "name": "audio_decoder_factory_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "audio_decoder_t*",
+            "name": "audio_decoder",
+            "desc": "audio_decoder对象。"
+          },
+          {
+            "type": "void*",
+            "name": "buff",
+            "desc": "返回解码的数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "buff的大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "解码数据。",
+        "name": "audio_decoder_decode",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际数据的长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_decoder_t*",
+            "name": "decoder",
+            "desc": "audio_decoder对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "offset",
+            "desc": "绝对偏移量(ms)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "定位到指定的位置。",
+        "name": "audio_decoder_seek",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_decoder_t*",
+            "name": "decoder",
+            "desc": "audio_decoder对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁audio decoder对象。",
+        "name": "audio_decoder_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "position",
+        "desc": "当前解码位置(ms)。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "duration",
+        "desc": "时间长度(ms)。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "freq",
+        "desc": "每秒采样数量。",
+        "type": "int32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "format",
+        "desc": "音频格式。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "channels",
+        "desc": "通道数。1表示单声道，2表示立体声。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "samples",
+        "desc": "总采样数。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/audio_decoder.h",
+    "desc": "音频格式解码器接口。",
+    "name": "audio_decoder_t",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "音频格式。",
+    "consts": [
+      {
+        "desc": "无效格式。",
+        "name": "AUDIO_FORMAT_NONE"
+      },
+      {
+        "desc": "16位有符号采样(系统原生字节顺序)。",
+        "name": "AUDIO_FORMAT_S16SYS"
+      }
+    ],
+    "header": "base/audio_device.h",
+    "name": "audio_format_t",
+    "prefix": "AUDIO_FORMAT_",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "freq",
+        "desc": "每秒采样数量。",
+        "type": "int32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "format",
+        "desc": "音频格式。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "channels",
+        "desc": "通道数。1表示单声道，2表示立体声。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "samples",
+        "desc": "采样数。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "size",
+        "desc": "音频缓存大小(根据参数计算得来)。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "callback",
+        "desc": "回调函数。",
+        "type": "audio_device_callback_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "callback_ctx",
+        "desc": "回调函数的上下文。",
+        "type": "void*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/audio_device.h",
+    "desc": "音频描述。",
+    "name": "audio_spec_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "audio_device_t*",
+            "name": "device",
+            "desc": "audio_device对象。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "dst",
+            "desc": "目标缓存区。"
+          },
+          {
+            "type": "const uint8_t*",
+            "name": "src",
+            "desc": "目标缓存区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "len",
+            "desc": "数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "准备播放的数据(在回调函数中调用)。",
+        "name": "audio_device_mix",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_device_t*",
+            "name": "device",
+            "desc": "audio_device对象。"
+          },
+          {
+            "type": "void*",
+            "name": "data",
+            "desc": "用于返回数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "len",
+            "desc": "最大数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取录音的数据。",
+        "name": "audio_device_dequeue_data",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回实际数据长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_device_t*",
+            "name": "device",
+            "desc": "audio_device对象。"
+          },
+          {
+            "type": "void*",
+            "name": "data",
+            "desc": "用于返回数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "len",
+            "desc": "最大数据长度。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timeout_ms",
+            "desc": "超时时间(ms)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定长度的录音数据。",
+        "name": "audio_device_dequeue_data_len",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回实际数据长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_device_t*",
+            "name": "device",
+            "desc": "audio_device对象。"
+          },
+          {
+            "type": "const void*",
+            "name": "data",
+            "desc": "音频数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "len",
+            "desc": "数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加播放的音频数据。",
+        "name": "audio_device_queue_data",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际数据长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_device_t*",
+            "name": "device",
+            "desc": "audio_device对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取队列中的音频数据长度。",
+        "name": "audio_device_get_queued_data_size",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回数据长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_device_t*",
+            "name": "device",
+            "desc": "audio_device对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清除队列中的音频数据。",
+        "name": "audio_device_clear_queued_data",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_device_t*",
+            "name": "audio_device",
+            "desc": "audio_device对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "让设备开始工作。",
+        "name": "audio_device_start",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_device_t*",
+            "name": "audio_device",
+            "desc": "audio_device对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "让设备暂停工作。",
+        "name": "audio_device_pause",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_device_t*",
+            "name": "device",
+            "desc": "audio_device对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "volume",
+            "desc": "音量(0-100)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置音量。",
+        "name": "audio_device_set_volume",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_device_t*",
+            "name": "device",
+            "desc": "audio_device对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁audio device对象。",
+        "name": "audio_device_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "名称(为NULL时使用默认的设备)。"
+          },
+          {
+            "type": "const audio_spec_t*",
+            "name": "desired",
+            "desc": "期望的audio spec。"
+          },
+          {
+            "type": "audio_spec_t*",
+            "name": "real",
+            "desc": "实际支持的audio spec。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建用于播放的音频设备。",
+        "name": "audio_device_mixer_create",
+        "return": {
+          "type": "audio_device_t*",
+          "desc": "返回音频设备。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "名称(为NULL时使用默认的设备)。"
+          },
+          {
+            "type": "const audio_spec_t*",
+            "name": "desired",
+            "desc": "期望的audio spec。"
+          },
+          {
+            "type": "audio_spec_t*",
+            "name": "real",
+            "desc": "实际支持的audio spec。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建用于录音的音频设备。",
+        "name": "audio_device_recorder_create",
+        "return": {
+          "type": "audio_device_t*",
+          "desc": "返回音频设备。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "volume",
+        "desc": "音量。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/audio_device.h",
+    "desc": "音频设备接口。",
+    "name": "audio_device_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "获取缺省的audio encoder工厂对象。",
+        "name": "audio_encoder_factory",
+        "return": {
+          "type": "audio_encoder_factory_t*",
+          "desc": "返回audio encoder工厂对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_encoder_factory_t*",
+            "name": "factory",
+            "desc": "audio encoder工厂对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省的audio encoder工厂对象。",
+        "name": "audio_encoder_factory_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建audio encoder工厂对象。",
+        "name": "audio_encoder_factory_create",
+        "return": {
+          "type": "audio_encoder_factory_t*",
+          "desc": "返回audio encoder工厂对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_encoder_factory_t*",
+            "name": "factory",
+            "desc": "encoder工厂对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "type",
+            "desc": "类型(如mp3)。"
+          },
+          {
+            "type": "audio_encoder_create_t",
+            "name": "create",
+            "desc": "audio encoder创建函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "注册audio encoder创建函数。",
+        "name": "audio_encoder_factory_register",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_encoder_factory_t*",
+            "name": "factory",
+            "desc": "audio encoder工厂对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "type",
+            "desc": "类型(如mp3)。"
+          },
+          {
+            "type": "data_writer_t*",
+            "name": "writer",
+            "desc": "writer对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建指定类型的audio encoder对象。",
+        "name": "audio_encoder_factory_create_encoder",
+        "return": {
+          "type": "audio_encoder_t*",
+          "desc": "返回audio encoder对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_encoder_factory_t*",
+            "name": "factory",
+            "desc": "audio encoder工厂对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "析构并释放audio encoder工厂对象。",
+        "name": "audio_encoder_factory_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/audio_encoder_factory.h",
+    "desc": "audio encoder工厂。",
+    "name": "audio_encoder_factory_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "audio_encoder_t*",
+            "name": "audio_encoder",
+            "desc": "audio_encoder对象。"
+          },
+          {
+            "type": "const void*",
+            "name": "buff",
+            "desc": "待编码的数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "buff的大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "对音频数据进行编码。",
+        "name": "audio_encoder_encode",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际编码的原始数据的长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_encoder_t*",
+            "name": "encoder",
+            "desc": "audio_encoder对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "v",
+            "desc": "属性值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置属性。",
+        "name": "audio_encoder_set_prop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_encoder_t*",
+            "name": "encoder",
+            "desc": "audio_encoder对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "v",
+            "desc": "属性值(返回)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取属性。",
+        "name": "audio_encoder_get_prop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "audio_encoder_t*",
+            "name": "encoder",
+            "desc": "audio_encoder对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁audio encoder对象。",
+        "name": "audio_encoder_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "freq",
+        "desc": "每秒采样数量。",
+        "type": "int32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "channels",
+        "desc": "通道数。1表示单声道，2表示立体声。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/audio_encoder.h",
+    "desc": "音频编码器接口。\n\n音频编码器除了将声音编码成mp3/wav等文件外，也可以将声音识别成文本。",
+    "name": "audio_encoder_t",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "媒体播放器的事件。",
+    "consts": [
+      {
+        "desc": "加载事件(media_player_loaded_event_t)。",
+        "name": "EVT_MEDIA_PLAYER_LOADED"
+      },
+      {
+        "desc": "进入暂停状态。",
+        "name": "EVT_MEDIA_PLAYER_PAUSED"
+      },
+      {
+        "desc": "进入播放状态。",
+        "name": "EVT_MEDIA_PLAYER_RESUMED"
+      },
+      {
+        "desc": "播放完成。",
+        "name": "EVT_MEDIA_PLAYER_DONE"
+      },
+      {
+        "desc": "播放取消。",
+        "name": "EVT_MEDIA_PLAYER_ABORT"
+      }
+    ],
+    "header": "base/media_player_event.h",
+    "name": "media_player_event_t",
+    "prefix": "EVT_MEDIA_PLAYER_",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "has_audio",
+        "desc": "是否有音频。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "has_video",
+        "desc": "是否有视频。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "has_subtitle",
+        "desc": "是否有字幕。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "duration",
+        "desc": "时长(ms)。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "video_width",
+        "desc": "视频宽度。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "video_height",
+        "desc": "视频高度。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "display_aspect_ratio_w",
+        "desc": "display aspect ratio width。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "display_aspect_ratio_h",
+        "desc": "display aspect ratio width。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/media_player_event.h",
+    "desc": "媒体信息。",
+    "name": "media_info_t",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "媒体播放器的状态。",
+    "consts": [
+      {
+        "desc": "无效状态。",
+        "name": "MEDIA_PLAYER_NONE"
+      },
+      {
+        "desc": "暂停状态。",
+        "name": "MEDIA_PLAYER_PAUSED"
+      },
+      {
+        "desc": "播放状态。",
+        "name": "MEDIA_PLAYER_PLAYING"
+      }
+    ],
+    "header": "base/media_player.h",
+    "name": "media_player_state_t",
+    "prefix": "MEDIA_PLAYER_",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "player",
+            "desc": "media player对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性的名称。"
+          },
+          {
+            "type": "value_t*",
+            "name": "value",
+            "desc": "属性的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置指定属性的值。\n\n> 具体实现可能提供了一些特定的属性，以通过本函数进行设置。",
+        "name": "media_player_set_prop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "player",
+            "desc": "media player对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性的名称。"
+          },
+          {
+            "type": "value_t*",
+            "name": "value",
+            "desc": "返回属性的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取指定属性的值。\n\n> 具体实现可能提供了一些特定的属性，以通过本函数进行获取。",
+        "name": "media_player_get_prop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "url",
+            "desc": "URL(支持的协议与具体实现有关，缺省为本地文件)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "加载指定的文件。",
+        "name": "media_player_load",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "开始播放刚加载或暂停的曲目。",
+        "name": "media_player_start",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "暂停播放。",
+        "name": "media_player_pause",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "停止播放。",
+        "name": "media_player_stop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "offset",
+            "desc": "偏移量(ms)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "定位到指定的位置。",
+        "name": "media_player_seek",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "volume",
+            "desc": "音量(0-100)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置音量。",
+        "name": "media_player_set_volume",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "muted",
+            "desc": "是否静音。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置静音。",
+        "name": "media_player_set_muted",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          },
+          {
+            "type": "event_func_t",
+            "name": "on_event",
+            "desc": "事件回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "事件回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置事件回调函数。",
+        "name": "media_player_set_on_event",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "image",
+            "desc": "用于返回图片（图片需要调用者初始化：大小和内存）。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取视频的一帧图片。",
+        "name": "media_player_get_video_frame",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁媒体播放器对象。",
+        "name": "media_player_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取播放状态。",
+        "name": "media_player_get_state",
+        "return": {
+          "type": "media_player_state_t",
+          "desc": "返回播放状态。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取音量。",
+        "name": "media_player_get_volume",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回音量。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取当前播放位置。",
+        "name": "media_player_get_elapsed",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回当前播放位置(ms)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取时间长度。",
+        "name": "media_player_get_duration",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回时间长度(ms)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取视频宽度。",
+        "name": "media_player_get_video_width",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回时间宽度(ms)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取视频高度。",
+        "name": "media_player_get_video_height",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回时间高度(ms)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "event_type",
+            "desc": "事件类型。"
+          }
+        ],
+        "annotation": {},
+        "desc": "事件通知。",
+        "name": "media_player_notify_simple",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "media_player_t*",
+            "name": "media_player",
+            "desc": "media_player对象。"
+          },
+          {
+            "type": "event_t*",
+            "name": "e",
+            "desc": "事件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "事件通知。",
+        "name": "media_player_notify",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建media_player对象。",
+        "name": "media_player_create",
+        "return": {
+          "type": "media_player_t*",
+          "desc": "返回media_player对象。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "获取全局缺省的media_player对象。",
+        "name": "media_player",
+        "return": {
+          "type": "media_player_t*",
+          "desc": "返回media_player对象。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "设置全局缺省的media_player对象。",
+        "name": "media_player_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "user_data",
+        "desc": "用户数据。",
+        "type": "void*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/media_player.h",
+    "desc": "媒体播放器接口。",
+    "name": "media_player_t",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "播放模式。",
+    "consts": [
+      {
+        "desc": "全部循环。",
+        "name": "PLAY_MODE_REPEAT_ALL"
+      },
+      {
+        "desc": "单曲循环。",
+        "name": "PLAY_MODE_REPEAT_ONE"
+      },
+      {
+        "desc": "随机播放",
+        "name": "PLAY_MODE_SHUFFLE"
+      }
+    ],
+    "header": "base/play_list.h",
+    "name": "play_mode_t",
+    "prefix": "PLAY_MODE_",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建播放列表对象。",
+        "name": "play_list_create",
+        "return": {
+          "type": "play_list_t*",
+          "desc": "返回播放列表对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "play_list_t*",
+            "name": "list",
+            "desc": "play_list对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "filename",
+            "desc": "文件名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加一个媒体文件。",
+        "name": "play_list_append",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "play_list_t*",
+            "name": "list",
+            "desc": "play_list对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "filename",
+            "desc": "文件名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "删除指定的媒体文件。",
+        "name": "play_list_remove",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "play_list_t*",
+            "name": "list",
+            "desc": "play_list对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取曲目个数。",
+        "name": "play_list_get_queued_data_size",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回曲目个数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "play_list_t*",
+            "name": "list",
+            "desc": "play_list对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "选择下一首。",
+        "name": "play_list_next",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "play_list_t*",
+            "name": "list",
+            "desc": "play_list对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "选择前一首。",
+        "name": "play_list_prev",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "play_list_t*",
+            "name": "list",
+            "desc": "play_list对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取当前曲目的文件名。",
+        "name": "play_list_curr",
+        "return": {
+          "type": "const char*",
+          "desc": "返回当前曲目的文件名。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "play_list_t*",
+            "name": "play_list",
+            "desc": "play_list对象。"
+          },
+          {
+            "type": "play_mode_t",
+            "name": "mode",
+            "desc": "播放模式。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置播放模式。",
+        "name": "play_list_set_play_mode",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "play_list_t*",
+            "name": "list",
+            "desc": "play_list对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁play list对象。",
+        "name": "play_list_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "mode",
+        "desc": "循环模式。",
+        "type": "play_mode_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "curr",
+        "desc": "当前曲目序号。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/play_list.h",
+    "desc": "媒体播放器接口。",
+    "name": "play_list_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建builder对象。",
+        "name": "lrc_builder_dump_create",
+        "return": {
+          "type": "lrc_builder_t*",
+          "desc": "返回builder对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "lrc/lrc_builder_dump.h",
+    "desc": "lrc builder dump",
+    "name": "lrc_builder_dump_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "lrc_builder_t*",
+            "name": "builder",
+            "desc": "lrc_builder对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "id",
+            "desc": "名称。"
+          },
+          {
+            "type": "const char*",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "处理id标签。",
+        "name": "lrc_builder_on_id_tag",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_builder_t*",
+            "name": "builder",
+            "desc": "lrc_builder对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timestamp",
+            "desc": "时间。"
+          }
+        ],
+        "annotation": {},
+        "desc": "处理time标签。",
+        "name": "lrc_builder_on_time_tag",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_builder_t*",
+            "name": "builder",
+            "desc": "lrc_builder对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "歌词。"
+          }
+        ],
+        "annotation": {},
+        "desc": "处理歌词。",
+        "name": "lrc_builder_on_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_builder_t*",
+            "name": "builder",
+            "desc": "lrc_builder对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "error",
+            "desc": "错误。"
+          }
+        ],
+        "annotation": {},
+        "desc": "处理错误。",
+        "name": "lrc_builder_on_error",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_builder_t*",
+            "name": "builder",
+            "desc": "lrc_builder对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁lrc builder对象。",
+        "name": "lrc_builder_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "lrc/lrc_builder.h",
+    "desc": "lrc builder",
+    "name": "lrc_builder_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "id",
+        "desc": "ID。",
+        "type": "const char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "value",
+        "desc": "值。",
+        "type": "const char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "lrc/lrc_id_tag.h",
+    "desc": "lrc id tag",
+    "name": "lrc_id_tag_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建id tag list对象。",
+        "name": "lrc_id_tag_list_create",
+        "return": {
+          "type": "lrc_id_tag_list_t*",
+          "desc": "返回list对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_id_tag_list_t*",
+            "name": "list",
+            "desc": "lrc_id_tag_list对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "id",
+            "desc": "id。"
+          },
+          {
+            "type": "const char*",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加一个tag。",
+        "name": "lrc_id_tag_list_append",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_id_tag_list_t*",
+            "name": "list",
+            "desc": "lrc_id_tag_list对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "id",
+            "desc": "id。"
+          }
+        ],
+        "annotation": {},
+        "desc": "查找指定tag的值。",
+        "name": "lrc_id_tag_list_find",
+        "return": {
+          "type": "const char*",
+          "desc": "返回值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_id_tag_list_t*",
+            "name": "list",
+            "desc": "lrc_id_tag_list对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁list对象。",
+        "name": "lrc_id_tag_list_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "lrc/lrc_id_tag.h",
+    "desc": "lrc id tag list",
+    "name": "lrc_id_tag_list_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "lrc_builder_t*",
+            "name": "builder",
+            "desc": "builder对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "str",
+            "desc": "歌词数据。"
+          }
+        ],
+        "annotation": {},
+        "desc": "解析歌词。",
+        "name": "lrc_parser_parse",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "lrc/lrc_parser.h",
+    "desc": "lrc parser",
+    "name": "lrc_parser_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "timestamp",
+        "desc": "time stamp。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "text",
+        "desc": "文本。",
+        "type": "const char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "lrc/lrc_time_tag.h",
+    "desc": "lrc time tag",
+    "name": "lrc_time_tag_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建time tag list对象。",
+        "name": "lrc_time_tag_list_create",
+        "return": {
+          "type": "lrc_time_tag_list_t*",
+          "desc": "返回list对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_time_tag_list_t*",
+            "name": "list",
+            "desc": "lrc_time_tag_list对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timestamp",
+            "desc": "时间。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加一个tag。",
+        "name": "lrc_time_tag_list_append",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_time_tag_list_t*",
+            "name": "list",
+            "desc": "lrc_time_tag_list对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "序数。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timestamp",
+            "desc": "时间。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断指定的序号是否匹配指定的时间。",
+        "name": "lrc_time_tag_list_is_matched",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示匹配，FALSE表示不匹配。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_time_tag_list_t*",
+            "name": "list",
+            "desc": "lrc_time_tag_list对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timestamp",
+            "desc": "时间。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定时间的项的序数。",
+        "name": "lrc_time_tag_list_find_index",
+        "return": {
+          "type": "int32_t",
+          "desc": "找到则返回项的序数，否则返回-1。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_time_tag_list_t*",
+            "name": "list",
+            "desc": "lrc_time_tag_list对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "文本。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置没有text的tag的text。",
+        "name": "lrc_time_tag_list_set_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_time_tag_list_t*",
+            "name": "list",
+            "desc": "lrc_time_tag_list对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "按时间对tag进行排序。",
+        "name": "lrc_time_tag_list_sort",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_time_tag_list_t*",
+            "name": "list",
+            "desc": "lrc_time_tag_list对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "time",
+            "desc": "time。"
+          }
+        ],
+        "annotation": {},
+        "desc": "查找指定tag的值。",
+        "name": "lrc_time_tag_list_find",
+        "return": {
+          "type": "const char*",
+          "desc": "返回值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_time_tag_list_t*",
+            "name": "list",
+            "desc": "lrc_time_tag_list对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁list对象。",
+        "name": "lrc_time_tag_list_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "lrc/lrc_time_tag.h",
+    "desc": "lrc time tag list",
+    "name": "lrc_time_tag_list_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "歌词文本。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建lrc对象。",
+        "name": "lrc_create",
+        "return": {
+          "type": "lrc_t*",
+          "desc": "返回list对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lrc_t*",
+            "name": "list",
+            "desc": "lrc对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁lrc对象。",
+        "name": "lrc_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "初始化。",
+        "name": "media_player_init",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "~初始化。",
+        "name": "media_player_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "id_tags",
+        "desc": "id tags。",
+        "type": "lrc_id_tag_list_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "time_tags",
+        "desc": "time tags。",
+        "type": "lrc_time_tag_list_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "lrc/lrc.h",
+    "desc": "lrc",
+    "name": "lrc_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建音频播放器对象。",
+        "name": "media_player_audio_create",
+        "return": {
+          "type": "media_player_t*",
+          "desc": "返回media player对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "audio_player/media_player_audio.h",
+    "desc": "音频播放器。",
+    "name": "media_player_audio_t",
+    "parent": "media_player_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "media_player_loaded_event_t*",
+            "name": "edia_player_loaded_event",
+            "desc": "edia_player_loaded_event对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "has_audio",
+            "desc": "是否有音频。"
+          },
+          {
+            "type": "bool_t",
+            "name": "has_video",
+            "desc": "是否有视频。"
+          },
+          {
+            "type": "bool_t",
+            "name": "has_subtitle",
+            "desc": "是否有字幕。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "duration",
+            "desc": "时长(ms)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化。",
+        "name": "media_player_loaded_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "返回event_t对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "把event对象转media_player_loaded_event_t对象，主要给脚本语言使用。",
+        "name": "media_player_loaded_event_cast",
+        "return": {
+          "type": "media_player_loaded_event_t*",
+          "desc": "返回event对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "media_info",
+        "desc": "媒体信息。",
+        "type": "media_info_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/media_player_event.h",
+    "desc": "媒体加载事件。",
+    "name": "media_player_loaded_event_t",
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建视频播放器对象。",
+        "name": "media_player_ffmpeg_create",
+        "return": {
+          "type": "media_player_t*",
+          "desc": "返回media player对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "ffmpeg/media_player_ffmpeg.h",
+    "desc": "基于ffmpeg实现的视频播放器。",
+    "name": "media_player_ffmpeg_t",
+    "parent": "media_player_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建audio_view对象",
+        "name": "audio_view_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "audio_view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为audio_view对象(供脚本语言使用)。",
+        "name": "audio_view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "audio_view对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "audio_view对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取播放列表。",
+        "name": "audio_view_get_play_list",
+        "return": {
+          "type": "play_list_t*",
+          "desc": "返回播放列表。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "lrc",
+        "desc": "歌词对象。",
+        "type": "lrc_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "play_list",
+        "desc": "播放列表对象。",
+        "type": "play_list_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "widgets/audio_view.h",
+    "desc": "音频播放控件。\n\naudio_view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于audio_view\\_t控件。\n\n在xml中使用\"audio_view\"标签创建audio_view。如：\n\n```xml\n<audio_view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" \">\n</audio_view>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
+    "name": "audio_view_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建lrc_view对象",
+        "name": "lrc_view_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "lrc_view对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "current_time",
+            "desc": "当前时间。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置当前时间(ms)。",
+        "name": "lrc_view_set_current_time",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "lrc_view对象。"
+          },
+          {
+            "type": "lrc_t*",
+            "name": "lrc",
+            "desc": "lrc对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置lrc对象(调用者负责管理lrc对象的生命周期)。",
+        "name": "lrc_view_set_lrc",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "lrc_view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为lrc_view对象(供脚本语言使用)。",
+        "name": "lrc_view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "lrc_view对象。"
+        }
+      }
+    ],
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": "值(当前时间)即将改变事件。",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": "值(当前时间)改变事件。",
+        "type": "event_t"
+      }
+    ],
+    "properties": [],
+    "header": "widgets/lrc_view.h",
+    "desc": "歌词显示控件。\n\nlrc\\_view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于lrc\\_view\\_t控件。\n\n在xml中使用\"lrc\\_view\"标签创建歌词显示控件。如：\n\n```xml\n<lrc_view x=\"c\" y=\"m\" w=\"80\" h=\"30\"/>\n```\n\n在c代码中使用函数lrc\\_view\\_create创建歌词显示控件。如：\n\n```c\nwidget_t* lrc_view = lrc_view_create(win, 10, 10, 128, 30);\n```\n\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n\n```xml\n<lrc_view>\n<style highlight_text_color=\"red\" text_color=\"black\" text_align_h=\"center\">\n<normal />\n</style>\n</lrc_view>\n```",
+    "name": "lrc_view_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建video_view对象",
+        "name": "video_view_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "video_view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为video_view对象(供脚本语言使用)。",
+        "name": "video_view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "video_view对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "video_view对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取播放列表。",
+        "name": "video_view_get_play_list",
+        "return": {
+          "type": "play_list_t*",
+          "desc": "返回播放列表。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "play_list",
+        "desc": "播放列表对象。",
+        "type": "play_list_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "widgets/video_view.h",
+    "desc": "音频播放控件。\n\nvideo_view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于video_view\\_t控件。\n\n在xml中使用\"video_view\"标签创建video_view。如：\n\n```xml\n<video_view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" \">\n</video_view>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
+    "name": "video_view_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  }
+]

@@ -10,6 +10,7 @@ APP_SRC=os.environ['APP_SRC'];
 
 env=DefaultEnvironment().Clone();
 
+env['LIBS'] = ['media_player'] + env['LIBS']
 INCLUDE_PATH = [TK_ROOT, 
   GTEST_ROOT,
   APP_SRC,

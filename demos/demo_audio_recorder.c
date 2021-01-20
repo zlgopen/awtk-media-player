@@ -19,10 +19,7 @@
  *
  */
 
-#include "awtk.h"
-#include "media_player/base/audio_encoder_factory.h"
-#include "media_player/audio_recorder/audio_recorder.h"
-#include "media_player/audio_encoders/audio_encoder_mp3.h"
+#include "media_player/media_player_helper.h"
 
 #define STR_DURATION "duration"
 
@@ -56,19 +53,9 @@ static ret_t on_start_stop_click(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t app_global_init(void) {
-  audio_recorder_set(audio_recorder_create());
-
-  audio_encoder_factory_set(audio_encoder_factory_create());
-  audio_encoder_factory_register(audio_encoder_factory(), "mp3", audio_encoder_mp3_create);
-
-  return RET_OK;
-}
-
 static ret_t application_init() {
   widget_t* win = NULL;
-
-  app_global_init();
+  media_player_init();
   log_set_log_level(LOG_LEVEL_DEBUG);
 
   win = window_open("audio_recorder");
@@ -80,10 +67,7 @@ static ret_t application_init() {
 }
 
 ret_t application_exit() {
-  audio_recorder_destroy(audio_recorder());
-  audio_encoder_factory_destroy(audio_encoder_factory());
-  data_reader_factory_destroy(data_reader_factory());
-  audio_recorder_set(NULL);
+  media_player_deinit();
 
   return RET_OK;
 }

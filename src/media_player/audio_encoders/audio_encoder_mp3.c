@@ -66,11 +66,11 @@ static int32_t audio_encoder_mp3_encode(audio_encoder_t* encoder, const void* bu
   audio_encoder_mp3_t* aencoder = (audio_encoder_mp3_t*)encoder;
   return_value_if_fail(aencoder != NULL && buff != NULL, 0);
 
-  bytes_per_pass = audio_encoder_mp3_get_one_pass_bytes(aencoder);
   if (aencoder->mp3 == NULL) {
     aencoder->mp3 = shine_initialise(&(aencoder->config));
   }
 
+  bytes_per_pass = audio_encoder_mp3_get_one_pass_bytes(aencoder);
   n = size / bytes_per_pass;
   for (i = 0; i < n; i++) {
     data = shine_encode_buffer_interleaved(aencoder->mp3, p, &written);

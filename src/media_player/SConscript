@@ -1,0 +1,20 @@
+import os
+import sys
+
+env=DefaultEnvironment().Clone()
+BIN_DIR=os.environ['BIN_DIR'];
+
+SOURCES= Glob("audio_decoders/*.c") + \
+  Glob("audio_device/*.c") + \
+  Glob("audio_encoders/*.c") + \
+  Glob("audio_player/*.c") + \
+  Glob("audio_recorder/*.c") + \
+  Glob("base/*.c") + \
+  Glob("lrc/*.c") + \
+  Glob("widgets/*.c") + \
+  Glob('*.c')
+
+if os.environ['WITH_FFMPEG'] == 'true':
+  SOURCES+=Glob("ffmpeg/*.c") 
+
+env.SharedLibrary(os.path.join(BIN_DIR, 'media_player'), SOURCES)
