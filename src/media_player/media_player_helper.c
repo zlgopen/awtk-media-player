@@ -36,7 +36,7 @@
 #include "media_player/ffmpeg/media_player_ffmpeg.h"
 #endif/*WITH_PLAYER_FFMPEG*/
 
-ret_t media_player_init(void) {
+ret_t media_player_init(bool_t audio_player_only) {
 
   if (widget_factory() != NULL) {
     lrc_view_register();
@@ -46,11 +46,13 @@ ret_t media_player_init(void) {
 
   audio_recorder_set(audio_recorder_create());
 
+  if (audio_player_only) {
+    media_player_set(media_player_audio_create());
+  } else {
 #ifdef WITH_PLAYER_FFMPEG 
-  media_player_set(media_player_ffmpeg_create());
-#else
-  media_player_set(media_player_audio_create());
+    media_player_set(media_player_ffmpeg_create());
 #endif/*WITH_PLAYER_FFMPEG */
+  }
   
   if(data_reader_factory() == NULL) {
     data_reader_factory_set(data_reader_factory_create());

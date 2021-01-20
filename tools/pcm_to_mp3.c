@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
   }
 
   platform_prepare();
-  media_player_init();
+  media_player_init(TRUE);
   log_set_log_level(LOG_LEVEL_DEBUG);
 
   infile = argv[1];

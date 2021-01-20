@@ -25,7 +25,7 @@ ret_t application_init() {
   widget_t* win = NULL;
   widget_t* video_view = NULL;
 
-  media_player_init();
+  media_player_init(FALSE);
   log_set_log_level(LOG_LEVEL_DEBUG);
 
   win = window_open("video_player");

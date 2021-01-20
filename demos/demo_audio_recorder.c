@@ -55,7 +55,7 @@ static ret_t on_start_stop_click(void* ctx, event_t* e) {
 
 static ret_t application_init() {
   widget_t* win = NULL;
-  media_player_init();
+  media_player_init(TRUE);
   log_set_log_level(LOG_LEVEL_DEBUG);
 
   win = window_open("audio_recorder");

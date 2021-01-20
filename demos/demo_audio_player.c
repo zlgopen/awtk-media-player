@@ -30,7 +30,7 @@ static ret_t application_init() {
   widget_t* win = NULL;
   widget_t* audio_view = NULL;
 
-  media_player_init();
+  media_player_init(TRUE);
   log_set_log_level(LOG_LEVEL_DEBUG);
 
   win = window_open("audio_player");

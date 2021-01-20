@@ -36,9 +36,10 @@ BEGIN_C_DECLS
 /**
  * @method media_player_init
  * 初始化。
+ * @param {bool_t} audio_player_only init audio_player_only
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t media_player_init(void);
+ret_t media_player_init(bool_t audio_player_only);
 
 /**
  * @method media_player_deinit
