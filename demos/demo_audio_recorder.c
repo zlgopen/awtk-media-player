@@ -55,11 +55,16 @@ static ret_t on_start_stop_click(void* ctx, event_t* e) {
 
 static ret_t application_init() {
   widget_t* win = NULL;
+  widget_t* audio_view = NULL;
+
   media_player_init(TRUE);
   log_set_log_level(LOG_LEVEL_DEBUG);
 
   win = window_open("audio_recorder");
   widget_child_on(win, "start_stop", EVT_CLICK, on_start_stop_click, win);
+  
+  audio_view = widget_lookup_by_type(win, "audio_view", TRUE);
+  play_list_append(audio_view_get_play_list(audio_view), "file://./test.mp3");
 
   widget_layout(win);
 
