@@ -65,7 +65,7 @@ static ret_t media_player_ffmpeg_load(media_player_t* player, const char* url) {
     sleep_ms(300);
 #else
     tk_thread_join(thread);
-#endif    
+#endif
   }
 
   ffmpeg->is = stream_open(url, player);

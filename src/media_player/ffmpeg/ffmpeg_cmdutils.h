@@ -170,7 +170,7 @@ typedef struct OptionDef {
 #define OPT_EXIT 0x0800
 #define OPT_DATA 0x1000
 #define OPT_PERFILE \
-  0x2000                  /* the option is per-file (currently ffmpeg-only). \
+  0x2000 /* the option is per-file (currently ffmpeg-only). \
                              implied by OPT_OFFSET or OPT_SPEC */
 #define OPT_OFFSET 0x4000 /* option is specified as an offset in a passed optctx */
 #define OPT_SPEC \

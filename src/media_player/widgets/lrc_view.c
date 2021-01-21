@@ -105,7 +105,7 @@ static ret_t lrc_view_paint_self(widget_t* widget, canvas_t* c) {
   color_t black = color_init(0, 0, 0, 0xff);
   color_t text_color = style_get_color(style, STYLE_ID_TEXT_COLOR, black);
   color_t curr_text_color = style_get_color(style, STYLE_ID_HIGHLIGHT_TEXT_COLOR, black);
-  
+
   return_value_if_fail(time_tags != NULL, RET_BAD_PARAMS);
 
   if (content_h < h) {

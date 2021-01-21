@@ -72,7 +72,7 @@ static ret_t qaction_exec_decode(qaction_t* action) {
   audio_spec_t real;
   audio_spec_t desired;
   audio_device_t* device = NULL;
-  int16_t *buff = (int16_t*)TKMEM_ALLOC(AUDIO_DECODE_BUFFER_SIZE);
+  int16_t* buff = (int16_t*)TKMEM_ALLOC(AUDIO_DECODE_BUFFER_SIZE);
   action_play_info_t* info = (action_play_info_t*)(action->args);
   media_player_audio_t* player = info->player;
   audio_decoder_t* decoder = player->decoder;

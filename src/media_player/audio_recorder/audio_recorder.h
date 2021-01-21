@@ -117,7 +117,7 @@ audio_recorder_state_t audio_recorder_get_state(audio_recorder_t* recorder);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t audio_recorder_start(audio_recorder_t* recorder, const char* url); 
+ret_t audio_recorder_start(audio_recorder_t* recorder, const char* url);
 
 /**
  * @method audio_recorder_pause
@@ -170,4 +170,3 @@ ret_t audio_recorder_set(audio_recorder_t* audio_recorder);
 END_C_DECLS
 
 #endif /*TK_AUDIO_RECODER_H*/
-

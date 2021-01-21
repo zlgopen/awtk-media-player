@@ -39,7 +39,8 @@ uint32_t audio_device_dequeue_data(audio_device_t* device, void* data, uint32_t 
   return device->vt->dequeue_data(device, data, len);
 }
 
-uint32_t audio_device_dequeue_data_len(audio_device_t* device, void* buff, uint32_t len, uint32_t timeout_ms) {
+uint32_t audio_device_dequeue_data_len(audio_device_t* device, void* buff, uint32_t len,
+                                       uint32_t timeout_ms) {
   uint32_t now = 0;
   uint32_t end = 0;
   int32_t offset = 0;
@@ -76,8 +77,8 @@ uint32_t audio_device_dequeue_data_len(audio_device_t* device, void* buff, uint3
       break;
     }
   } while (remain_bytes > 0);
-    
-  if(len != offset) {
+
+  if (len != offset) {
     log_debug("read: %d/%u\n", offset, max_size);
   }
 

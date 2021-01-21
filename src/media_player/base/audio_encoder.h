@@ -29,8 +29,10 @@ BEGIN_C_DECLS
 struct _audio_encoder_t;
 typedef struct _audio_encoder_t audio_encoder_t;
 
-typedef int32_t (*audio_encoder_encode_t)(audio_encoder_t* encoder, const void* buff, uint32_t size);
-typedef ret_t (*audio_encoder_set_prop_t)(audio_encoder_t* encoder, const char* name, const value_t* v);
+typedef int32_t (*audio_encoder_encode_t)(audio_encoder_t* encoder, const void* buff,
+                                          uint32_t size);
+typedef ret_t (*audio_encoder_set_prop_t)(audio_encoder_t* encoder, const char* name,
+                                          const value_t* v);
 typedef ret_t (*audio_encoder_get_prop_t)(audio_encoder_t* encoder, const char* name, value_t* v);
 typedef ret_t (*audio_encoder_destroy_t)(audio_encoder_t* encoder);
 
@@ -123,4 +125,3 @@ ret_t audio_encoder_destroy(audio_encoder_t* encoder);
 END_C_DECLS
 
 #endif /*TK_AUDIO_ENCODER_H*/
-

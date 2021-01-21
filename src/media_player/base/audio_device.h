@@ -183,7 +183,8 @@ uint32_t audio_device_dequeue_data(audio_device_t* device, void* data, uint32_t 
  *
  * @return {uint32_t} 返回实际数据长度。
  */
-uint32_t audio_device_dequeue_data_len(audio_device_t* device, void* data, uint32_t len, uint32_t timeout_ms);
+uint32_t audio_device_dequeue_data_len(audio_device_t* device, void* data, uint32_t len,
+                                       uint32_t timeout_ms);
 
 /**
  * @method audio_device_queue_data
@@ -287,4 +288,3 @@ audio_device_t* audio_device_recorder_create(const char* name, const audio_spec_
 END_C_DECLS
 
 #endif /*TK_AUDIO_DEVICE_H*/
-

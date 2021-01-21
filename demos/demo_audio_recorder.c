@@ -62,7 +62,7 @@ static ret_t application_init() {
 
   win = window_open("audio_recorder");
   widget_child_on(win, "start_stop", EVT_CLICK, on_start_stop_click, win);
-  
+
   audio_view = widget_lookup_by_type(win, "audio_view", TRUE);
   play_list_append(audio_view_get_play_list(audio_view), "file://./test.mp3");
 

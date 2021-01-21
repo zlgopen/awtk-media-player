@@ -203,4 +203,3 @@ ret_t audio_player_set(media_player_t* media_layer) {
 
   return RET_OK;
 }
-

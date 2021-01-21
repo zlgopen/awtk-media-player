@@ -48,4 +48,3 @@ ret_t audio_encoder_set_prop(audio_encoder_t* encoder, const char* name, const v
 
   return encoder->vt->set_prop(encoder, name, v);
 }
-
