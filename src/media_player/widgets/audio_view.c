@@ -128,8 +128,8 @@ TK_DECL_VTABLE(audio_view) = {.size = sizeof(audio_view_t),
 widget_t* audio_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(audio_view), x, y, w, h);
   audio_view_t* audio_view = AUDIO_VIEW(widget);
-  media_player_t* player = media_player();
-  return_value_if_fail(audio_view != NULL, NULL);
+  media_player_t* player = audio_player() != NULL ? audio_player() : media_player();
+  return_value_if_fail(audio_view != NULL && player != NULL, NULL);
 
   player_set(widget, player);
   audio_view->timer_id = timer_add(player_on_update_timer, audio_view, 500);

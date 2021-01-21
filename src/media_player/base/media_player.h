@@ -351,6 +351,22 @@ media_player_t* media_player(void);
  */
 ret_t media_player_set(media_player_t* media_layer);
 
+/**
+ * @method audio_player
+ * 获取全局缺省的audio_player对象。
+ *
+ * @return {media_player_t*} 返回media_player对象。
+ */
+media_player_t* audio_player(void);
+
+/**
+ * @method audio_player_set
+ * 设置全局缺省的audio_player对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t audio_player_set(media_player_t* media_layer);
+
 #define MEDIA_PLAYER_MAX_VOLUME 128
 
 END_C_DECLS

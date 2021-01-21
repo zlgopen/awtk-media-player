@@ -138,7 +138,7 @@ widget_t* video_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(video_view), x, y, w, h);
   video_view_t* video_view = VIDEO_VIEW(widget);
   media_player_t* player = media_player();
-  return_value_if_fail(video_view != NULL, NULL);
+  return_value_if_fail(video_view != NULL && player != NULL, NULL);
 
   player_set(widget, player);
   video_view->timer_id = timer_add(player_on_update_timer, video_view, 500);

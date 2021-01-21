@@ -47,7 +47,7 @@ ret_t media_player_init(bool_t audio_player_only) {
   audio_recorder_set(audio_recorder_create());
 
   if (audio_player_only) {
-    media_player_set(media_player_audio_create());
+    audio_player_set(media_player_audio_create());
   } else {
 #ifdef WITH_PLAYER_FFMPEG 
     media_player_set(media_player_ffmpeg_create());
@@ -77,8 +77,13 @@ ret_t media_player_deinit(void) {
   audio_recorder_destroy(audio_recorder());
   audio_recorder_set(NULL);
 
-  media_player_destroy(media_player());
-  media_player_set(NULL);
+  if (media_player() != NULL) {
+    media_player_destroy(media_player());
+    media_player_set(NULL);
+  }
+  
+  media_player_destroy(audio_player());
+  audio_player_set(NULL);
 
   audio_decoder_factory_destroy(audio_decoder_factory());
   audio_decoder_factory_set(NULL);

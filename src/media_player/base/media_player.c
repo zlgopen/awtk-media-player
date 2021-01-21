@@ -158,18 +158,6 @@ uint32_t media_player_get_video_height(media_player_t* player) {
   return player->vt->get_video_height(player);
 }
 
-static media_player_t* s_media_player;
-
-media_player_t* media_player(void) {
-  return s_media_player;
-}
-
-ret_t media_player_set(media_player_t* media_layer) {
-  s_media_player = media_layer;
-
-  return RET_OK;
-}
-
 ret_t media_player_set_prop(media_player_t* player, const char* name, const value_t* value) {
   return_value_if_fail(name != NULL && value != NULL, RET_BAD_PARAMS);
   return_value_if_fail(player != NULL && player->vt != NULL, RET_BAD_PARAMS);
@@ -191,3 +179,28 @@ ret_t media_player_get_prop(media_player_t* player, const char* name, value_t* v
 
   return RET_NOT_IMPL;
 }
+
+static media_player_t* s_media_player;
+
+media_player_t* media_player(void) {
+  return s_media_player;
+}
+
+ret_t media_player_set(media_player_t* media_layer) {
+  s_media_player = media_layer;
+
+  return RET_OK;
+}
+
+static media_player_t* s_audio_player;
+
+media_player_t* audio_player(void) {
+  return s_audio_player;
+}
+
+ret_t audio_player_set(media_player_t* media_layer) {
+  s_audio_player = media_layer;
+
+  return RET_OK;
+}
+
