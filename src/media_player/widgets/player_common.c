@@ -35,8 +35,7 @@ static ret_t widget_set_value_without_notify(widget_t* widget, uint32_t value) {
   return RET_OK;
 }
 
-static ret_t player_play_curr(play_list_t* play_list) {
-  media_player_t* player = media_player();
+static ret_t player_play_curr(play_list_t* play_list, media_player_t* player) {
   const char* url = play_list_curr(play_list);
   return_value_if_fail(url != NULL, RET_BAD_PARAMS);
 
@@ -46,8 +45,8 @@ static ret_t player_play_curr(play_list_t* play_list) {
 }
 
 static ret_t player_on_play_or_pause(void* ctx, event_t* e) {
-  media_player_t* player = media_player();
   play_list_t* play_list = (play_list_t*)(ctx);
+  media_player_t* player = player_get(WIDGET(e->target));
   return_value_if_fail(play_list != NULL && player != NULL, RET_BAD_PARAMS);
 
   media_player_state_t state = media_player_get_state(player);
@@ -57,7 +56,7 @@ static ret_t player_on_play_or_pause(void* ctx, event_t* e) {
   } else if (state == MEDIA_PLAYER_PLAYING) {
     media_player_pause(player);
   } else {
-    player_play_curr(play_list);
+    player_play_curr(play_list, player);
   }
 
   return RET_OK;
@@ -65,27 +64,30 @@ static ret_t player_on_play_or_pause(void* ctx, event_t* e) {
 
 static ret_t player_on_prev(void* ctx, event_t* e) {
   play_list_t* play_list = (play_list_t*)(ctx);
+  media_player_t* player = player_get(WIDGET(e->target));
 
   return_value_if_fail(play_list_prev(play_list) == RET_OK, RET_BAD_PARAMS);
 
-  return player_play_curr(play_list);
+  return player_play_curr(play_list, player);
 }
 
 static ret_t player_on_next(void* ctx, event_t* e) {
   play_list_t* play_list = (play_list_t*)(ctx);
+  media_player_t* player = player_get(WIDGET(e->target));
 
   return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
 
-  return player_play_curr(play_list);
+  return player_play_curr(play_list, player);
 }
 
 static ret_t player_idle_on_done(const idle_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
+  media_player_t* player = player_get(widget);
   play_list_t* play_list = WIDGET_GET_PLAY_LIST(widget);
 
   return_value_if_fail(play_list_next(play_list) == RET_OK, RET_BAD_PARAMS);
 
-  player_play_curr(play_list);
+  player_play_curr(play_list, player);
 
   return RET_REMOVE;
 }
@@ -118,7 +120,7 @@ static ret_t player_prepare_lrc(widget_t* widget) {
 
 static ret_t player_idle_on_load(const idle_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
-  media_player_t* player = media_player();
+  media_player_t* player = player_get(widget);
   widget_t* volume = widget_lookup(widget, WIDGET_NAME_VOLUME, TRUE);
 
   player_prepare_lrc(widget);
@@ -155,8 +157,9 @@ ret_t player_on_media_player_event(void* ctx, event_t* e) {
 static ret_t player_on_mute_changed(void* ctx, event_t* e) {
   widget_t* target = WIDGET(e->target);
   uint32_t muted = widget_get_value(target);
+  media_player_t* player = player_get(target);
 
-  return media_player_set_muted(media_player(), muted);
+  return media_player_set_muted(player, muted);
 }
 
 static ret_t player_on_mode_changed(void* ctx, event_t* e) {
@@ -169,8 +172,8 @@ static ret_t player_on_mode_changed(void* ctx, event_t* e) {
 
 static ret_t player_on_progress_changed(void* ctx, event_t* e) {
   widget_t* target = WIDGET(e->target);
+  media_player_t* player = player_get(target);
   uint32_t position = widget_get_value(target);
-  media_player_t* player = media_player();
 
   media_player_seek(player, position);
 
@@ -180,8 +183,9 @@ static ret_t player_on_progress_changed(void* ctx, event_t* e) {
 static ret_t player_on_volume_changed(void* ctx, event_t* e) {
   widget_t* target = WIDGET(e->target);
   uint32_t volume = widget_get_value(target);
+  media_player_t* player = player_get(target);
 
-  return media_player_set_volume(media_player(), volume);
+  return media_player_set_volume(player, volume);
 }
 
 static const char* player_format_time(char* buff, uint32_t size, uint32_t ms) {
@@ -195,7 +199,7 @@ static const char* player_format_time(char* buff, uint32_t size, uint32_t ms) {
 ret_t player_on_update_timer(const timer_info_t* info) {
   char buff[64];
   widget_t* widget = WIDGET(info->ctx);
-  media_player_t* player = media_player();
+  media_player_t* player = player_get(widget);
   widget_t* lrc = widget_lookup(widget, WIDGET_NAME_LRC, TRUE);
   widget_t* play = widget_lookup(widget, WIDGET_NAME_PLAY, TRUE);
   widget_t* elapsed = widget_lookup(widget, WIDGET_NAME_ELAPSED, TRUE);
@@ -233,7 +237,7 @@ ret_t player_on_update_timer(const timer_info_t* info) {
 }
 
 ret_t player_hook_children(widget_t* widget) {
-  media_player_t* player = media_player();
+  media_player_t* player = player_get(widget);
   play_list_t* play_list = WIDGET_GET_PLAY_LIST(widget);
   widget_t* volume = widget_lookup(widget, WIDGET_NAME_VOLUME, TRUE);
 
@@ -254,4 +258,27 @@ ret_t player_hook_children(widget_t* widget) {
   }
 
   return RET_OK;
+}
+
+#define STR_PLAYER "__player__"
+media_player_t* player_get(widget_t* widget) {
+  widget_t* iter = widget;
+  return_value_if_fail(widget != NULL, NULL);
+
+  while (iter != NULL) {
+    media_player_t* player = (media_player_t*)widget_get_prop_pointer(iter, STR_PLAYER);
+    if (player != NULL) {
+      return player;
+    } else {
+      iter = iter->parent;
+    }
+  }
+
+  return NULL;
+}
+
+ret_t player_set(widget_t* widget, media_player_t* player) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return widget_set_prop_pointer(widget, STR_PLAYER, player);
 }

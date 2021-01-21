@@ -235,7 +235,7 @@ static ret_t media_player_audio_pause(media_player_t* player) {
 
 static ret_t media_player_audio_stop(media_player_t* player) {
   media_player_audio_t* aplayer = (media_player_audio_t*)player;
-  return_value_if_fail(aplayer->decoder != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(aplayer != NULL, RET_BAD_PARAMS);
 
   if (aplayer->decoder != NULL) {
     aplayer->abort_request = 1;

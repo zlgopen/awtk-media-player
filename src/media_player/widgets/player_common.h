@@ -49,6 +49,8 @@ BEGIN_C_DECLS
 ret_t player_hook_children(widget_t* widget);
 ret_t player_on_update_timer(const timer_info_t* info);
 ret_t player_on_media_player_event(void* ctx, event_t* e);
+media_player_t* player_get(widget_t* widget);
+ret_t player_set(widget_t* widget, media_player_t* player);
 
 END_C_DECLS
 

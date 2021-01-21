@@ -90,7 +90,6 @@ ret_t audio_view_set_lrc(widget_t* widget, lrc_t* alrc) {
 }
 
 static ret_t audio_view_set_prop(widget_t* widget, const char* name, const value_t* v) {
-  audio_view_t* audio_view = AUDIO_VIEW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
@@ -104,9 +103,10 @@ static ret_t audio_view_set_prop(widget_t* widget, const char* name, const value
 
 static ret_t audio_view_on_destroy(widget_t* widget) {
   audio_view_t* audio_view = AUDIO_VIEW(widget);
+  media_player_t* player = player_get(widget);
 
-  media_player_stop(media_player());
-  media_player_set_on_event(media_player(), NULL, NULL);
+  media_player_stop(player);
+  media_player_set_on_event(player, NULL, NULL);
   play_list_destroy(audio_view->play_list);
 
   if (audio_view->lrc != NULL) {
@@ -128,11 +128,13 @@ TK_DECL_VTABLE(audio_view) = {.size = sizeof(audio_view_t),
 widget_t* audio_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(audio_view), x, y, w, h);
   audio_view_t* audio_view = AUDIO_VIEW(widget);
+  media_player_t* player = media_player();
   return_value_if_fail(audio_view != NULL, NULL);
 
+  player_set(widget, player);
   audio_view->timer_id = timer_add(player_on_update_timer, audio_view, 500);
   audio_view->play_list = play_list_create();
-  media_player_set_on_event(media_player(), player_on_media_player_event, audio_view);
+  media_player_set_on_event(player, player_on_media_player_event, audio_view);
 
   return widget;
 }

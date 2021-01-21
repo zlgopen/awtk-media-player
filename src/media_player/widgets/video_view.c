@@ -72,10 +72,10 @@ static ret_t mutable_image_prepare_image(void* ctx, bitmap_t* image) {
 }
 
 static ret_t video_view_on_event(widget_t* widget, event_t* e) {
-  media_player_t* player = media_player();
   widget_t* mutable = widget_lookup(widget, WIDGET_NAME_MUTABLE_IMAGE, TRUE);
   switch (e->type) {
     case EVT_WINDOW_WILL_OPEN: {
+      media_player_t* player = player_get(widget);
       player_hook_children(widget);
       return_value_if_fail(player != NULL, RET_BAD_PARAMS);
       return_value_if_fail(mutable != NULL, RET_BAD_PARAMS);
@@ -116,9 +116,10 @@ static ret_t video_view_set_prop(widget_t* widget, const char* name, const value
 
 static ret_t video_view_on_destroy(widget_t* widget) {
   video_view_t* video_view = VIDEO_VIEW(widget);
+  media_player_t* player = media_player();
 
-  media_player_stop(media_player());
-  media_player_set_on_event(media_player(), NULL, NULL);
+  media_player_stop(player);
+  media_player_set_on_event(player, NULL, NULL);
   play_list_destroy(video_view->play_list);
 
   return RET_OK;
@@ -136,11 +137,13 @@ TK_DECL_VTABLE(video_view) = {.size = sizeof(video_view_t),
 widget_t* video_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(video_view), x, y, w, h);
   video_view_t* video_view = VIDEO_VIEW(widget);
+  media_player_t* player = media_player();
   return_value_if_fail(video_view != NULL, NULL);
 
+  player_set(widget, player);
   video_view->timer_id = timer_add(player_on_update_timer, video_view, 500);
   video_view->play_list = play_list_create();
-  media_player_set_on_event(media_player(), player_on_media_player_event, video_view);
+  media_player_set_on_event(player, player_on_media_player_event, video_view);
 
   return widget;
 }
