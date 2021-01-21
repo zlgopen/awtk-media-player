@@ -1,5 +1,9 @@
 #最新动态
 
+2021-01-21
+  * 更新文档。
+  * 完善 audio_recorder。
+
 2021-01-20
 	* 修改 lrc 内存泄漏。
   * 增加 audio_recorder。

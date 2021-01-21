@@ -82,6 +82,14 @@ os.environ['WITH_FFMPEG'] = 'false'
 
 ![](docs/images/audio_player.png)
 
+* 音频录音演示
+
+```
+./bin/demo_audio_recorder
+```
+
+![](docs/images/audio_recorder.png)
+
 ## 3. 文档
 
 [架构介绍](docs/arch.md)
