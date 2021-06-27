@@ -21,11 +21,6 @@
 
 #include "media_player/media_player_helper.h"
 
-static ret_t on_quit_click(void* ctx, event_t* e) {
-  tk_quit();
-  return RET_OK;
-}
-
 static ret_t application_init() {
   widget_t* win = NULL;
   widget_t* audio_view = NULL;
@@ -41,7 +36,6 @@ static ret_t application_init() {
   play_list_append(audio_view_get_play_list(audio_view), "data/song2.mp3");
   play_list_append(audio_view_get_play_list(audio_view), "data/song3.mp3");
 
-  widget_child_on(win, "close", EVT_CLICK, on_quit_click, NULL);
   widget_layout(win);
 
   return RET_OK;

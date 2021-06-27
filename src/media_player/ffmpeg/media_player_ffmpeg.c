@@ -104,7 +104,6 @@ static ret_t media_player_ffmpeg_pause(media_player_t* player) {
 
 static ret_t media_player_ffmpeg_stop(media_player_t* player) {
   media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
-  return_value_if_fail(ffmpeg->is != NULL, RET_BAD_PARAMS);
 
   if (ffmpeg->is != NULL) {
     ffmpeg->is->abort_request = 1;
@@ -219,9 +218,7 @@ static media_player_state_t media_player_ffmpeg_get_state(media_player_t* player
 
 static uint32_t media_player_ffmpeg_get_volume(media_player_t* player) {
   media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
-  return_value_if_fail(ffmpeg->is != NULL, 0);
-
-  return ffmpeg->is->audio_volume;
+  return ffmpeg->is != NULL ? ffmpeg->is->audio_volume : 0;
 }
 
 static uint32_t media_player_ffmpeg_get_elapsed(media_player_t* player) {

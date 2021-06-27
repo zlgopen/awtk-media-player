@@ -28,9 +28,13 @@
   (play_list_t*)widget_get_prop_pointer(widget, WIDGET_PROP_PLAY_LIST);
 
 static ret_t widget_set_value_without_notify(widget_t* widget, uint32_t value) {
-  emitter_disable(widget->emitter);
-  widget_set_value(widget, value);
-  emitter_enable(widget->emitter);
+  if (widget->emitter != NULL) {
+    emitter_disable(widget->emitter);
+    widget_set_value(widget, value);
+    emitter_enable(widget->emitter);
+  } else {
+    widget_set_value(widget, value);
+  }
 
   return RET_OK;
 }
