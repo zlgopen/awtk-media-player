@@ -87,5 +87,5 @@ SConscriptFiles=[
   'tests/SConscript', 
 ]
 
-SConscript(SConscriptFiles)
+helper.SConscript(SConscriptFiles)
 
