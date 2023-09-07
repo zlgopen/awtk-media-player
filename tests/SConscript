@@ -23,7 +23,7 @@ INCLUDE_PATH = [TK_ROOT,
   os.path.join(GTEST_ROOT, 'include'),
   os.path.join(GTEST_ROOT, 'make')] 
 
-env['CPPPATH'] = env['CPPPATH'] + INCLUDE_PATH
+env['CPPPATH'] = INCLUDE_PATH
 
 if platform.system() == 'Windows':
   env['LIBS'] = ['Ws2_32', 'Wldap32'] + env['LIBS']
