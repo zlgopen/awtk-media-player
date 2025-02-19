@@ -51,6 +51,7 @@
 
 #ifdef MACOS
 #define SLIBSUF ".dynlib"
+#define HAVE_SYSCTL 1
 #define HAVE_ARC4RANDOM 1
 #define HAVE_MACH_ABSOLUTE_TIME 1
 #endif/*MACOS*/
@@ -82,7 +83,6 @@
 #define HAVE_NANOSLEEP 1
 #define HAVE_LSTAT 1
 #define HAVE_SYSCONF 1
-#define HAVE_SYSCTL 1
 #define HAVE_USLEEP 1
 #define HAVE_SYS_PARAM_H 1
 #define HAVE_SYS_RESOURCE_H 1

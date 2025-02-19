@@ -9,9 +9,10 @@
 #define HAVE_LAVF 0
 #define HAVE_AVS 0
 #define USE_AVXSYNTH 0
+#elif defined(MACOS)
+#define SYS_MACOSX 1
 #else
 #define STACK_ALIGNMENT 64
-#define SYS_MACOSX 1
 #define HAVE_POSIXTHREAD 1
 #define HAVE_BEOSTHREAD 0
 #define HAVE_WIN32THREAD 0
