@@ -14,6 +14,7 @@ env['LIBS'] = ['media_player'] + env['LIBS']
 INCLUDE_PATH = [TK_ROOT, 
   GTEST_ROOT,
   APP_SRC,
+  TK_3RD_ROOT,
   os.path.join(TK_ROOT, 'src'),  
   os.path.join(TK_3RD_ROOT, 'SDL/src'), 
   os.path.join(TK_3RD_ROOT, 'SDL/include'), 
