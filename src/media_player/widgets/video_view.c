@@ -134,6 +134,20 @@ TK_DECL_VTABLE(video_view) = {.size = sizeof(video_view_t),
                               .create = video_view_create,
                               .on_destroy = video_view_on_destroy};
 
+static ret_t video_view_on_media_player_event(void* ctx, event_t* e) {
+  video_view_t* video_view = VIDEO_VIEW(ctx);
+  return_value_if_fail(video_view != NULL, RET_BAD_PARAMS);
+
+  player_on_media_player_event(ctx, e);
+  
+  if (e->type == EVT_MEDIA_PLAYER_LOADED) {
+    widget_t* mutable = widget_lookup(WIDGET(ctx), WIDGET_NAME_MUTABLE_IMAGE, TRUE);
+    mutable_image_invalidate_force(mutable);
+  }
+
+  return RET_OK;
+}
+
 widget_t* video_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(video_view), x, y, w, h);
   video_view_t* video_view = VIDEO_VIEW(widget);
@@ -143,7 +157,7 @@ widget_t* video_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   player_set(widget, player);
   video_view->timer_id = timer_add(player_on_update_timer, video_view, 500);
   video_view->play_list = play_list_create();
-  media_player_set_on_event(player, player_on_media_player_event, video_view);
+  media_player_set_on_event(player, video_view_on_media_player_event, video_view);
 
   return widget;
 }
