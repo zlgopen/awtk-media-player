@@ -110,10 +110,14 @@ ret_t media_player_get_video_frame(media_player_t* player, bitmap_t* image) {
 }
 
 ret_t media_player_destroy(media_player_t* player) {
+  ret_t ret = RET_OK;
   return_value_if_fail(player != NULL && player->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(player->vt->destroy != NULL, RET_BAD_PARAMS);
 
-  return player->vt->destroy(player);
+  ret = player->vt->destroy(player);
+  player->vt = NULL;
+
+  return ret;
 }
 
 media_player_state_t media_player_get_state(media_player_t* player) {
