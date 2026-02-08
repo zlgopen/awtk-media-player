@@ -70,6 +70,11 @@ enum show_muxdemuxers {
 };
 
 void init_opts(void) {
+  sws_dict = NULL;
+  swr_opts = NULL;
+  format_opts = NULL;
+  codec_opts = NULL;
+  resample_opts = NULL;
   av_dict_set(&sws_dict, "flags", "bicubic", 0);
 }
 
