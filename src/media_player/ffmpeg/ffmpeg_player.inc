@@ -772,6 +772,7 @@ static void stream_component_close(VideoState* is, int stream_index) {
     case AVMEDIA_TYPE_AUDIO:
       decoder_abort(&is->auddec, &is->sampq);
       audio_device_destroy(audio_dev);
+      audio_dev = NULL;
       decoder_destroy(&is->auddec);
       swr_free(&is->swr_ctx);
       av_freep(&is->audio_buf1);
@@ -2391,6 +2392,17 @@ static int read_thread(void* arg) {
 
 fail:
   ret = 0;
+
+  /* Close audio before notifying DONE/ABORT: the notify lets the UI thread
+   * immediately open the next file's audio (which reassigns the shared global
+   * audio_dev). Closing here first avoids racing with stream_close() below,
+   * which would otherwise destroy the new device or NULL audio_dev while the
+   * new SDL callback is already running. */
+  if (is->audio_stream >= 0) {
+    stream_component_close(is, is->audio_stream);
+    is->audio_stream = -1;
+  }
+
   if (is->abort_request) {
     media_player_ffmpeg_notify_simple(is->player, EVT_MEDIA_PLAYER_ABORT);
   } else {

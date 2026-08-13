@@ -87,6 +87,10 @@ static ret_t audio_device_sdl_pause(audio_device_t* device) {
 static ret_t audio_device_sdl_destroy(audio_device_t* device) {
   audio_device_sdl_t* sdl = (audio_device_sdl_t*)device;
 
+  /* pause and flush before close, so the underlying ALSA PCM can recover from
+   * xrun/underrun states and be released cleanly for the next reopen */
+  SDL_PauseAudioDevice(sdl->devid, TRUE);
+  SDL_ClearQueuedAudio(sdl->devid);
   SDL_CloseAudioDevice(sdl->devid);
   TKMEM_FREE(device);
 
