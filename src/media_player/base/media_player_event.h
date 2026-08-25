@@ -59,7 +59,12 @@ typedef enum _media_player_event_t {
    * @const EVT_MEDIA_PLAYER_ABORT
    * 播放取消。
    */
-  EVT_MEDIA_PLAYER_ABORT
+  EVT_MEDIA_PLAYER_ABORT,
+  /**
+   * @const EVT_MEDIA_PLAYER_ERROR
+   * 打开或播放失败。
+   */
+  EVT_MEDIA_PLAYER_ERROR
 } media_player_event_t;
 
 /**

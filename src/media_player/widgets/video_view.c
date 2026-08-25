@@ -122,6 +122,11 @@ static ret_t video_view_on_destroy(widget_t* widget) {
   media_player_set_on_event(player, NULL, NULL);
   play_list_destroy(video_view->play_list);
 
+  if (video_view->timer_id != TK_INVALID_ID) {
+    timer_remove(video_view->timer_id);
+    video_view->timer_id = TK_INVALID_ID;
+  }
+
   return RET_OK;
 }
 

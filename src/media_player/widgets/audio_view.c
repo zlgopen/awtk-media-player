@@ -113,6 +113,11 @@ static ret_t audio_view_on_destroy(widget_t* widget) {
     lrc_destroy(audio_view->lrc);
   }
 
+  if (audio_view->timer_id != TK_INVALID_ID) {
+    timer_remove(audio_view->timer_id);
+    audio_view->timer_id = TK_INVALID_ID;
+  }
+
   return RET_OK;
 }
 

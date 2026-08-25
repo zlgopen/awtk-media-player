@@ -46,31 +46,45 @@ static ret_t media_player_ffmpeg_notify(media_player_t* player, event_t* e) {
 }
 
 static ret_t media_player_ffmpeg_notify_simple(media_player_t* player, uint32_t type) {
-  media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
+  return media_player_notify_simple(player, type);
+}
 
-  if (type == EVT_MEDIA_PLAYER_DONE) {
-    ffmpeg->is = NULL;
+static ret_t media_player_ffmpeg_close_stream(media_player_ffmpeg_t* ffmpeg) {
+  VideoState* is;
+  return_value_if_fail(ffmpeg != NULL, RET_BAD_PARAMS);
+
+  is = ffmpeg->is;
+  if (is == NULL) {
+    return RET_OK;
   }
 
-  return media_player_notify_simple(player, type);
+  /* Drop the pointer first so get_video_frame() cannot use a freed VideoState. */
+  ffmpeg->is = NULL;
+  is->abort_request = 1;
+  stream_close(is);
+
+  return RET_OK;
 }
 
 static ret_t media_player_ffmpeg_load(media_player_t* player, const char* url) {
   media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
 
-  if (ffmpeg->is != NULL) {
-    tk_thread_t* thread = ffmpeg->is->read_tid;
-    ffmpeg->is->abort_request = 1;
-    tk_thread_join(thread);
-  }
+  media_player_ffmpeg_close_stream(ffmpeg);
 
   ffmpeg->is = stream_open(url, player);
-  if (ffmpeg->is != NULL) {
-    ffmpeg->is->frame_width = 0;
-    ffmpeg->is->frame_height = 0;
+  if (ffmpeg->is == NULL) {
+    return RET_FAIL;
+  }
+
+  if (stream_wait_opened(ffmpeg->is) < 0) {
+    media_player_ffmpeg_close_stream(ffmpeg);
+    return RET_FAIL;
+  }
+
+  ffmpeg->is->muted = ffmpeg->muted;
+  ffmpeg->is->audio_volume = av_clip(ffmpeg->volume, 0, MEDIA_PLAYER_MAX_VOLUME);
+  if (!(ffmpeg->is->paused)) {
     toggle_pause(ffmpeg->is);
-    ffmpeg->is->muted = ffmpeg->muted;
-    ffmpeg->is->audio_volume = av_clip(ffmpeg->volume, 0, MEDIA_PLAYER_MAX_VOLUME);
   }
 
   return RET_OK;
@@ -102,14 +116,7 @@ static ret_t media_player_ffmpeg_stop(media_player_t* player) {
   media_player_ffmpeg_t* ffmpeg = (media_player_ffmpeg_t*)player;
   return_value_if_fail(ffmpeg != NULL, RET_BAD_PARAMS);
 
-  if (ffmpeg->is != NULL) {
-    tk_thread_t* read_tid = ffmpeg->is->read_tid;
-    ffmpeg->is->abort_request = 1;
-    ffmpeg->is = NULL;
-    tk_thread_join(read_tid);
-  }
-
-  return RET_OK;
+  return media_player_ffmpeg_close_stream(ffmpeg);
 }
 
 static ret_t media_player_ffmpeg_seek(media_player_t* player, uint32_t offset) {

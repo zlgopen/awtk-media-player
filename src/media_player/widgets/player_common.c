@@ -154,6 +154,10 @@ ret_t player_on_media_player_event(void* ctx, event_t* e) {
       idle_add(player_idle_on_done, widget);
       break;
     }
+    case EVT_MEDIA_PLAYER_ERROR: {
+      log_debug("error\n");
+      break;
+    }
   }
   return RET_OK;
 }

@@ -304,6 +304,11 @@ typedef struct _VideoState {
 
   tk_cond_t* continue_read_thread;
 
+  /* signaled once from read_thread when open succeeds (1) or fails (-1) */
+  tk_mutex_t* open_mutex;
+  tk_cond_t* open_cond;
+  int open_status;
+
   /*media player*/
   bitmap_t* image;
   uint32_t frame_width;
@@ -485,9 +490,15 @@ static void packet_queue_flush(PacketQueue* q) {
 }
 
 static void packet_queue_destroy(PacketQueue* q) {
-  packet_queue_flush(q);
-  tk_mutex_destroy(q->mutex);
-  tk_cond_destroy(q->cond);
+  if (q->mutex) {
+    packet_queue_flush(q);
+    tk_mutex_destroy(q->mutex);
+    q->mutex = NULL;
+  }
+  if (q->cond) {
+    tk_cond_destroy(q->cond);
+    q->cond = NULL;
+  }
 }
 
 static void packet_queue_abort(PacketQueue* q) {
@@ -676,11 +687,19 @@ static void frame_queue_destory(FrameQueue* f) {
   int i;
   for (i = 0; i < f->max_size; i++) {
     Frame* vp = &f->queue[i];
-    frame_queue_unref_item(vp);
-    av_frame_free(&vp->frame);
+    if (vp->frame) {
+      frame_queue_unref_item(vp);
+      av_frame_free(&vp->frame);
+    }
   }
-  tk_mutex_destroy(f->mutex);
-  tk_cond_destroy(f->cond);
+  if (f->mutex) {
+    tk_mutex_destroy(f->mutex);
+    f->mutex = NULL;
+  }
+  if (f->cond) {
+    tk_cond_destroy(f->cond);
+    f->cond = NULL;
+  }
 }
 
 static void frame_queue_signal(FrameQueue* f) {
@@ -753,11 +772,19 @@ static int frame_queue_nb_remaining(FrameQueue* f) {
   return f->size - f->rindex_shown;
 }
 
+static void thread_join_destroy(tk_thread_t** thread) {
+  if (thread == NULL || *thread == NULL) {
+    return;
+  }
+  tk_thread_join(*thread);
+  tk_thread_destroy(*thread);
+  *thread = NULL;
+}
+
 static void decoder_abort(Decoder* d, FrameQueue* fq) {
   packet_queue_abort(d->queue);
   frame_queue_signal(fq);
-  tk_thread_join(d->decoder_tid);
-  d->decoder_tid = NULL;
+  thread_join_destroy(&d->decoder_tid);
   packet_queue_flush(d->queue);
 }
 
@@ -817,27 +844,74 @@ static void stream_component_close(VideoState* is, int stream_index) {
   }
 }
 
+static void stream_notify_open(VideoState* is, int result) {
+  if (is == NULL || is->open_mutex == NULL) {
+    return;
+  }
+
+  tk_mutex_lock(is->open_mutex);
+  if (is->open_status == 0) {
+    is->open_status = result;
+    if (is->open_cond != NULL) {
+      tk_cond_signal(is->open_cond);
+    }
+  }
+  tk_mutex_unlock(is->open_mutex);
+}
+
+static int stream_wait_opened(VideoState* is) {
+  int status = -1;
+  return_value_if_fail(is != NULL && is->open_mutex != NULL, -1);
+
+  tk_mutex_lock(is->open_mutex);
+  while (is->open_status == 0) {
+    tk_cond_wait(is->open_cond, is->open_mutex);
+  }
+  status = is->open_status;
+  tk_mutex_unlock(is->open_mutex);
+
+  return status;
+}
+
 static void stream_close(VideoState* is) {
-  /* XXX: use a special url_shutdown call to abort parse cleanly */
+  if (is == NULL) {
+    return;
+  }
+
+  /* Must be called from a thread other than read_tid. Join closes the OS
+   * handle; destroy frees the tk_thread_t wrapper. */
   is->abort_request = 1;
-  tk_thread_join(is->read_tid);
+  stream_notify_open(is, -1);
+  thread_join_destroy(&is->read_tid);
 
-  /* close each stream */
-  if (is->audio_stream >= 0) stream_component_close(is, is->audio_stream);
-  if (is->video_stream >= 0) stream_component_close(is, is->video_stream);
-  if (is->subtitle_stream >= 0) stream_component_close(is, is->subtitle_stream);
-
-  avformat_close_input(&is->ic);
+  if (is->ic) {
+    if (is->audio_stream >= 0) stream_component_close(is, is->audio_stream);
+    if (is->video_stream >= 0) stream_component_close(is, is->video_stream);
+    if (is->subtitle_stream >= 0) stream_component_close(is, is->subtitle_stream);
+    avformat_close_input(&is->ic);
+  }
 
   packet_queue_destroy(&is->videoq);
   packet_queue_destroy(&is->audioq);
   packet_queue_destroy(&is->subtitleq);
 
-  /* free all pictures */
   frame_queue_destory(&is->pictq);
   frame_queue_destory(&is->sampq);
   frame_queue_destory(&is->subpq);
-  tk_cond_destroy(is->continue_read_thread);
+
+  if (is->continue_read_thread) {
+    tk_cond_destroy(is->continue_read_thread);
+    is->continue_read_thread = NULL;
+  }
+  if (is->open_cond) {
+    tk_cond_destroy(is->open_cond);
+    is->open_cond = NULL;
+  }
+  if (is->open_mutex) {
+    tk_mutex_destroy(is->open_mutex);
+    is->open_mutex = NULL;
+  }
+
   sws_freeContext(is->swsContext);
   sws_freeContext(is->sub_convert_ctx);
   av_free(is->filename);
@@ -1495,9 +1569,15 @@ the_end:
 static int decoder_start(Decoder* d, int (*fn)(void*), const char* thread_name, void* arg) {
   packet_queue_start(d->queue);
   d->decoder_tid = tk_thread_create((tk_thread_entry_t)fn, arg);
-  tk_thread_start(d->decoder_tid);
   if (!d->decoder_tid) {
     av_log(NULL, AV_LOG_ERROR, "tk_thread_create(): %s\n", "error");
+    return AVERROR(ENOMEM);
+  }
+  tk_thread_set_name(d->decoder_tid, thread_name);
+  if (tk_thread_start(d->decoder_tid) != RET_OK) {
+    av_log(NULL, AV_LOG_ERROR, "tk_thread_start(): %s\n", "error");
+    tk_thread_destroy(d->decoder_tid);
+    d->decoder_tid = NULL;
     return AVERROR(ENOMEM);
   }
   return 0;
@@ -2259,6 +2339,7 @@ static int read_thread(void* arg) {
     event.media_info.display_aspect_ratio_h = display_aspect_ratio_h;
 
     media_player_ffmpeg_notify(is->player, e);
+    stream_notify_open(is, 1);
   }
 
   if (infinite_buffer < 0 && is->realtime) infinite_buffer = 1;
@@ -2393,26 +2474,42 @@ static int read_thread(void* arg) {
 fail:
   ret = 0;
 
-  /* Close audio before notifying DONE/ABORT: the notify lets the UI thread
-   * immediately open the next file's audio (which reassigns the shared global
-   * audio_dev). Closing here first avoids racing with stream_close() below,
-   * which would otherwise destroy the new device or NULL audio_dev while the
-   * new SDL callback is already running. */
+  /* Close audio before notifying DONE/ABORT/ERROR: the notify lets the UI
+   * thread immediately open the next file's audio (which reassigns the shared
+   * global audio_dev). Closing here first avoids racing with stream_close()
+   * on the UI thread. */
   if (is->audio_stream >= 0) {
     stream_component_close(is, is->audio_stream);
     is->audio_stream = -1;
   }
 
-  if (is->abort_request) {
-    media_player_ffmpeg_notify_simple(is->player, EVT_MEDIA_PLAYER_ABORT);
-  } else {
-    media_player_ffmpeg_notify_simple(is->player, EVT_MEDIA_PLAYER_DONE);
+  {
+    int opened = 0;
+    if (is->open_mutex) {
+      tk_mutex_lock(is->open_mutex);
+      opened = is->open_status;
+      tk_mutex_unlock(is->open_mutex);
+    }
+
+    if (is->abort_request) {
+      stream_notify_open(is, -1);
+      media_player_ffmpeg_notify_simple(is->player, EVT_MEDIA_PLAYER_ABORT);
+    } else if (opened <= 0) {
+      stream_notify_open(is, -1);
+      media_player_ffmpeg_notify_simple(is->player, EVT_MEDIA_PLAYER_ERROR);
+    } else {
+      media_player_ffmpeg_notify_simple(is->player, EVT_MEDIA_PLAYER_DONE);
+    }
   }
 
   if (ic && !is->ic) avformat_close_input(&ic);
 
-  stream_close(is);
-  tk_mutex_destroy(wait_mutex);
+  /* Do not stream_close() here: that would self-join read_tid and leak the
+   * Windows/SDL thread handle. The UI thread joins and destroys after this
+   * function returns. */
+  if (wait_mutex) {
+    tk_mutex_destroy(wait_mutex);
+  }
   return 0;
 }
 
@@ -2425,6 +2522,8 @@ static VideoState* stream_open(const char* filename, media_player_t* player) {
   if (!is->filename) goto fail;
   is->iformat = iformat;
   is->player = player;
+  is->audio_stream = is->video_stream = is->subtitle_stream = -1;
+  is->last_audio_stream = is->last_video_stream = is->last_subtitle_stream = -1;
 
   /* start video display */
   if (frame_queue_init(&is->pictq, &is->videoq, VIDEO_PICTURE_QUEUE_SIZE, 1) < 0) goto fail;
@@ -2436,6 +2535,14 @@ static VideoState* stream_open(const char* filename, media_player_t* player) {
     goto fail;
 
   if (!(is->continue_read_thread = tk_cond_create())) {
+    av_log(NULL, AV_LOG_FATAL, "tk_cond_create(): %s\n", "error");
+    goto fail;
+  }
+  if (!(is->open_mutex = tk_mutex_create())) {
+    av_log(NULL, AV_LOG_FATAL, "tk_mutex_create(): %s\n", "error");
+    goto fail;
+  }
+  if (!(is->open_cond = tk_cond_create())) {
     av_log(NULL, AV_LOG_FATAL, "tk_cond_create(): %s\n", "error");
     goto fail;
   }
@@ -2455,15 +2562,21 @@ static VideoState* stream_open(const char* filename, media_player_t* player) {
   is->muted = 0;
   is->av_sync_type = av_sync_type;
   is->read_tid = tk_thread_create((tk_thread_entry_t)read_thread, is);
-  tk_thread_start(is->read_tid);
-
   if (!is->read_tid) {
     av_log(NULL, AV_LOG_FATAL, "tk_thread_create(): %s\n", "error");
-  fail:
-    stream_close(is);
-    return NULL;
+    goto fail;
+  }
+  tk_thread_set_name(is->read_tid, "ff_read");
+  if (tk_thread_start(is->read_tid) != RET_OK) {
+    av_log(NULL, AV_LOG_FATAL, "tk_thread_start(): %s\n", "error");
+    tk_thread_destroy(is->read_tid);
+    is->read_tid = NULL;
+    goto fail;
   }
   return is;
+fail:
+  stream_close(is);
+  return NULL;
 }
 
 /* Called from the main */
